@@ -1,0 +1,157 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  theme?: 'amber' | 'sunset' | 'olive' | 'aurora';
+}
+
+const {
+  title = "Axios '26 | Technical Symposium · PSG College of Technology",
+  description = "Axios '26 — The premier national technical symposium presented by the Computational Sciences Association (CSA) at PSG College of Technology, Coimbatore. 8 arenas, 2 days, ₹1,50,000 prize pool. Sept 11–12, 2026.",
+  theme = 'amber'
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://axios.psgtech.ac.in');
+const ogImageUrl = new URL('/assets/axios-logo-text.webp', canonicalURL).href;
+
+const eventJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Axios '26 - Technical Symposium",
+  "description": description,
+  "startDate": "2026-09-11T09:00:00+05:30",
+  "endDate": "2026-09-12T17:00:00+05:30",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": "PSG College of Technology",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Avinashi Road, Peelamedu",
+      "addressLocality": "Coimbatore",
+      "addressRegion": "Tamil Nadu",
+      "postalCode": "641004",
+      "addressCountry": "IN"
+    }
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "Computational Sciences Association (CSA)",
+    "url": "https://www.psgtech.edu"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": canonicalURL.href,
+    "price": "0",
+    "priceCurrency": "INR",
+    "availability": "https://schema.org/InStock",
+    "validFrom": "2026-01-01T00:00:00+05:30"
+  },
+  "image": [ogImageUrl]
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="keywords" content="Axios 2026, Axios PSG Tech, Technical Symposium Coimbatore, Computational Sciences Association, CSA PSG, Breach Point CTF, DataQuest, Math Mania, QFactor, Survivors Court, Valorant tournament" />
+  <meta name="author" content="Computational Sciences Association (CSA)" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- OpenGraph Metadata -->
+  <meta property="og:site_name" content="Axios '26" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:image:type" content="image/webp" />
+
+  <!-- Twitter Card Metadata -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
+
+  <!-- Google Fonts Preconnect & Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Shrikhand&family=Monoton&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Jost:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Preload Key LCP Image -->
+  <link rel="preload" as="image" href="/assets/axios-logo-text.webp" type="image/webp" fetchpriority="high" />
+
+  <!-- Schema.org JSON-LD Event Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(eventJsonLd)}></script>
+
+  <style is:global>
+    html, body {
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    ::selection {
+      background: #e23b2e;
+      color: #fff;
+    }
+    a {
+      color: #e23b2e;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #26190f;
+    }
+
+    /* Modern Performance Optimization: Content Containment for Below-the-fold Sections */
+    .cv-auto {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 600px;
+    }
+
+    /* Keyframe Animations */
+    @keyframes bl { 50% { opacity: 0; } }
+    @keyframes fill { to { width: 88%; } }
+    @keyframes mq { to { transform: translateX(-100%); } }
+    @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+    @keyframes neon { 0%, 100% { opacity: 1; } 50% { opacity: .72; } }
+    @keyframes scan { to { background-position: 0 3px; } }
+    @keyframes secRise { from { opacity: 0; transform: translateY(70px) skewY(1.2deg); } to { opacity: 1; transform: none; } }
+    @keyframes passIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes tick { to { transform: translateX(-50%); } }
+    @keyframes stampIn {
+      0%, 45% { opacity: 0; transform: scale(1.12); animation-timing-function: steps(1, end); }
+      46%, 80% { opacity: 1; transform: scale(1.12); animation-timing-function: steps(1, end); }
+      81%, 100% { opacity: 1; transform: none; }
+    }
+    @keyframes billCrawl {
+      0% { opacity: 0; transform: translate(230px, 130px) rotate(40deg) scaleX(-1); animation-timing-function: steps(1, end); }
+      12% { opacity: 1; transform: translate(230px, 130px) rotate(40deg) scaleX(-1); animation-timing-function: steps(1, end); }
+      45% { opacity: 1; transform: translate(108px, 58px) rotate(26deg) scaleX(-1); animation-timing-function: steps(1, end); }
+      78%, 100% { opacity: 1; transform: translate(0, 0) rotate(12deg) scaleX(-1); }
+    }
+    @keyframes slotShake { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-4px, 3px); } 40% { transform: translate(4px, -2px); } 60% { transform: translate(-3px, -2px); } 80% { transform: translate(3px, 2px); } }
+    @keyframes dangle { 0%, 100% { transform: rotate(2.4deg); } 50% { transform: rotate(-2deg); } }
+    @keyframes twk { 0%, 100% { opacity: 0; transform: scale(.4) rotate(0deg); } 45% { opacity: 1; transform: scale(1.15) rotate(70deg); } 70% { opacity: .55; transform: scale(.8) rotate(120deg); } }
+    @keyframes handDraw { 0% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(-14px,3px) rotate(-2deg); } 50% { transform: translate(-26px,1px) rotate(-1deg); } 75% { transform: translate(-12px,4px) rotate(-2.5deg); } 100% { transform: translate(0,0) rotate(0deg); } }
+  </style>
+</head>
+<body>
+  <div class="neo" style="--paper:#f7f1e4;--card:#fbf5e8;--wcard:#ffffff;--ink:#241a12;--ink2:#7a6650;--acc:#e23b2e;--acc2:#f0a500;--line:#e2d8c2;--term:#17100a;--termfg:#f4b12a;--r1:#e23b2e;--r2:#ef7d2e;--r3:#f4b32c;--r4:#4ea36a;--r5:#2f8fd0;--r6:#5150ad;--r7:#8e4fa8;min-height:100vh;background:var(--paper);color:var(--ink);font-family:'Bricolage Grotesque',system-ui,sans-serif;position:relative;overflow-x:hidden;background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:22px 22px">
+
+    <div class="scan-overlay" style="display:none;position:fixed;inset:0;z-index:9998;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.14) 0 1px,transparent 1px 3px);mix-blend-mode:multiply;animation:scan .5s steps(3) infinite"></div>
+
+    <slot />
+
+  </div>
+</body>
+</html>

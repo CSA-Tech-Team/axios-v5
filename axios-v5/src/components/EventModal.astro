@@ -1,0 +1,321 @@
+---
+---
+
+<div id="event-modal" style="display:none;position:fixed;inset:0;z-index:5000;background:rgba(23,16,10,.6);align-items:flex-start;justify-content:center;padding:44px 16px;overflow-y:auto">
+  <div id="modal-container" style="width:min(900px,100%);background:var(--card);border:2px solid var(--ink);box-shadow:10px 10px 0 var(--ink);position:relative;overflow:hidden;margin-top:auto;margin-bottom:auto">
+    <!-- Event Logo Watermark -->
+    <img id="modal-logo" src="" alt="" style="position:absolute;top:-58px;left:-58px;width:180px;height:180px;object-fit:contain;mix-blend-mode:multiply;opacity:.92;pointer-events:none;z-index:1" />
+    
+    <!-- Close Button -->
+    <button id="modal-close-btn" title="Close" style="position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;background:var(--wcard);color:var(--ink);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-size:16px;font-weight:800;font-family:inherit;cursor:pointer">✕</button>
+
+    <!-- Header Section -->
+    <div style="position:relative;z-index:2;padding:30px 64px 0 140px;text-align:right">
+      <span id="modal-cat" style="display:inline-block;background:var(--acc);color:#fff;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:5px 13px;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transform:rotate(-1deg)">Technical</span>
+      <h3 id="modal-title" style="margin:14px 0 0;font-family:'Anton',sans-serif;font-size:clamp(34px,6vw,58px);line-height:.88;color:var(--ink);text-shadow:3px 3px 0 var(--acc2)">Event Title</h3>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div style="display:flex;gap:2px;padding:20px 26px 0;margin-top:16px;border-bottom:2px solid var(--ink)">
+      <button id="tab-overview-btn" style="background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:.05em;color:var(--ink);padding:10px 14px 13px;position:relative">
+        OVERVIEW
+        <span id="indicator-overview" style="position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--acc)"></span>
+      </button>
+      <button id="tab-rounds-btn" style="background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:.05em;color:var(--ink2);padding:10px 14px 13px;position:relative">
+        ROUNDS
+        <span id="indicator-rounds" style="display:none;position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--acc2)"></span>
+      </button>
+      <button id="tab-prizes-btn" style="background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:.05em;color:var(--ink2);padding:10px 14px 13px;position:relative">
+        PRIZES &amp; TEAM
+        <span id="indicator-prizes" style="display:none;position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--r5)"></span>
+      </button>
+    </div>
+
+    <!-- Tab Contents Container -->
+    <div style="padding:24px 26px 6px">
+      <!-- Tab 1: Overview -->
+      <div id="content-overview">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div style="background:var(--wcard);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:16px 18px">
+            <div style="font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--ink2);text-transform:uppercase">Total Prize</div>
+            <div id="modal-prize" style="font-family:'Anton',sans-serif;font-size:34px;color:var(--acc);margin-top:2px">₹60,000</div>
+          </div>
+          <div style="background:var(--wcard);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:16px 18px">
+            <div style="font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--ink2);text-transform:uppercase">Team Size</div>
+            <div id="modal-team" style="font-family:'Anton',sans-serif;font-size:34px;color:var(--ink);margin-top:2px">3 Members</div>
+          </div>
+        </div>
+        <div style="font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin:22px 0 8px">About the Event</div>
+        <p id="modal-about" style="margin:0;font-size:15px;line-height:1.6;color:var(--ink2)">Description</p>
+        <div style="font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin:22px 0 8px">Event Convenors</div>
+        <div id="modal-convenors" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px"></div>
+      </div>
+
+      <!-- Tab 2: Rounds -->
+      <div id="content-rounds" style="display:none;flex-direction:column;gap:12px"></div>
+
+      <!-- Tab 3: Prizes & Team -->
+      <div id="content-prizes" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
+          <div style="background:var(--wcard);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:16px 18px">
+            <div style="font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--ink2);text-transform:uppercase">Total Prize</div>
+            <div id="modal-prize-dup" style="font-family:'Anton',sans-serif;font-size:34px;color:var(--acc);margin-top:2px">₹60,000</div>
+          </div>
+          <div style="background:var(--wcard);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:16px 18px">
+            <div style="font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--ink2);text-transform:uppercase">Team Size</div>
+            <div id="modal-team-dup" style="font-family:'Anton',sans-serif;font-size:34px;color:var(--ink);margin-top:2px">3 Members</div>
+          </div>
+        </div>
+        <div style="font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin:0 0 12px">Prize Split</div>
+        <div id="modal-prize-splits" style="display:flex;flex-direction:column;gap:14px"></div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div style="padding:8px 26px 26px;display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap">
+      <button id="modal-close-footer" style="background:var(--card);color:var(--ink);border:2px solid var(--ink);font-family:inherit;font-size:15px;font-weight:700;padding:12px 20px;cursor:pointer">Close</button>
+      <button id="modal-register-btn" style="background:var(--acc);color:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);font-family:inherit;font-size:15px;font-weight:700;padding:12px 24px;cursor:pointer">▶ Register Now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface EventDetails {
+    logo: string;
+    name: string;
+    cat: string;
+    team: string;
+    prize: string;
+    about: string;
+    rounds: { t: string; d: string }[];
+    convenors: { n: string; p: string }[];
+    prizes: { p: string; v: string; w: string }[];
+  }
+
+  const eventsData: Record<string, EventDetails> = {
+    tri: {
+      logo: '/assets/logo-tri.webp', name: 'Technical Triathlon', cat: 'Technical', team: '3 Members', prize: '₹60,000',
+      about: 'Three back-to-back rounds run relay-style against a shared clock. Your team splits the load across code, logic and build, and hands off cleanly — because the timer never stops. Fastest cumulative finish takes the crown.',
+      rounds: [
+        { t: 'Round 1 · Code Sprint', d: 'Timed algorithmic problems on the judge. Clear as many as you can before the handoff.' },
+        { t: 'Round 2 · Logic Grid', d: 'Pen-and-paper puzzles, circuit tracing and bit-twiddling. No compiler — just wits.' },
+        { t: 'Round 3 · Build & Ship', d: 'A mini-spec dropped live. Ship a working prototype before the buzzer.' }
+      ],
+      convenors: [{ n: 'Aravind Kumar', p: '+91 90000 00001' }, { n: 'Nisha Verma', p: '+91 90000 00002' }],
+      prizes: [{ p: 'Champion', v: '₹35,000', w: '100%' }, { p: 'Runner-up', v: '₹15,000', w: '58%' }, { p: 'Third', v: '₹10,000', w: '38%' }]
+    },
+    brc: {
+      logo: '/assets/logo-brc.webp', name: 'Breach Point', cat: 'Technical', team: '4 Members', prize: '₹75,000',
+      about: 'A jeopardy-style capture-the-flag arena. Five tracks, dozens of flags, one scoreboard. Points scale with difficulty and drop as more teams solve — so first blood is worth the most.',
+      rounds: [
+        { t: 'Cryptography', d: 'Break the cipher, recover the key, read what was never meant for you.' },
+        { t: 'Web Exploitation', d: 'Find the bug in the stack and pop the flag out of it.' },
+        { t: 'Forensics', d: 'Carve the truth out of packet captures and disk images.' },
+        { t: 'Reverse Engineering', d: 'Read the binary like it owes you money.' },
+        { t: 'Miscellaneous', d: 'OSINT, steganography and the curveballs that do not fit a box.' }
+      ],
+      convenors: [{ n: 'Rahul Menon', p: '+91 90000 00003' }, { n: 'Sana Iqbal', p: '+91 90000 00004' }],
+      prizes: [{ p: 'Champion', v: '₹40,000', w: '100%' }, { p: 'Runner-up', v: '₹20,000', w: '56%' }, { p: 'Third', v: '₹15,000', w: '42%' }]
+    },
+    dq: {
+      logo: '/assets/logo-dq.webp', name: 'DataQuest', cat: 'Technical', team: '3 Members', prize: '₹70,000',
+      about: 'One raw dataset, one deadline, one story hiding in the noise. Clean it, model it, and defend your findings to a panel. There are marks for rigour and marks for a narrative that lands.',
+      rounds: [
+        { t: 'Round 1 · Modelling', d: 'Wrangle the dataset and build your model in a fixed window. Push predictions to the live leaderboard.' },
+        { t: 'Round 2 · Finals & Defence', d: 'Top teams present their insight and defend the method to the judges.' }
+      ],
+      convenors: [{ n: 'Priya Nair', p: '+91 90000 00005' }, { n: 'Karthik R', p: '+91 90000 00006' }],
+      prizes: [{ p: 'Champion', v: '₹40,000', w: '100%' }, { p: 'Runner-up', v: '₹20,000', w: '56%' }, { p: 'Third', v: '₹10,000', w: '34%' }]
+    },
+    qz: {
+      logo: '/assets/logo-qz.webp', name: 'QFactor', cat: 'Non Technical', team: '2 Members', prize: '₹45,000',
+      about: 'Prelims to knockout finals. Tech, trivia and lateral thinking on the buzzer. Boot your brain and test your knowledge against the brightest minds.',
+      rounds: [
+        { t: 'Written Prelims', d: 'Top scoring teams advance to the stage.' },
+        { t: 'Stage Finals', d: 'Buzzer rounds, pounce and bounce, and speed trivia.' }
+      ],
+      convenors: [{ n: 'Siddharth M', p: '+91 90000 00007' }, { n: 'Ananya S', p: '+91 90000 00008' }],
+      prizes: [{ p: 'Champion', v: '₹25,000', w: '100%' }, { p: 'Runner-up', v: '₹12,000', w: '50%' }, { p: 'Third', v: '₹8,000', w: '32%' }]
+    },
+    mm: {
+      logo: '/assets/logo-mm.webp', name: 'Math Mania', cat: 'Technical', team: '2 Members', prize: '₹50,000',
+      about: 'An integration bee with teeth. Solve against the clock, one integral at a time, head-to-head. Clean substitutions early; by the finals the problems fight back.',
+      rounds: [
+        { t: 'Round 1 · Warm-up', d: 'Timed integrals of rising difficulty. Accuracy and speed both count.' },
+        { t: 'Round 2 · The Gauntlet', d: 'Head-to-head elimination at the board. Last solver standing wins.' }
+      ],
+      convenors: [{ n: 'Vivek Anand', p: '+91 90000 00009' }, { n: 'Meera Joshi', p: '+91 90000 00010' }],
+      prizes: [{ p: 'Champion', v: '₹28,000', w: '100%' }, { p: 'Runner-up', v: '₹14,000', w: '58%' }, { p: 'Third', v: '₹8,000', w: '40%' }]
+    },
+    svc: {
+      logo: '/assets/logo-svc.webp', name: "Survivors' Court", cat: 'Non Technical', team: 'Solo Entry', prize: '₹40,000',
+      about: 'A social-strategy game of alliances and betrayals. Talk your way into a bloc, spot the double-cross before it lands, and hold an immunity token when the room turns.',
+      rounds: [
+        { t: 'Round 1 · Alliances', d: 'Open negotiation. Form blocs, trade favours and read the table.' },
+        { t: 'Round 2 · The Trials', d: 'Challenges hand out immunity and information.' },
+        { t: 'Final · The Verdict', d: 'The jury of the eliminated decides who outplayed whom.' }
+      ],
+      convenors: [{ n: 'Anjali Rao', p: '+91 90000 00021' }, { n: 'Suresh Babu', p: '+91 90000 00022' }],
+      prizes: [{ p: 'Champion', v: '₹20,000', w: '100%' }, { p: 'Runner-up', v: '₹12,000', w: '60%' }, { p: 'Third', v: '₹8,000', w: '40%' }]
+    },
+    val: {
+      logo: '/assets/logo-val.webp', name: 'Game Over — Valorant', cat: 'Gaming', team: '5 Members', prize: '₹55,000',
+      about: 'Five-a-side tactical shooter run on a single-elimination bracket. Lock in your agents, trade sites, and win rounds on economy and nerve.',
+      rounds: [
+        { t: 'Group Stage', d: 'Best-of-one seeding matches.' },
+        { t: 'Playoffs', d: 'Best-of-three, double elimination.' },
+        { t: 'Grand Final', d: 'Best-of-five on the main stage.' }
+      ],
+      convenors: [{ n: 'Rohit Sharma', p: '+91 90000 00023' }, { n: 'Farhan Ali', p: '+91 90000 00024' }],
+      prizes: [{ p: 'Champion', v: '₹30,000', w: '100%' }, { p: 'Runner-up', v: '₹16,000', w: '54%' }, { p: 'Third', v: '₹9,000', w: '32%' }]
+    },
+    fifa: {
+      logo: '/assets/logo-fifa.webp', name: 'Game Over — FIFA', cat: 'Gaming', team: 'Solo Entry', prize: '₹30,000',
+      about: 'One on one on the pitch. Short halves keep it frantic, single-elimination keeps it honest. Pick your club, park the bus or press high.',
+      rounds: [
+        { t: 'Group Stage', d: 'Round-robin within small groups.' },
+        { t: 'Knockouts', d: 'Single-elimination ties with golden goal.' },
+        { t: 'Final', d: 'One match for the golden boot.' }
+      ],
+      convenors: [{ n: 'Naveen Kumar', p: '+91 90000 00025' }, { n: 'Aditya Menon', p: '+91 90000 00026' }],
+      prizes: [{ p: 'Champion', v: '₹16,000', w: '100%' }, { p: 'Runner-up', v: '₹9,000', w: '56%' }, { p: 'Third', v: '₹5,000', w: '32%' }]
+    }
+  };
+
+  function initEventModal() {
+    const modal = document.getElementById('event-modal');
+    const modalContainer = document.getElementById('modal-container');
+    const closeBtn = document.getElementById('modal-close-btn');
+    const closeFooter = document.getElementById('modal-close-footer');
+    const regBtn = document.getElementById('modal-register-btn');
+
+    const tabOverviewBtn = document.getElementById('tab-overview-btn');
+    const tabRoundsBtn = document.getElementById('tab-rounds-btn');
+    const tabPrizesBtn = document.getElementById('tab-prizes-btn');
+
+    const contentOverview = document.getElementById('content-overview');
+    const contentRounds = document.getElementById('content-rounds');
+    const contentPrizes = document.getElementById('content-prizes');
+
+    const indOverview = document.getElementById('indicator-overview');
+    const indRounds = document.getElementById('indicator-rounds');
+    const indPrizes = document.getElementById('indicator-prizes');
+
+    if (!modal) return;
+
+    const switchTab = (tab: 'overview' | 'rounds' | 'prizes') => {
+      if (contentOverview) contentOverview.style.display = tab === 'overview' ? 'block' : 'none';
+      if (contentRounds) contentRounds.style.display = tab === 'rounds' ? 'flex' : 'none';
+      if (contentPrizes) contentPrizes.style.display = tab === 'prizes' ? 'block' : 'none';
+
+      if (indOverview) indOverview.style.display = tab === 'overview' ? 'block' : 'none';
+      if (indRounds) indRounds.style.display = tab === 'rounds' ? 'block' : 'none';
+      if (indPrizes) indPrizes.style.display = tab === 'prizes' ? 'block' : 'none';
+
+      if (tabOverviewBtn) tabOverviewBtn.style.color = tab === 'overview' ? 'var(--ink)' : 'var(--ink2)';
+      if (tabRoundsBtn) tabRoundsBtn.style.color = tab === 'rounds' ? 'var(--ink)' : 'var(--ink2)';
+      if (tabPrizesBtn) tabPrizesBtn.style.color = tab === 'prizes' ? 'var(--ink)' : 'var(--ink2)';
+    };
+
+    if (tabOverviewBtn) tabOverviewBtn.addEventListener('click', () => switchTab('overview'));
+    if (tabRoundsBtn) tabRoundsBtn.addEventListener('click', () => switchTab('rounds'));
+    if (tabPrizesBtn) tabPrizesBtn.addEventListener('click', () => switchTab('prizes'));
+
+    const closeModal = () => {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    };
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (closeFooter) closeFooter.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.style.display !== 'none') {
+        closeModal();
+      }
+    });
+
+    if (regBtn) {
+      regBtn.addEventListener('click', () => {
+        closeModal();
+        const regSection = document.getElementById('register');
+        if (regSection) {
+          regSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+
+    const openModal = (key: string) => {
+      const ev = eventsData[key];
+      if (!ev) return;
+
+      const logoEl = document.getElementById('modal-logo') as HTMLImageElement;
+      const catEl = document.getElementById('modal-cat');
+      const titleEl = document.getElementById('modal-title');
+      const prizeEl = document.getElementById('modal-prize');
+      const prizeDupEl = document.getElementById('modal-prize-dup');
+      const teamEl = document.getElementById('modal-team');
+      const teamDupEl = document.getElementById('modal-team-dup');
+      const aboutEl = document.getElementById('modal-about');
+      const convenorsEl = document.getElementById('modal-convenors');
+      const roundsEl = document.getElementById('content-rounds');
+      const prizeSplitsEl = document.getElementById('modal-prize-splits');
+
+      if (logoEl) logoEl.src = ev.logo;
+      if (catEl) catEl.textContent = ev.cat;
+      if (titleEl) titleEl.textContent = ev.name;
+      if (prizeEl) prizeEl.textContent = ev.prize;
+      if (prizeDupEl) prizeDupEl.textContent = ev.prize;
+      if (teamEl) teamEl.textContent = ev.team;
+      if (teamDupEl) teamDupEl.textContent = ev.team;
+      if (aboutEl) aboutEl.textContent = ev.about;
+
+      if (convenorsEl) {
+        convenorsEl.innerHTML = ev.convenors.map(c => `
+          <div style="background:var(--wcard);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:13px 15px">
+            <div style="font-weight:700;font-size:15px;color:var(--ink)">${c.n}</div>
+            <div style="font-size:13.5px;font-weight:600;color:var(--acc);margin-top:3px">${c.p}</div>
+          </div>
+        `).join('');
+      }
+
+      if (roundsEl) {
+        roundsEl.innerHTML = ev.rounds.map(r => `
+          <div style="background:var(--wcard);border:2px solid var(--ink);border-left:6px solid var(--acc2);box-shadow:4px 4px 0 var(--ink);padding:15px 18px">
+            <div style="font-weight:700;font-size:16px;color:var(--ink)">${r.t}</div>
+            <div style="font-size:14px;line-height:1.55;color:var(--ink2);margin-top:5px">${r.d}</div>
+          </div>
+        `).join('');
+      }
+
+      if (prizeSplitsEl) {
+        prizeSplitsEl.innerHTML = ev.prizes.map(p => `
+          <div style="display:grid;grid-template-columns:96px 1fr auto;gap:12px;align-items:center">
+            <span style="font-size:14px;font-weight:600;color:var(--ink)">${p.p}</span>
+            <div style="height:16px;background:var(--paper);border:2px solid var(--ink)">
+              <i style="display:block;height:100%;width:${p.w};background:var(--acc)"></i>
+            </div>
+            <b style="font-size:14.5px;font-weight:800;color:var(--ink)">${p.v}</b>
+          </div>
+        `).join('');
+      }
+
+      switchTab('overview');
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    };
+
+    document.querySelectorAll('[data-open]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const key = btn.getAttribute('data-open');
+        if (key) openModal(key);
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initEventModal);
+</script>
