@@ -23,3 +23,5 @@
 /screenshots
 /support.js
 /uploads
+.env
+.env.*
