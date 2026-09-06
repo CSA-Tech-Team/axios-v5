@@ -1,0 +1,151 @@
+/* Tall, closely spaced title lettering and offset ink inspired by the supplied title card. */
+.big-bull-title,
+#modal-title.big-bull-title {
+  --event-title-font: 'Bebas Neue';
+  --event-title-color: #183c2b;
+  --event-title-shadow: 1.5px 0 0 #4ea36a, -1px 0 0 #b66d4b;
+  font-family: 'Bebas Neue', 'Anton', sans-serif;
+  font-weight: 400;
+  letter-spacing: .015em;
+  line-height: .95;
+  text-transform: uppercase;
+  color: #183c2b;
+  text-shadow: 1.5px 0 0 #4ea36a, -1px 0 0 #b66d4b;
+}
+
+.big-bull-wall {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  transform: rotate(-.8deg);
+}
+
+.big-bull-wall-link {
+  display: inline-block;
+  transition: transform .15s;
+}
+
+.lineup-name-size {
+  font-size: clamp(32px, 6vw, 70px);
+}
+
+.big-bull-wall .big-bull-title {
+  /* Match the surrounding event names in both cap height and stroke weight. */
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  line-height: .85;
+  letter-spacing: normal;
+  background: radial-gradient(circle, var(--paper) .6px, transparent .9px), #183c2b;
+  background-size: 4px 5px;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(1px 0 0 #4ea36a) drop-shadow(-1px 0 0 #b66d4b);
+}
+
+.big-bull-preview {
+  position: absolute;
+  right: -72px;
+  top: -18px;
+  width: 100px;
+  height: auto;
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 rgb(24 60 43 / 50%);
+  transition: opacity .12s steps(2), transform .18s steps(3);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.big-bull-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 22px 20px;
+  background: var(--card);
+  border: 2px solid var(--ink);
+  box-shadow: 5px 5px 0 #183c2b;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  scroll-margin-top: 70px;
+  transform: rotate(-.6deg);
+  transition: transform .2s, box-shadow .2s;
+  cursor: pointer;
+}
+
+.big-bull-card-image {
+  display: block;
+  width: 62px;
+  height: 62px;
+  margin-bottom: 14px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.big-bull-card-category {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: #183c2b;
+  margin-bottom: 6px;
+}
+
+.big-bull-card-title {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.big-bull-card-description {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink2);
+}
+
+.big-bull-card-prize {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6px 12px;
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1.5px dashed var(--line);
+  font-size: 11px;
+  color: var(--ink2);
+}
+
+.big-bull-card-prize strong {
+  font-size: 15px;
+  color: #183c2b;
+}
+
+.big-bull-wall-link:hover,
+.big-bull-card:hover {
+  transform: translateY(-3px);
+}
+
+.big-bull-wall-link:focus-visible,
+.big-bull-card:focus-visible {
+  outline: 3px solid #183c2b;
+  outline-offset: 6px;
+}
+
+@media (max-width: 600px) {
+  .big-bull-preview {
+    right: -16px;
+    top: -34px;
+    width: 68px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .big-bull-wall-link,
+  .big-bull-card,
+  .big-bull-preview {
+    transition: none;
+  }
+}

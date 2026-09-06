@@ -1,4 +1,6 @@
 ---
+import '../styles/big-bull.css';
+
 interface Props {
   title?: string;
   description?: string;
@@ -7,7 +9,7 @@ interface Props {
 
 const {
   title = "Axios '26 | PSGCT",
-  description = "Axios '26 — The premier national technical symposium presented by the Computational Sciences Association (CSA) at PSG College of Technology, Coimbatore. 8 arenas, 2 days, ₹1,50,000 prize pool. Sept 11–12, 2026.",
+  description = "Axios '26 — The premier national technical symposium presented by the Computational Sciences Association (CSA) at PSG College of Technology, Coimbatore. 9 arenas, 2 days, ₹1,50,000 prize pool. Sept 11–12, 2026.",
   theme = 'amber'
 } = Astro.props;
 
@@ -59,7 +61,7 @@ const eventJsonLd = {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <meta name="keywords" content="Axios 2026, Axios PSG Tech, Technical Symposium Coimbatore, Computational Sciences Association, CSA PSG, Breach Point CTF, DataQuest, Math Mania, QFactor, Survivors Court, Valorant tournament" />
+  <meta name="keywords" content="Axios 2026, Axios PSG Tech, Technical Symposium Coimbatore, Computational Sciences Association, CSA PSG, Breach Point CTF, DataQuest, Math Mania, QFactor, Survivors Court, Big Bull stock market event, Valorant tournament" />
   <meta name="author" content="Computational Sciences Association (CSA)" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href={canonicalURL} />
@@ -83,7 +85,7 @@ const eventJsonLd = {
   <!-- Google Fonts Preconnect & Styles -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Shrikhand&family=Monoton&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Jost:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Shrikhand&family=Monoton&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Jost:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 
   <!-- Preload Key LCP Image -->
   <link rel="preload" as="image" href="/assets/axios-logo-text.webp" type="image/webp" fetchpriority="high" />

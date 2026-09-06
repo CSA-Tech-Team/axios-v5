@@ -12,7 +12,7 @@
     <!-- Header Section -->
     <div style="position:relative;z-index:2;padding:30px 64px 0 140px;text-align:right">
       <span id="modal-cat" style="display:inline-block;background:var(--acc);color:#fff;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:5px 13px;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transform:rotate(-1deg)">Technical</span>
-      <h3 id="modal-title" style="margin:14px 0 0;font-family:'Anton',sans-serif;font-size:clamp(34px,6vw,58px);line-height:.88;color:var(--ink);text-shadow:3px 3px 0 var(--acc2)">Event Title</h3>
+      <h3 id="modal-title" style="margin:14px 0 0;font-family:var(--event-title-font,'Anton'),sans-serif;font-size:clamp(34px,6vw,58px);line-height:.88;color:var(--event-title-color,var(--ink));text-shadow:var(--event-title-shadow,3px 3px 0 var(--acc2))">Event Title</h3>
     </div>
 
     <!-- Tabs Navigation -->
@@ -93,6 +93,13 @@
   }
 
   const eventsData: Record<string, EventDetails> = {
+    bb: {
+      logo: '/assets/logo-bb.png', name: 'Big Bull', cat: 'Non Technical', team: 'To be announced', prize: 'To be announced',
+      about: 'Read the market. Back your instincts. Big Bull is a non-technical stock market event where financial curiosity meets strategy. Put your market thinking to the test and make your move as the next Big Bull. The event format and participation details will be announced soon.',
+      rounds: [{ t: 'Event format · Coming soon', d: 'The rounds, rules and schedule will be announced soon. Check back for the full event brief.' }],
+      convenors: [],
+      prizes: []
+    },
     tri: {
       logo: '/assets/logo-tri.webp', name: 'Technical Triathlon', cat: 'Technical', team: '3 Members', prize: '₹60,000',
       about: 'Three back-to-back rounds run relay-style against a shared clock. Your team splits the load across code, logic and build, and hands off cleanly — because the timer never stops. Fastest cumulative finish takes the crown.',
@@ -266,7 +273,10 @@
 
       if (logoEl) logoEl.src = ev.logo;
       if (catEl) catEl.textContent = ev.cat;
-      if (titleEl) titleEl.textContent = ev.name;
+      if (titleEl) {
+        titleEl.textContent = ev.name;
+        titleEl.classList.toggle('big-bull-title', key === 'bb');
+      }
       if (prizeEl) prizeEl.textContent = ev.prize;
       if (prizeDupEl) prizeDupEl.textContent = ev.prize;
       if (teamEl) teamEl.textContent = ev.team;
@@ -279,7 +289,7 @@
             <div style="font-weight:700;font-size:15px;color:var(--ink)">${c.n}</div>
             <div style="font-size:13.5px;font-weight:600;color:var(--acc);margin-top:3px">${c.p}</div>
           </div>
-        `).join('');
+        `).join('') || '<p style="margin:0;color:var(--ink2)">Convenor details will be announced soon.</p>';
       }
 
       if (roundsEl) {
@@ -300,7 +310,7 @@
             </div>
             <b style="font-size:14.5px;font-weight:800;color:var(--ink)">${p.v}</b>
           </div>
-        `).join('');
+        `).join('') || '<p style="margin:0;color:var(--ink2)">The prize pool and prize split will be announced soon.</p>';
       }
 
       switchTab('overview');
