@@ -1,0 +1,475 @@
+---
+interface Props {
+  /** Total intro length in seconds */
+  duration?: number;
+  /** Star streak count (defaults: 2200 desktop / 900 mobile) */
+  stars?: number;
+  /** Logo used for the particle wordmark. Must be same-origin. */
+  logo?: string;
+  /** Replay on every load instead of once per session */
+  alwaysReplay?: boolean;
+}
+const { duration = 8, stars = 0, logo = '/assets/logo26.svg', alwaysReplay = false } = Astro.props;
+---
+
+<div
+  id="warp-intro"
+  data-duration={String(duration)}
+  data-stars={String(stars)}
+  data-logo={logo}
+  data-always-replay={alwaysReplay ? '1' : '0'}
+  style="position:fixed;inset:0;z-index:9999;background:#0b0705;opacity:1;transition:opacity .7s ease"
+>
+  <canvas id="warp-canvas" style="display:block;width:100%;height:100%"></canvas>
+  <div
+    id="warp-hud"
+    style="position:absolute;left:0;right:0;bottom:26px;display:flex;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#f7f1e4;opacity:.5;pointer-events:none"
+  >
+    entering hyperspace
+  </div>
+</div>
+
+<script>
+  import * as THREE from 'three';
+
+  const host = document.getElementById('warp-intro');
+  const canvas = document.getElementById('warp-canvas');
+  const hud = document.getElementById('warp-hud');
+  if (host && canvas) {
+    const D = Math.max(3, parseFloat(host.dataset.duration) || 8);
+    const LOGO = host.dataset.logo || '/assets/logo26.svg';
+    const KEY = 'axios_warp_intro_v1';
+    const mobile = Math.min(window.innerWidth, window.innerHeight) < 700;
+    const STARS = parseInt(host.dataset.stars, 10) || (mobile ? 900 : 2200);
+    const wordEl = document.getElementById('axis-word');
+
+    // page content fades up as the intro clears
+    const wrap = host.parentElement;
+    const content = wrap ? Array.from(wrap.children).filter((el) => el !== host && !el.classList.contains('scan-overlay')) : [];
+    const showPage = (instant) => {
+      content.forEach((el) => {
+        el.style.transition = instant ? 'none' : 'opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1)';
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    };
+    const hidePage = () => {
+      content.forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(14px)';
+      });
+    };
+
+    let done = false;
+    let renderer = null;
+    let raf = 0;
+    const finish = (instant) => {
+      if (done) return;
+      done = true;
+      cancelAnimationFrame(raf);
+      showPage(instant);
+      if (instant) {
+        host.style.display = 'none';
+      } else {
+        host.style.opacity = '0';
+        host.style.pointerEvents = 'none';
+        setTimeout(() => {
+          host.style.display = 'none';
+          if (renderer) renderer.dispose();
+        }, 800);
+      }
+    };
+
+    const seen = host.dataset.alwaysReplay !== '1' && sessionStorage.getItem(KEY) === '1';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (seen || reduce) {
+      finish(true);
+    } else {
+      sessionStorage.setItem(KEY, '1');
+      hidePage();
+      // Never let a WebGL/runtime failure strand the page behind the overlay.
+      const safety = setTimeout(() => finish(true), (D + 4) * 1000);
+      try {
+        initWarp();
+      } catch (err) {
+        console.error('WarpIntro failed to start', err);
+        clearTimeout(safety);
+        finish(true);
+      }
+    }
+
+    function initWarp() {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, alpha: false });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setClearColor(0x0b0705, 1);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(70, 1, 0.1, 5000);
+      camera.position.set(0, 0, 0);
+
+      // ---- star streaks ------------------------------------------------
+      const pos = new Float32Array(STARS * 6);
+      const col = new Float32Array(STARS * 6);
+      const S = [];
+      const cream = new THREE.Color(0xf7f1e4);
+      for (let i = 0; i < STARS; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 26 + Math.pow(Math.random(), 0.6) * 620;
+        S.push({ x: Math.cos(a) * r, y: Math.sin(a) * r, z: -Math.random() * 2400, s: 0.6 + Math.random() * 0.8 });
+        for (let k = 0; k < 2; k++) {
+          col[i * 6 + k * 3] = cream.r;
+          col[i * 6 + k * 3 + 1] = cream.g;
+          col[i * 6 + k * 3 + 2] = cream.b;
+        }
+      }
+      const sg = new THREE.BufferGeometry();
+      sg.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      sg.setAttribute('color', new THREE.BufferAttribute(col, 3));
+      const starField = new THREE.LineSegments(
+        sg,
+        new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false })
+      );
+      scene.add(starField);
+
+      // ---- wordmark particles -----------------------------------------
+      const WZ = -420;
+      const WORLD_W = 465;
+      const wordGeo = new THREE.BufferGeometry();
+      const wordMat = new THREE.PointsMaterial({
+        color: 0xf7f1e4,
+        size: mobile ? 2.4 : 2.0,
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        sizeAttenuation: true
+      });
+      const words = new THREE.Points(wordGeo, wordMat);
+      const wordGroup = new THREE.Group();
+      wordGroup.position.z = WZ;
+      wordGroup.add(words);
+      scene.add(wordGroup);
+
+      const state = { wt: null, ws: null, mask: null, mw: 0, mh: 0, wordH: 162, solid: null };
+
+      // where the hero's own logo sits on screen, expressed in world units at WZ
+      const heroBox = () => {
+        const w = host.clientWidth || window.innerWidth;
+        const h = host.clientHeight || window.innerHeight;
+        const viewH = 2 * Math.abs(WZ) * Math.tan(((camera.fov * Math.PI) / 180) / 2);
+        const pxPerWorld = h / viewH;
+        const r = wordEl
+          ? wordEl.getBoundingClientRect()
+          : { width: Math.min(680, w * 0.56), left: w / 2 - 200, top: h / 2 - 60, height: 120 };
+        return {
+          s: r.width / pxPerWorld / WORLD_W,
+          x: (r.left + r.width / 2 - w / 2) / pxPerWorld,
+          y: -(r.top + r.height / 2 - h / 2) / pxPerWorld
+        };
+      };
+
+      const img = new Image();
+      img.onload = () => {
+        const cw = 300;
+        const ch = Math.round(300 * img.height / img.width) || 80;
+        const cv = document.createElement('canvas');
+        cv.width = cw;
+        cv.height = ch;
+        const cx2 = cv.getContext('2d');
+        cx2.drawImage(img, 0, 0, cw, ch);
+        const data = cx2.getImageData(0, 0, cw, ch).data;
+        const target = [];
+        const start = [];
+        const step = mobile ? 2 : 1;
+        const scale = 1.55;
+        for (let y = 0; y < ch; y += step) {
+          for (let x = 0; x < cw; x += step) {
+            if (data[(y * cw + x) * 4 + 3] > 130) {
+              target.push((x / cw - 0.5) * cw * scale, -(y / ch - 0.5) * ch * scale, (Math.random() - 0.5) * 8);
+              const a = Math.random() * Math.PI * 2;
+              const rr = 300 + Math.random() * 500;
+              start.push(Math.cos(a) * rr, Math.sin(a) * rr, -900 - Math.random() * 500);
+            }
+          }
+        }
+
+        // dilated low-res stencil of the glyphs: stars are culled where letters are
+        const mw = 180;
+        const mh = Math.max(8, Math.round((mw * ch) / cw));
+        const mc = document.createElement('canvas');
+        mc.width = mw;
+        mc.height = mh;
+        const mx = mc.getContext('2d');
+        mx.drawImage(img, 0, 0, mw, mh);
+        const md = mx.getImageData(0, 0, mw, mh).data;
+        const raw = new Uint8Array(mw * mh);
+        for (let i = 0; i < mw * mh; i++) raw[i] = md[i * 4 + 3] > 90 ? 1 : 0;
+        const mask = new Uint8Array(mw * mh);
+        for (let y = 0; y < mh; y++) {
+          for (let x = 0; x < mw; x++) {
+            let on = 0;
+            for (let dy = -2; dy <= 2 && !on; dy++) {
+              for (let dx = -2; dx <= 2 && !on; dx++) {
+                const yy = y + dy;
+                const xx = x + dx;
+                if (yy >= 0 && yy < mh && xx >= 0 && xx < mw && raw[yy * mw + xx]) on = 1;
+              }
+            }
+            mask[y * mw + x] = on;
+          }
+        }
+        state.mask = mask;
+        state.mw = mw;
+        state.mh = mh;
+        state.wordH = ch * scale;
+
+        // crisp silhouette the particles resolve into, so the landing is not grainy
+        const tex = new THREE.Texture(img);
+        tex.needsUpdate = true;
+        tex.anisotropy = 8;
+        tex.minFilter = THREE.LinearFilter;
+        const solid = new THREE.Mesh(
+          new THREE.PlaneGeometry(cw * scale, ch * scale),
+          new THREE.MeshBasicMaterial({ color: 0xf7f1e4, alphaMap: tex, transparent: true, opacity: 0, depthWrite: false })
+        );
+        wordGroup.add(solid);
+        state.solid = solid;
+
+        state.wt = new Float32Array(target);
+        state.ws = new Float32Array(start);
+        wordGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(state.ws), 3));
+      };
+      img.src = LOGO;
+
+      // ---- past editions as star blocks --------------------------------
+      const makeTextBlock = (text, opts) => {
+        const cv = document.createElement('canvas');
+        cv.width = 512;
+        cv.height = 160;
+        const c2 = cv.getContext('2d');
+        c2.fillStyle = '#fff';
+        c2.font = "700 108px Anton, 'Bricolage Grotesque', sans-serif";
+        c2.textAlign = 'center';
+        c2.textBaseline = 'middle';
+        c2.fillText(text, 256, 84);
+        const d = c2.getImageData(0, 0, 512, 160).data;
+        const pts = [];
+        const step = mobile ? 5 : 4;
+        for (let y = 0; y < 160; y += step) {
+          for (let x = 0; x < 512; x += step) {
+            if (d[(y * 512 + x) * 4 + 3] > 140) {
+              pts.push((x / 512 - 0.5) * 520, -(y / 160 - 0.5) * 162, (Math.random() - 0.5) * 26);
+            }
+          }
+        }
+        const g = new THREE.BufferGeometry();
+        g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pts), 3));
+        const m = new THREE.PointsMaterial({
+          color: 0xf7f1e4,
+          size: mobile ? 3.2 : 2.8,
+          transparent: true,
+          opacity: 0.55,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          sizeAttenuation: true
+        });
+        const o = new THREE.Points(g, m);
+        o.position.set(opts.x, opts.y, -2200);
+        o.rotation.set(opts.rx || 0, opts.ry || 0, opts.rz || 0);
+        o.scale.setScalar(opts.s || 1);
+        scene.add(o);
+        return o;
+      };
+      const blocks = [];
+      const buildBlocks = () => {
+        blocks.push({ o: makeTextBlock("AXIOS '24", { x: 0, y: -330, s: 1.5, rx: -0.34, rz: 0.02 }), a: 0.1, b: 0.46 });
+        blocks.push({ o: makeTextBlock("AXIOS '25", { x: 520, y: -20, s: 1.55, ry: -0.5, rz: -0.02 }), a: 0.26, b: 0.62 });
+      };
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildBlocks);
+      else buildBlocks();
+
+      // ---- post pass: chromatic aberration + flash + vignette ----------
+      const rt = new THREE.WebGLRenderTarget(1, 1, { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter });
+      const postScene = new THREE.Scene();
+      const postCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+      const uni = { tDiffuse: { value: rt.texture }, amt: { value: 0 }, flash: { value: 0 }, vig: { value: 0.5 } };
+      postScene.add(
+        new THREE.Mesh(
+          new THREE.PlaneGeometry(2, 2),
+          new THREE.ShaderMaterial({
+            uniforms: uni,
+            vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy,0.,1.); }',
+            fragmentShader: [
+              'precision highp float;',
+              'varying vec2 vUv; uniform sampler2D tDiffuse; uniform float amt; uniform float flash; uniform float vig;',
+              'void main(){',
+              '  vec2 c = vUv - 0.5; float d = length(c);',
+              '  vec2 off = c * amt * (0.25 + d * 1.4);',
+              '  float r = texture2D(tDiffuse, vUv + off).r;',
+              '  vec2 g2 = texture2D(tDiffuse, vUv).ga;',
+              '  float b = texture2D(tDiffuse, vUv - off).b;',
+              '  vec3 col = vec3(r, g2.x, b);',
+              '  col *= mix(1.0, smoothstep(1.05, 0.25, d), vig);',
+              '  col += vec3(0.97, 0.94, 0.89) * flash;',
+              '  gl_FragColor = vec4(col, 1.0);',
+              '}'
+            ].join('\n')
+          })
+        )
+      );
+
+      const resize = () => {
+        const w = host.clientWidth || window.innerWidth;
+        const h = host.clientHeight || window.innerHeight;
+        renderer.setSize(w, h, false);
+        const dpr = renderer.getPixelRatio();
+        rt.setSize(Math.max(1, Math.floor(w * dpr)), Math.max(1, Math.floor(h * dpr)));
+        camera.aspect = w / h;
+        camera.fov = w / h < 1 ? 92 : 70;
+        camera.updateProjectionMatrix();
+      };
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      // ---- look-around (mouse + gyro) ----------------------------------
+      const look = { x: 0, y: 0, tx: 0, ty: 0 };
+      const onMove = (e) => {
+        look.tx = (e.clientX / window.innerWidth - 0.5) * 0.16;
+        look.ty = (e.clientY / window.innerHeight - 0.5) * 0.12;
+      };
+      const onTilt = (e) => {
+        if (e.gamma == null) return;
+        look.tx = Math.max(-1, Math.min(1, e.gamma / 45)) * 0.16;
+        look.ty = Math.max(-1, Math.min(1, ((e.beta || 0) - 45) / 45)) * 0.12;
+      };
+      window.addEventListener('mousemove', onMove, { passive: true });
+      window.addEventListener('deviceorientation', onTilt, { passive: true });
+
+      const ease = (x) => x * x * (3 - 2 * x);
+      const clamp01 = (x) => Math.max(0, Math.min(1, x));
+      const seg = (p, a, b) => clamp01((p - a) / (b - a));
+      let last = performance.now();
+      const t0 = last;
+
+      const loop = () => {
+        if (done) return;
+        raf = requestAnimationFrame(loop);
+        const now = performance.now();
+        const dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+        const t = (now - t0) / 1000;
+        const p = t / D;
+
+        const speed = 70 + 2300 * Math.pow(ease(seg(p, 0.1, 0.62)), 1.6) * (1 - 0.92 * ease(seg(p, 0.84, 0.97)));
+        const streak = Math.min(520, speed * 0.075 + 4);
+        const collapse = ease(seg(p, 0.85, 0.99));
+
+        const box = heroBox();
+        const land = ease(seg(p, 0.5, 0.94));
+        const big = 1.75;
+        const gs = box.s * (big + (1 - big) * land);
+        const tanHalf = Math.tan(((camera.fov * Math.PI) / 180) / 2);
+        const clear = ease(seg(p, 0.26, 0.52)) * (1 - ease(seg(p, 0.9, 1)));
+        const cxN = (box.x * land) / (Math.abs(WZ) * tanHalf * camera.aspect);
+        const cyN = (box.y * land) / (Math.abs(WZ) * tanHalf);
+        const hwN = (WORLD_W * gs * 0.5) / (Math.abs(WZ) * tanHalf * camera.aspect);
+        const hhN = (state.wordH * gs * 0.5) / (Math.abs(WZ) * tanHalf);
+
+        const a = sg.attributes.position.array;
+        for (let i = 0; i < STARS; i++) {
+          const s = S[i];
+          s.z += speed * s.s * dt;
+          if (s.z > 40) {
+            const ang = Math.random() * Math.PI * 2;
+            const r = 26 + Math.pow(Math.random(), 0.6) * 620;
+            s.x = Math.cos(ang) * r;
+            s.y = Math.sin(ang) * r;
+            s.z -= 2400;
+          }
+          const k = 1 - collapse * 0.985;
+          const x = s.x * k;
+          const y = s.y * k;
+          let hide = false;
+          if (clear > 0.05 && state.mask) {
+            const dz = Math.max(60, Math.abs(s.z));
+            const sxN = x / (dz * tanHalf * camera.aspect) - cxN;
+            const syN = y / (dz * tanHalf) - cyN;
+            const u = (sxN / hwN) * 0.5 + 0.5;
+            const v = 0.5 - (syN / hhN) * 0.5;
+            if (u >= 0 && u < 1 && v >= 0 && v < 1) {
+              hide = state.mask[Math.floor(v * state.mh) * state.mw + Math.floor(u * state.mw)] === 1;
+            }
+          }
+          if (hide) {
+            a[i * 6] = 0; a[i * 6 + 1] = 0; a[i * 6 + 2] = 0;
+            a[i * 6 + 3] = 0; a[i * 6 + 4] = 0; a[i * 6 + 5] = 0;
+            continue;
+          }
+          a[i * 6] = x; a[i * 6 + 1] = y; a[i * 6 + 2] = s.z;
+          a[i * 6 + 3] = x; a[i * 6 + 4] = y; a[i * 6 + 5] = s.z - streak * s.s * (1 - collapse);
+        }
+        sg.attributes.position.needsUpdate = true;
+
+        if (state.wt) {
+          const form = ease(seg(p, 0.14, 0.5));
+          const wp = words.geometry.attributes.position.array;
+          for (let i = 0; i < wp.length; i += 3) {
+            wp[i] = state.ws[i] + (state.wt[i] - state.ws[i]) * form;
+            wp[i + 1] = state.ws[i + 1] + (state.wt[i + 1] - state.ws[i + 1]) * form;
+            const jitter = (1 - form) * Math.sin(t * 3 + i * 0.11) * 26;
+            wp[i + 2] = state.ws[i + 2] + (state.wt[i + 2] - state.ws[i + 2]) * form + jitter;
+          }
+          words.geometry.attributes.position.needsUpdate = true;
+          const resolve = ease(seg(p, 0.46, 0.62));
+          wordMat.opacity = Math.min(1, form * 1.3) * (1 - resolve * 0.92);
+          wordMat.size = (mobile ? 2.2 : 1.7) * (1 + 0.25 * form);
+          if (state.solid) state.solid.material.opacity = resolve;
+        }
+
+        for (let i = 0; i < blocks.length; i++) {
+          const bl = blocks[i];
+          const q = seg(p, bl.a, bl.b);
+          bl.o.position.z = -2200 + 2600 * ease(q);
+          bl.o.material.opacity = 0.85 * ease(seg(q, 0, 0.18)) * (1 - ease(seg(q, 0.78, 1)));
+          bl.o.visible = q > 0 && q < 1;
+        }
+
+        starField.material.opacity = 0.95 - 0.2 * clear;
+        wordGroup.scale.setScalar(gs);
+        wordGroup.position.x = box.x * land;
+        wordGroup.position.y = box.y * land;
+        wordGroup.rotation.z = (1 - land) * 0.03 * Math.sin(t * 0.7);
+
+        const settle = 1 - ease(seg(p, 0.6, 0.9));
+        look.x += (look.tx * settle - look.x) * Math.min(1, dt * 4);
+        look.y += (look.ty * settle - look.y) * Math.min(1, dt * 4);
+        const shake = ease(seg(p, 0.42, 0.5)) * (1 - ease(seg(p, 0.5, 0.62)));
+        camera.rotation.y = -look.x + (Math.random() - 0.5) * shake * 0.03;
+        camera.rotation.x = -look.y + (Math.random() - 0.5) * shake * 0.03;
+        camera.rotation.z = look.x * 0.25 + (Math.random() - 0.5) * shake * 0.02;
+        camera.position.x = look.x * 40;
+        camera.position.y = -look.y * 34;
+
+        uni.amt.value = 0.02 * (speed / 2300) + 0.09 * shake;
+        uni.flash.value = 0.8 * ease(seg(p, 0.46, 0.49)) * (1 - ease(seg(p, 0.49, 0.6))) + 0.55 * ease(seg(p, 0.95, 1.0));
+        uni.vig.value = 0.55 - 0.25 * collapse;
+
+        if (hud) hud.style.opacity = String(0.5 * (1 - ease(seg(p, 0.55, 0.7))));
+
+        renderer.setRenderTarget(rt);
+        renderer.render(scene, camera);
+        renderer.setRenderTarget(null);
+        renderer.render(postScene, postCam);
+
+        if (p >= 1.02) {
+          window.removeEventListener('mousemove', onMove);
+          window.removeEventListener('deviceorientation', onTilt);
+          window.removeEventListener('resize', resize);
+          finish(false);
+        }
+      };
+      raf = requestAnimationFrame(loop);
+    }
+  }
+</script>

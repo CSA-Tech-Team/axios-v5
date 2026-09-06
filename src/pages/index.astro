@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import WarpIntro from '../components/WarpIntro.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import PastEditions from '../components/PastEditions.astro';
@@ -14,6 +15,7 @@ import EventModal from '../components/EventModal.astro';
 ---
 
 <Layout>
+  <WarpIntro alwaysReplay />
   <Header />
   <main>
     <Hero />

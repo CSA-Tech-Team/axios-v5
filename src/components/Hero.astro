@@ -53,7 +53,7 @@
     </svg>
   </span>
 
-  <div style="max-width:1320px;width:100%;margin:0 auto;padding:34px 24px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:clamp(20px,3.6vh,48px)">
+  <div style="max-width:1320px;width:100%;margin:0 auto;padding:34px 24px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,2.1vh,30px)">
     <!-- Subtitle Header -->
     <div style="display:flex;align-items:center;gap:16px;justify-content:center">
       <span style="height:2px;flex:1;max-width:200px;background:var(--ink)"></span>
@@ -67,15 +67,17 @@
       <span style="background:var(--card);color:var(--ink);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:7px 15px;border-left:3px solid var(--ink)">Vol. III · MMXXVI</span>
     </div>
 
-    <!-- 3D Multi-layered AXIOS Logo Wordmark -->
-    <div id="axis-word" role="img" aria-label="Axios '26 Logo" style="position:relative;display:block;margin:0 auto;width:clamp(220px,56vw,680px);aspect-ratio:871/230;font-size:clamp(70px,17vw,240px);line-height:.84">
-      <span aria-hidden="true" style="position:absolute;inset:0;background:var(--r6);-webkit-mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;transform:translate(clamp(0em, calc(.028em + var(--px,0px)* 6), 15.0px),clamp(0em, calc(.028em + var(--py,0px)* 6), 15.0px));animation:passIn .01s steps(1) 0.15s both;pointer-events:none"></span>
-      <span aria-hidden="true" style="position:absolute;inset:0;background:var(--r5);-webkit-mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;transform:translate(clamp(0em, calc(.023em + var(--px,0px)* 5), 12.5px),clamp(0em, calc(.023em + var(--py,0px)* 5), 12.5px));animation:passIn .01s steps(1) 0.3s both;pointer-events:none"></span>
-      <span aria-hidden="true" style="position:absolute;inset:0;background:var(--r4);-webkit-mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;transform:translate(clamp(0em, calc(.018em + var(--px,0px)* 4), 10.0px),clamp(0em, calc(.018em + var(--py,0px)* 4), 10.0px));animation:passIn .01s steps(1) 0.45s both;pointer-events:none"></span>
-      <span aria-hidden="true" style="position:absolute;inset:0;background:var(--r3);-webkit-mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;transform:translate(clamp(0em, calc(.013em + var(--px,0px)* 3), 7.5px),clamp(0em, calc(.013em + var(--py,0px)* 3), 7.5px));animation:passIn .01s steps(1) 0.6s both;pointer-events:none"></span>
-      <span aria-hidden="true" style="position:absolute;inset:0;background:var(--r2);-webkit-mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;transform:translate(clamp(0em, calc(.008em + var(--px,0px)* 2), 5.0px),clamp(0em, calc(.008em + var(--py,0px)* 2), 5.0px));animation:passIn .01s steps(1) 0.75s both;pointer-events:none"></span>
-      <span aria-hidden="true" style="position:absolute;inset:0;background:var(--r1);-webkit-mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;transform:translate(clamp(0em, calc(.004em + var(--px,0px)* 1), 2.5px),clamp(0em, calc(.004em + var(--py,0px)* 1), 2.5px));animation:passIn .01s steps(1) 0.9s both;pointer-events:none"></span>
-      <span aria-hidden="true" style="position:absolute;inset:0;background:var(--ink);-webkit-mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;mask:url(/assets/axios-logo-text.webp) center/contain no-repeat;animation:passIn .01s steps(1) 1.05s both;pointer-events:none"></span>
+    <!-- AXIOS '26 Logo -->
+    <div id="axis-word" role="img" aria-label="Axios '26 Logo" style="position:relative;display:block;margin:0 auto;width:min(clamp(280px,46vw,620px),52vh);aspect-ratio:920/842">
+      <img
+        src="/assets/logo26.svg"
+        alt="Axios '26"
+        width="920"
+        height="842"
+        fetchpriority="high"
+        decoding="async"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform:translate(var(--px,0px),var(--py,0px));filter:drop-shadow(6px 7px 0 rgba(36,26,18,.16))"
+      />
     </div>
 
     <!-- Tagline -->
@@ -88,7 +90,7 @@
     <!-- Event Date & Add to Calendar -->
     <div style="margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 24px;font-family:'Anton',sans-serif;color:var(--ink)">
       <a 
-        href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Axios%20%2726%20%C2%B7%20Technical%20Symposium&dates=20260911/20260913&details=Axios%20Technical%20Symposium%20%E2%80%94%20Computational%20Sciences%20Association&location=PSG%20College%20of%20Technology%2C%20Coimbatore" 
+        href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Axios%20%2726%20%C2%B7%20Technical%20Symposium&dates=20260925/20260927&details=Axios%20Technical%20Symposium%20%E2%80%94%20Computational%20Sciences%20Association&location=PSG%20College%20of%20Technology%2C%20Coimbatore" 
         target="_blank" 
         rel="noopener" 
         title="Save the date — add to Google Calendar" 
@@ -106,7 +108,7 @@
           style="display:block;width:clamp(56px,6.8vw,90px);height:auto;transform:rotate(-9deg);filter:drop-shadow(4px 5px 0 rgba(36,26,18,.26))" 
         />
       </a>
-      <span style="font-size:clamp(26px,4.5vw,52px);transform:rotate(-1deg)">11–12 SEP '26</span>
+      <span style="font-size:clamp(26px,4.5vw,52px);transform:rotate(-1deg)">25-26 SEP '26</span>
       <span style="color:var(--acc);font-size:clamp(16px,2.6vw,26px);transform:rotate(12deg)">✶</span>
       <span style="font-size:clamp(26px,4.5vw,52px);transform:rotate(.8deg)">PSG TECH</span>
     </div>
@@ -143,12 +145,12 @@
 
     function paint() {
       raf = null;
-      const r = word.getBoundingClientRect();
+      const r = word!.getBoundingClientRect();
       if (r.bottom < 0 || r.top > window.innerHeight) return;
       const cx = (mx - r.left - r.width / 2) / r.width;
       const cy = (my - r.top - r.height / 2) / r.height;
-      word.style.setProperty('--px', (cx * 3).toFixed(2) + 'px');
-      word.style.setProperty('--py', (cy * 2.5).toFixed(2) + 'px');
+      word!.style.setProperty('--px', (cx * 3).toFixed(2) + 'px');
+      word!.style.setProperty('--py', (cy * 2.5).toFixed(2) + 'px');
     }
 
     window.addEventListener('mousemove', (e) => {
