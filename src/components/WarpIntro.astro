@@ -80,7 +80,15 @@ const { duration = 8, stars = 0, logo = '/assets/logo26.svg', alwaysReplay = fal
       }
     };
 
-    const seen = host.dataset.alwaysReplay !== '1' && sessionStorage.getItem(KEY) === '1';
+    // The HTML document itself is served no-cache, so its transferSize can't tell
+    // a normal reload apart from a hard refresh. The hashed build assets under
+    // /_astro/ are served long-lived + immutable, though: a normal reload reuses
+    // them from disk cache (transferSize 0), while a hard refresh bypasses the
+    // cache and re-fetches them (transferSize > 0). Use that as the signal.
+    const [navEntry] = performance.getEntriesByType('navigation');
+    const assetEntry = performance.getEntriesByType('resource').find((r) => r.name.includes('/_astro/'));
+    const hardRefresh = !!navEntry && navEntry.type === 'reload' && !!assetEntry && assetEntry.transferSize > 0;
+    const seen = host.dataset.alwaysReplay !== '1' && !hardRefresh && sessionStorage.getItem(KEY) === '1';
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (seen || reduce) {
