@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from '../config/site.config';
+
 interface Props {
   title?: string;
   description?: string;
@@ -6,39 +8,39 @@ interface Props {
 }
 
 const {
-  title = "Axios '26 | PSGCT",
-  description = "Axios '26 — The premier national technical symposium presented by the Computational Sciences Association (CSA) at PSG College of Technology, Coimbatore. 8 arenas, 2 days, ₹1,50,000 prize pool. Sept 11–12, 2026.",
+  title = siteConfig.meta.title,
+  description = siteConfig.meta.description,
   theme = 'amber'
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://axios.live');
-const ogImageUrl = new URL('/assets/axios-logo-text.webp', canonicalURL).href;
+const ogImageUrl = new URL(siteConfig.meta.ogImagePath, canonicalURL).href;
 
 const eventJsonLd = {
   "@context": "https://schema.org",
   "@type": "Event",
-  "name": "Axios '26 - Technical Symposium",
+  "name": `${siteConfig.event.name} '26 - ${siteConfig.event.symposiumType}`,
   "description": description,
-  "startDate": "2026-09-11T09:00:00+05:30",
-  "endDate": "2026-09-12T17:00:00+05:30",
+  "startDate": siteConfig.event.date.startISO,
+  "endDate": siteConfig.event.date.endISO,
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "location": {
     "@type": "Place",
-    "name": "PSG College of Technology",
+    "name": siteConfig.event.date.venueName,
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Avinashi Road, Peelamedu",
-      "addressLocality": "Coimbatore",
-      "addressRegion": "Tamil Nadu",
-      "postalCode": "641004",
-      "addressCountry": "IN"
+      "streetAddress": siteConfig.event.date.venueAddress,
+      "addressLocality": siteConfig.event.date.venueCity,
+      "addressRegion": siteConfig.event.date.venueState,
+      "postalCode": siteConfig.event.date.venuePostalCode,
+      "addressCountry": siteConfig.event.date.venueCountry
     }
   },
   "organizer": {
     "@type": "Organization",
-    "name": "Computational Sciences Association (CSA)",
-    "url": "https://www.psgtech.edu"
+    "name": siteConfig.event.organizer.name,
+    "url": siteConfig.event.organizer.collegeUrl
   },
   "offers": {
     "@type": "Offer",
@@ -59,14 +61,14 @@ const eventJsonLd = {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <meta name="keywords" content="Axios 2026, Axios PSG Tech, Technical Symposium Coimbatore, Computational Sciences Association, CSA PSG, Breach Point CTF, DataQuest, Math Mania, QFactor, Survivors Court, Valorant tournament" />
-  <meta name="author" content="Computational Sciences Association (CSA)" />
+  <meta name="keywords" content={siteConfig.meta.keywords} />
+  <meta name="author" content={siteConfig.meta.author} />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
 
   <!-- OpenGraph Metadata -->
-  <meta property="og:site_name" content="Axios '26" />
+  <meta property="og:site_name" content={`${siteConfig.event.name} '26`} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />

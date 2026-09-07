@@ -1,17 +1,16 @@
 ---
+import { siteConfig } from '../config/site.config';
 ---
 
 <header style="position:sticky;top:0;z-index:1000;display:flex;align-items:center;gap:16px;height:52px;padding:0 22px;background:var(--term);color:var(--termfg);border-bottom:2px solid var(--ink);font-family:inherit">
   <div style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;letter-spacing:.04em">
     <span style="width:11px;height:11px;background:var(--acc);display:inline-block;transform:rotate(45deg)"></span>
-    AXIOS <span style="color:#8a7a5c;font-weight:400">'26</span>
+    {siteConfig.event.name.toUpperCase()} <span style="color:#8a7a5c;font-weight:400">'26</span>
   </div>
   <nav class="topnav" style="display:flex;gap:2px;margin-left:6px;flex:1;overflow:hidden">
-    <a href="#board" data-go="board" style="color:#c9b48c;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:6px 9px">Legacy</a>
-    <a href="#events" data-go="events" style="color:#c9b48c;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:6px 9px">Lineup</a>
-    <a href="#prizes" data-go="prizes" style="color:#c9b48c;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:6px 9px">Prizes</a>
-    <a href="#sponsors" data-go="sponsors" style="color:#c9b48c;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:6px 9px">Sponsors</a>
-    <a href="#faq" data-go="faq" style="color:#c9b48c;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:6px 9px">Help</a>
+    {siteConfig.nav.map((link) => (
+      <a href={`#${link.target}`} data-go={link.target} style="color:#c9b48c;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:6px 9px">{link.label}</a>
+    ))}
   </nav>
   <span id="os-clock" style="min-width:82px;text-align:right;font-size:13px;letter-spacing:.02em">12:00 PM</span>
   <a href="#register" data-go="register" style="background:var(--acc);color:#fff;padding:7px 14px;font-size:12px;font-weight:700;letter-spacing:.04em;border:2px solid #fff2">▶ REGISTER</a>
