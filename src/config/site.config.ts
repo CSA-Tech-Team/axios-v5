@@ -133,6 +133,20 @@ export interface EventPrizeSplit {
   widthPercent: string;
 }
 
+export interface EventTimelineEntry {
+  /** Round label, e.g. "Round 1" */
+  round: string;
+  /** Symposium day label, e.g. "Day 1" */
+  day: string;
+  /** 24h time, e.g. "10:00" */
+  startTime: string;
+  /** 24h time, e.g. "11:30" */
+  endTime: string;
+  /** Human duration label, e.g. "1:30" */
+  duration: string;
+  location: string;
+}
+
 export interface EventDetail {
   /** Stable slug used for anchors and the modal's data-open key, e.g. "tri" */
   key: string;
@@ -152,6 +166,8 @@ export interface EventDetail {
   rounds: EventRound[];
   convenors: EventConvenor[];
   prizeSplits: EventPrizeSplit[];
+  /** Schedule shown in the modal's Timeline tab — one entry per round */
+  timeline: EventTimelineEntry[];
   isSignature?: boolean;
 }
 
@@ -270,7 +286,7 @@ const event: EventInfo = {
     name: "Computational Sciences Association (CSA)",
     shortName: "CSA",
     department: "Department of Applied Mathematics & Computational Sciences",
-    collegeName: "PSG College of Technology, Coimbatore — 641004",
+    collegeName: "PSG College of Technology, Coimbatore, 641004",
     collegeUrl: "https://www.psgtech.edu",
   },
 };
@@ -278,7 +294,7 @@ const event: EventInfo = {
 const meta: SiteMeta = {
   title: "Axios '26 | PSGCT",
   description:
-    "Axios '26 — The premier national technical symposium presented by the Computational Sciences Association (CSA) at PSG College of Technology, Coimbatore. 8 arenas, 2 days, ₹1,50,000 prize pool. Sept 25–26, 2026.",
+    "Axios '26: The premier national technical symposium presented by the Computational Sciences Association (CSA) at PSG College of Technology, Coimbatore. 9 arenas, 2 days, ₹1,50,000 prize pool. Sept 25–26, 2026.",
   keywords:
     "Axios 2026, Axios PSG Tech, Technical Symposium Coimbatore, Computational Sciences Association, CSA PSG, Breach Point CTF, DataQuest, Math Mania, QFactor, Survivors Court, Valorant tournament",
   author: "Computational Sciences Association (CSA)",
@@ -302,7 +318,7 @@ const hero: HeroContent = {
 
 const lineup: LineupContent = {
   eyebrow: "The Event Lineup",
-  arenaSummary: "8 arenas · 2 days",
+  arenaSummary: "9 arenas · 2 days",
   hint: "✂ tap any name for the full brief",
   technicalHeading: "technical events",
   nonTechnicalHeading: "non-technical events",
@@ -317,7 +333,7 @@ const pastEditions: PastEditionsContent = {
   heading: "AXIOS<br>IS BACK",
   paragraphs: [
     "The loudest technical fest on campus is back for its third edition! Two days of arenas that bring in students from all over Coimbatore and outside, making this a true spectacle.",
-    "This year runs bigger: eight events, a signature triathlon, and a ₹1,50,000 pool. Here's what the last two looked like.",
+    "This year runs bigger: nine events, a signature triathlon, and a ₹1,50,000 pool. Here's what the last two looked like.",
   ],
   stats: [
     { value: "3,200+", label: "Past participants" },
@@ -352,12 +368,12 @@ const events: EventDetail[] = [
     posterLabel: "Tech Triathlon",
     tag: "RELAY · 3 ROUNDS",
     shortDescription:
-      "Three back-to-back rounds against the clock — code, logic, build. One team, one relay.",
+      "Three back-to-back rounds against the clock: code, logic, build. One team, one relay.",
     about:
-      "Three back-to-back rounds run relay-style against a shared clock. Your team splits the load across code, logic and build, and hands off cleanly — because the timer never stops. Fastest cumulative finish takes the crown.",
+      "Three back-to-back rounds run relay-style against a shared clock. Your team splits the load across code, logic and build, and hands off cleanly, because the timer never stops. Fastest cumulative finish takes the crown.",
     rounds: [
       { title: "Round 1 · Code Sprint", description: "Timed algorithmic problems on the judge. Clear as many as you can before the handoff." },
-      { title: "Round 2 · Logic Grid", description: "Pen-and-paper puzzles, circuit tracing and bit-twiddling. No compiler — just wits." },
+      { title: "Round 2 · Logic Grid", description: "Pen-and-paper puzzles, circuit tracing and bit-twiddling. No compiler, just wits." },
       { title: "Round 3 · Build & Ship", description: "A mini-spec dropped live. Ship a working prototype before the buzzer." },
     ],
     convenors: [
@@ -368,6 +384,11 @@ const events: EventDetail[] = [
       { place: "Champion", amount: "₹35,000", widthPercent: "100%" },
       { place: "Runner-up", amount: "₹15,000", widthPercent: "58%" },
       { place: "Third", amount: "₹10,000", widthPercent: "38%" },
+    ],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "09:00", endTime: "13:00", duration: "4:00", location: "4 rooms – G Block Classroom" },
+      { round: "Round 2", day: "Day 1", startTime: "14:30", endTime: "16:00", duration: "1:30", location: "2 rooms – G Block Classroom" },
+      { round: "Round 3", day: "Day 2", startTime: "16:30", endTime: "17:30", duration: "1:00", location: "F-Block Assembly Hall" },
     ],
     isSignature: true,
   },
@@ -382,7 +403,7 @@ const events: EventDetail[] = [
     shortDescription:
       "A capture-the-flag arena. Crypto, web, forensics, reversing. Find the flag, own the board.",
     about:
-      "A jeopardy-style capture-the-flag arena. Five tracks, dozens of flags, one scoreboard. Points scale with difficulty and drop as more teams solve — so first blood is worth the most.",
+      "A jeopardy-style capture-the-flag arena. Five tracks, dozens of flags, one scoreboard. Points scale with difficulty and drop as more teams solve, so first blood is worth the most.",
     rounds: [
       { title: "Cryptography", description: "Break the cipher, recover the key, read what was never meant for you." },
       { title: "Web Exploitation", description: "Find the bug in the stack and pop the flag out of it." },
@@ -398,6 +419,10 @@ const events: EventDetail[] = [
       { place: "Champion", amount: "₹40,000", widthPercent: "100%" },
       { place: "Runner-up", amount: "₹20,000", widthPercent: "56%" },
       { place: "Third", amount: "₹15,000", widthPercent: "42%" },
+    ],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "D Block Assembly Hall" },
+      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "14:00", duration: "4:30", location: "M503" },
     ],
   },
   {
@@ -425,6 +450,11 @@ const events: EventDetail[] = [
       { place: "Runner-up", amount: "₹20,000", widthPercent: "56%" },
       { place: "Third", amount: "₹10,000", widthPercent: "34%" },
     ],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "11:30", duration: "1:30", location: "SIL, OSL, NSL, IIL" },
+      { round: "Round 2", day: "Day 1", startTime: "13:00", endTime: "15:30", duration: "2:30", location: "SIL, OSL" },
+      { round: "Round 3", day: "Day 2", startTime: "08:30", endTime: "13:00", duration: "4:30", location: "SIL, OSL" },
+    ],
   },
   {
     key: "mm",
@@ -450,6 +480,11 @@ const events: EventDetail[] = [
       { place: "Champion", amount: "₹28,000", widthPercent: "100%" },
       { place: "Runner-up", amount: "₹14,000", widthPercent: "58%" },
       { place: "Third", amount: "₹8,000", widthPercent: "40%" },
+    ],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "12:30", duration: "3:00", location: "J515, J514, J516" },
+      { round: "Round 2", day: "Day 1", startTime: "14:00", endTime: "17:00", duration: "3:00", location: "J515, J516" },
+      { round: "Round 3", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "J515" },
     ],
   },
   {
@@ -477,6 +512,10 @@ const events: EventDetail[] = [
       { place: "Runner-up", amount: "₹12,000", widthPercent: "50%" },
       { place: "Third", amount: "₹8,000", widthPercent: "32%" },
     ],
+    timeline: [
+      { round: "Round 1", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "F-Block Assembly Hall" },
+      { round: "Round 2", day: "Day 2", startTime: "13:00", endTime: "16:00", duration: "3:00", location: "F-Block Assembly Hall" },
+    ],
   },
   {
     key: "svc",
@@ -487,7 +526,7 @@ const events: EventDetail[] = [
     logo: "/assets/logo-svc.webp",
     tag: "STRATEGY · ELIMINATION",
     shortDescription:
-      "Alliances, betrayals and one immunity token. Outwit the room across rounds of negotiation — then survive the vote.",
+      "Alliances, betrayals and one immunity token. Outwit the room across rounds of negotiation, then survive the vote.",
     about:
       "A social-strategy game of alliances and betrayals. Talk your way into a bloc, spot the double-cross before it lands, and hold an immunity token when the room turns.",
     rounds: [
@@ -504,10 +543,16 @@ const events: EventDetail[] = [
       { place: "Runner-up", amount: "₹12,000", widthPercent: "60%" },
       { place: "Third", amount: "₹8,000", widthPercent: "40%" },
     ],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "12:00", duration: "2:00", location: "M503, M504" },
+      { round: "Round 2", day: "Day 1", startTime: "14:00", endTime: "16:00", duration: "2:00", location: "M503, M504" },
+      { round: "Round 3", day: "Day 2", startTime: "10:00", endTime: "12:00", duration: "2:00", location: "D-Block Conference Hall" },
+      { round: "Round 4", day: "Day 2", startTime: "16:15", endTime: "17:00", duration: "0:45", location: "D-Block Conference Hall" },
+    ],
   },
   {
     key: "val",
-    name: "Game Over — Valorant",
+    name: "Game Over: Valorant",
     category: "Gaming",
     teamSize: "5 Members",
     prize: "₹55,000",
@@ -532,10 +577,14 @@ const events: EventDetail[] = [
       { place: "Runner-up", amount: "₹16,000", widthPercent: "54%" },
       { place: "Third", amount: "₹9,000", widthPercent: "32%" },
     ],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "F203" },
+      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "12:30", duration: "3:00", location: "Same as Round 1 (F203)" },
+    ],
   },
   {
     key: "fifa",
-    name: "Game Over — FIFA",
+    name: "Game Over: FIFA",
     category: "Gaming",
     teamSize: "Solo Entry",
     prize: "₹30,000",
@@ -559,6 +608,42 @@ const events: EventDetail[] = [
       { place: "Champion", amount: "₹16,000", widthPercent: "100%" },
       { place: "Runner-up", amount: "₹9,000", widthPercent: "56%" },
       { place: "Third", amount: "₹5,000", widthPercent: "32%" },
+    ],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "F202" },
+      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "12:30", duration: "3:00", location: "Same as Round 1 (F202)" },
+    ],
+  },
+  {
+    key: "bb",
+    name: "Big Bull",
+    category: "Non Technical",
+    teamSize: "2 Members",
+    prize: "₹35,000",
+    logo: "/assets/logo-bb.webp",
+    tag: "MARKET SIM · 3 ROUNDS",
+    shortDescription:
+      "A live stock market simulation. Trade smart, read the swings, and finish with the fattest portfolio.",
+    about:
+      "A three-round trading simulation where virtual capital meets real market psychology. Build a portfolio, react to breaking news events, and out-trade the room without going bust.",
+    rounds: [
+      { title: "Round 1 · Market Open", description: "Initial capital allocation across a live simulated index. React fast as prices move." },
+      { title: "Round 2 · Volatility Event", description: "A market shock hits the floor. Hedge, short, or double down before the dust settles." },
+      { title: "Round 3 · Closing Bell", description: "Final trades locked in. Portfolios are marked to market and ranked." },
+    ],
+    convenors: [
+      { name: "Arjun Das", phone: "+91 90000 00027" },
+      { name: "Divya Suresh", phone: "+91 90000 00028" },
+    ],
+    prizeSplits: [
+      { place: "Champion", amount: "₹18,000", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹10,000", widthPercent: "55%" },
+      { place: "Third", amount: "₹7,000", widthPercent: "38%" },
+    ],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "F-Block Assembly Hall" },
+      { round: "Round 2", day: "Day 2", startTime: "14:00", endTime: "17:00", duration: "3:00", location: "F-Block Assembly Hall" },
+      { round: "Round 3", day: "Day 2", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "F201" },
     ],
   },
 ];
@@ -614,12 +699,12 @@ const faq: FaqContent = {
     {
       question: "Who can participate in Axios?",
       answer:
-        "Any undergraduate or postgraduate student from any college can register. You do not need to be from a computing branch — the events reward clear thinking as much as technical skill.",
+        "Any undergraduate or postgraduate student from any college can register. You do not need to be from a computing branch, the events reward clear thinking as much as technical skill.",
     },
     {
       question: "Do I need to be an expert coder?",
       answer:
-        "No. Only Breach Point and the Triathlon build round assume coding comfort. DataQuest, the Quiz and Math Mania are open to anyone who enjoys problem-solving — beginners regularly place well.",
+        "No. Only Breach Point and the Triathlon build round assume coding comfort. DataQuest, the Quiz and Math Mania are open to anyone who enjoys problem-solving, beginners regularly place well.",
     },
     {
       question: "Can I register solo, or need a team?",
@@ -634,7 +719,7 @@ const faq: FaqContent = {
     {
       question: "Is accommodation available?",
       answer:
-        "Yes — limited hostel accommodation is available on request at a nominal charge. Flag it during registration or write to the contact below.",
+        "Yes, limited hostel accommodation is available on request at a nominal charge. Flag it during registration or write to the contact below.",
     },
   ],
 };
@@ -664,7 +749,7 @@ const footer: FooterContent = {
     { label: "Email", href: "mailto:axios@psgtech.ac.in" },
   ],
   copyright:
-    "© MMXXVI Computational Sciences Association · PSG College of Technology — best viewed at 800×600 or higher ✦ Not licensed for resale to any garage startup.",
+    "© MMXXVI Computational Sciences Association · PSG College of Technology, best viewed at 800×600 or higher ✦ Not licensed for resale to any garage startup.",
 };
 
 export const siteConfig: SiteConfig = {

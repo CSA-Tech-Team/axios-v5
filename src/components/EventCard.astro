@@ -1,0 +1,42 @@
+---
+import type { EventDetail } from '../config/site.config';
+
+export interface CardStyle {
+  shadow: string;
+  rotate: string;
+  /** Full border declaration, e.g. "border:2px dashed var(--ink);". Defaults to a solid ink border. */
+  border?: string;
+}
+
+interface Props {
+  event: EventDetail;
+  cardStyle: CardStyle;
+  prizeLabel: string;
+  /** Badge text shown when `event.isSignature` is true, e.g. "SIGNATURE" */
+  signatureBadge?: string;
+}
+
+const { event: ev, cardStyle, prizeLabel, signatureBadge } = Astro.props;
+---
+
+<div
+  id={`e-${ev.key}`}
+  class="ecard"
+  data-open={ev.key}
+  style={`position:relative;background:var(--card);${cardStyle.border ?? 'border:2px solid var(--ink);'}padding:22px 20px;box-shadow:5px 5px 0 ${cardStyle.shadow};transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;scroll-margin-top:70px;transform:${cardStyle.rotate};cursor:pointer`}
+>
+  {ev.isSignature && signatureBadge && (
+    <div style="position:absolute;top:-16px;left:-12px;z-index:5;transform:rotate(-10deg);display:flex;flex-direction:column;align-items:center;gap:1px;pointer-events:none">
+      <svg width="34" height="26" viewBox="0 0 34 26" style="display:block"><path d="M3 22 L1.5 7 L9.5 13 L17 2.5 L24.5 13 L32.5 7 L31 22 Z" fill="#f0a500" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"></path><circle cx="17" cy="17" r="2" fill="var(--ink)"></circle></svg>
+      <span style="font-family:inherit;font-size:9px;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--ink);padding:2px 6px 1px">{signatureBadge}</span>
+    </div>
+  )}
+  <img src={ev.logo} alt={`${ev.name} Logo`} width="62" height="62" loading="lazy" decoding="async" style="width:62px;height:62px;display:block;margin-bottom:14px" />
+  <div style="font-family:inherit;font-size:11px;letter-spacing:.08em;color:var(--acc);font-weight:700;margin-bottom:6px">{ev.tag}</div>
+  <div style="font-size:20px;font-weight:700;margin-bottom:8px">{ev.name}</div>
+  <div style="font-size:14px;line-height:1.5;color:var(--ink2);flex:1">{ev.shortDescription}</div>
+  <div style="margin-top:16px;padding-top:14px;border-top:1.5px dashed var(--line);display:flex;justify-content:space-between;align-items:baseline">
+    <span style="font-family:inherit;font-size:11px;color:var(--ink2)">{prizeLabel}</span>
+    <span style="font-size:20px;font-weight:800;color:var(--acc)">{ev.prize}</span>
+  </div>
+</div>

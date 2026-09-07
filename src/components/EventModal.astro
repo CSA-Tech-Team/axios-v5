@@ -39,6 +39,10 @@ const eventsDataJson = JSON.stringify(
         PRIZES &amp; TEAM
         <span id="indicator-prizes" style="display:none;position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--r5)"></span>
       </button>
+      <button id="tab-timeline-btn" style="background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:.05em;color:var(--ink2);padding:10px 14px 13px;position:relative">
+        TIMELINE
+        <span id="indicator-timeline" style="display:none;position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--r4)"></span>
+      </button>
     </div>
 
     <!-- Tab Contents Container -->
@@ -79,6 +83,9 @@ const eventsDataJson = JSON.stringify(
         <div style="font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin:0 0 12px">Prize Split</div>
         <div id="modal-prize-splits" style="display:flex;flex-direction:column;gap:14px"></div>
       </div>
+
+      <!-- Tab 4: Timeline -->
+      <div id="content-timeline" style="display:none;flex-direction:column;gap:12px"></div>
     </div>
 
     <!-- Actions -->
@@ -109,34 +116,41 @@ const eventsDataJson = JSON.stringify(
     const tabOverviewBtn = document.getElementById('tab-overview-btn');
     const tabRoundsBtn = document.getElementById('tab-rounds-btn');
     const tabPrizesBtn = document.getElementById('tab-prizes-btn');
+    const tabTimelineBtn = document.getElementById('tab-timeline-btn');
 
     const contentOverview = document.getElementById('content-overview');
     const contentRounds = document.getElementById('content-rounds');
     const contentPrizes = document.getElementById('content-prizes');
+    const contentTimeline = document.getElementById('content-timeline');
 
     const indOverview = document.getElementById('indicator-overview');
     const indRounds = document.getElementById('indicator-rounds');
     const indPrizes = document.getElementById('indicator-prizes');
+    const indTimeline = document.getElementById('indicator-timeline');
 
     if (!modal) return;
 
-    const switchTab = (tab: 'overview' | 'rounds' | 'prizes') => {
+    const switchTab = (tab: 'overview' | 'rounds' | 'prizes' | 'timeline') => {
       if (contentOverview) contentOverview.style.display = tab === 'overview' ? 'block' : 'none';
       if (contentRounds) contentRounds.style.display = tab === 'rounds' ? 'flex' : 'none';
       if (contentPrizes) contentPrizes.style.display = tab === 'prizes' ? 'block' : 'none';
+      if (contentTimeline) contentTimeline.style.display = tab === 'timeline' ? 'flex' : 'none';
 
       if (indOverview) indOverview.style.display = tab === 'overview' ? 'block' : 'none';
       if (indRounds) indRounds.style.display = tab === 'rounds' ? 'block' : 'none';
       if (indPrizes) indPrizes.style.display = tab === 'prizes' ? 'block' : 'none';
+      if (indTimeline) indTimeline.style.display = tab === 'timeline' ? 'block' : 'none';
 
       if (tabOverviewBtn) tabOverviewBtn.style.color = tab === 'overview' ? 'var(--ink)' : 'var(--ink2)';
       if (tabRoundsBtn) tabRoundsBtn.style.color = tab === 'rounds' ? 'var(--ink)' : 'var(--ink2)';
       if (tabPrizesBtn) tabPrizesBtn.style.color = tab === 'prizes' ? 'var(--ink)' : 'var(--ink2)';
+      if (tabTimelineBtn) tabTimelineBtn.style.color = tab === 'timeline' ? 'var(--ink)' : 'var(--ink2)';
     };
 
     if (tabOverviewBtn) tabOverviewBtn.addEventListener('click', () => switchTab('overview'));
     if (tabRoundsBtn) tabRoundsBtn.addEventListener('click', () => switchTab('rounds'));
     if (tabPrizesBtn) tabPrizesBtn.addEventListener('click', () => switchTab('prizes'));
+    if (tabTimelineBtn) tabTimelineBtn.addEventListener('click', () => switchTab('timeline'));
 
     const closeModal = () => {
       modal.style.display = 'none';
@@ -180,6 +194,7 @@ const eventsDataJson = JSON.stringify(
       const convenorsEl = document.getElementById('modal-convenors');
       const roundsEl = document.getElementById('content-rounds');
       const prizeSplitsEl = document.getElementById('modal-prize-splits');
+      const timelineEl = document.getElementById('content-timeline');
 
       if (logoEl) logoEl.src = ev.logo;
       if (catEl) catEl.textContent = ev.category;
@@ -216,6 +231,21 @@ const eventsDataJson = JSON.stringify(
               <i style="display:block;height:100%;width:${p.widthPercent};background:var(--acc)"></i>
             </div>
             <b style="font-size:14.5px;font-weight:800;color:var(--ink)">${p.amount}</b>
+          </div>
+        `).join('');
+      }
+
+      if (timelineEl) {
+        timelineEl.innerHTML = ev.timeline.map(t => `
+          <div style="display:grid;grid-template-columns:88px 1fr auto;gap:14px;align-items:center;background:var(--wcard);border:2px solid var(--ink);border-left:6px solid var(--r4);box-shadow:4px 4px 0 var(--ink);padding:14px 18px">
+            <div>
+              <div style="font-weight:800;font-size:13px;color:var(--acc)">${t.round}</div>
+              <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-top:2px">${t.day}</div>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:15px;color:var(--ink)">${t.startTime} – ${t.endTime} <span style="font-weight:600;font-size:12.5px;color:var(--ink2)">(${t.duration})</span></div>
+              <div style="font-size:13px;line-height:1.5;color:var(--ink2);margin-top:3px">📍 ${t.location}</div>
+            </div>
           </div>
         `).join('');
       }
