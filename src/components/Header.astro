@@ -2,41 +2,61 @@
 import { siteConfig } from '../config/site.config';
 ---
 
-<header style="position:sticky;top:0;z-index:1000;display:flex;align-items:center;gap:16px;height:52px;padding:0 22px;background:var(--term);color:var(--termfg);border-bottom:2px solid var(--ink);font-family:inherit">
-  <div style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;letter-spacing:.04em">
-    <span style="width:11px;height:11px;background:var(--acc);display:inline-block;transform:rotate(45deg)"></span>
-    {siteConfig.event.name.toUpperCase()} <span style="color:#8a7a5c;font-weight:400">'26</span>
-  </div>
-  <nav class="topnav" style="display:flex;gap:2px;margin-left:6px;flex:1;overflow:hidden">
+<header style="position:sticky;top:0;z-index:1000;display:flex;align-items:center;gap:14px;height:72px;padding:0 18px;background:var(--term);color:var(--termfg);border-bottom:2px solid var(--ink);font-family:inherit">
+  <!-- Institution Marks -->
+  <span class="hdr-logos" style="display:inline-flex;align-items:center;gap:12px;flex-shrink:0">
+    <a href={siteConfig.event.organizer.collegeUrl} target="_blank" rel="noopener" aria-label="PSG College of Technology" style="display:inline-flex;line-height:0">
+      <img
+        src="/assets/psg-logo.webp"
+        alt="PSG College of Technology"
+        width="62"
+        height="62"
+        fetchpriority="high"
+        decoding="async"
+        style="height:52px;width:auto;filter:brightness(0) invert(1)"
+      />
+    </a>
+    <span style="width:1.5px;height:32px;background:#fff;opacity:.3"></span>
+    <a href={siteConfig.event.organizer.departmentUrl} target="_blank" rel="noopener" aria-label="Computational Sciences Association" style="display:inline-flex;line-height:0">
+      <img
+        src="/assets/csa-logo.webp"
+        alt="Computational Sciences Association"
+        width="44"
+        height="44"
+        fetchpriority="high"
+        decoding="async"
+        style="height:42px;width:auto;filter:brightness(0) invert(1)"
+      />
+    </a>
+  </span>
+
+  <nav class="topnav" style="display:flex;align-items:center;justify-content:flex-end;gap:2px;flex:1;min-width:0;margin-left:auto;overflow:hidden">
     {siteConfig.nav.map((link) => (
-      <a href={`#${link.target}`} data-go={link.target} style="color:#c9b48c;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:6px 9px">{link.label}</a>
+      <a href={`#${link.target}`} data-go={link.target} style="color:#c9b48c;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:6px 9px;white-space:nowrap">{link.label}</a>
     ))}
   </nav>
-  <span id="os-clock" style="min-width:82px;text-align:right;font-size:13px;letter-spacing:.02em">12:00 PM</span>
-  <a href="#register" data-go="register" style="background:var(--acc);color:#fff;padding:7px 14px;font-size:12px;font-weight:700;letter-spacing:.04em;border:2px solid #fff2">▶ REGISTER</a>
+
+  <span class="hdr-sep" style="width:1.5px;height:24px;background:#fff;opacity:.18;flex-shrink:0"></span>
+  <a href="#register" data-go="register" style="background:var(--acc);color:#fff;padding:7px 14px;font-size:12px;font-weight:700;letter-spacing:.04em;border:2px solid #fff2;flex-shrink:0;white-space:nowrap">▶ REGISTER</a>
 </header>
+
+<style>
+  @media (max-width: 780px) {
+    .hdr-sep { display: none; }
+  }
+  @media (max-width: 560px) {
+    header { height: 60px !important; }
+    .hdr-logos img:first-of-type { height: 40px !important; }
+    .hdr-logos img:last-of-type { height: 32px !important; }
+  }
+</style>
 
 <script>
   function setupHeader() {
-    // Real-time Clock
-    const clockEl = document.getElementById('os-clock');
-    if (clockEl) {
-      const updateClock = () => {
-        const d = new Date();
-        let h = d.getHours();
-        const m = String(d.getMinutes()).padStart(2, '0');
-        const ap = h >= 12 ? 'PM' : 'AM';
-        h = h % 12 || 12;
-        clockEl.textContent = `${h}:${m} ${ap}`;
-      };
-      updateClock();
-      setInterval(updateClock, 1000);
-    }
-
     // Scrollspy for nav links
     const links = Array.from(document.querySelectorAll('.topnav a[data-go]'));
     const ids = ['board', 'events', 'prizes', 'sponsors', 'faq'];
-    
+
     if (links.length && 'IntersectionObserver' in window) {
       const setActive = (id: string) => {
         links.forEach((a) => {
@@ -69,7 +89,7 @@ import { siteConfig } from '../config/site.config';
         if (!targetId) return;
         const targetEl = document.getElementById(targetId);
         const header = document.querySelector('header');
-        const headerH = header ? header.offsetHeight : 52;
+        const headerH = header ? header.offsetHeight : 58;
         if (targetEl) {
           const y = targetEl.getBoundingClientRect().top + window.scrollY - headerH - 8;
           window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });

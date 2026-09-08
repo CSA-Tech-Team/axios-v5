@@ -33,7 +33,7 @@ const { event: ev, cardStyle, prizeLabel, signatureBadge } = Astro.props;
   )}
   <img src={ev.logo} alt={`${ev.name} Logo`} width="62" height="62" loading="lazy" decoding="async" style="width:62px;height:62px;display:block;margin-bottom:14px" />
   <div style="font-family:inherit;font-size:11px;letter-spacing:.08em;color:var(--acc);font-weight:700;margin-bottom:6px">{ev.tag}</div>
-  <div style="font-size:20px;font-weight:700;margin-bottom:8px">{ev.name}</div>
+  <h4 style="margin:0 0 8px;font-family:inherit;font-size:20px;font-weight:700">{ev.name}</h4>
   <div style="font-size:14px;line-height:1.5;color:var(--ink2);flex:1">{ev.shortDescription}</div>
   <div style="margin-top:16px;padding-top:14px;border-top:1.5px dashed var(--line);display:flex;justify-content:space-between;align-items:baseline">
     <span style="font-family:inherit;font-size:11px;color:var(--ink2)">{prizeLabel}</span>

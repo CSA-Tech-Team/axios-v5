@@ -30,12 +30,24 @@ const tileSizing: Record<string, { minWidth: string; height: string; maxHeight: 
                 <div>
                   <div style="font-family:inherit;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-bottom:8px">{sponsor.label}</div>
                   <div style={`background:var(--wcard);border:2px solid var(--ink);height:${sizing.height};display:grid;place-items:center`}>
-                    <img src={sponsor.logo} alt={sponsor.alt} width="160" height="70" loading="lazy" decoding="async" style={`max-height:${sizing.maxHeight};width:auto`} />
+                    {sponsor.href ? (
+                      <a href={sponsor.href} target="_blank" rel="noopener" style="display:grid;place-items:center;width:100%;height:100%">
+                        <img src={sponsor.logo} alt={sponsor.alt} width="160" height="70" loading="lazy" decoding="async" style={`max-height:${sizing.maxHeight};width:auto`} />
+                      </a>
+                    ) : (
+                      <img src={sponsor.logo} alt={sponsor.alt} width="160" height="70" loading="lazy" decoding="async" style={`max-height:${sizing.maxHeight};width:auto`} />
+                    )}
                   </div>
                 </div>
               ) : (
                 <div style={`background:var(--wcard);border:2px solid var(--ink);height:${sizing.height};display:grid;place-items:center`}>
-                  <img src={sponsor.logo} alt={sponsor.alt} width="50" height="40" loading="lazy" decoding="async" style={`max-height:${sizing.maxHeight};width:auto`} />
+                  {sponsor.href ? (
+                    <a href={sponsor.href} target="_blank" rel="noopener" style="display:grid;place-items:center;width:100%;height:100%">
+                      <img src={sponsor.logo} alt={sponsor.alt} width="50" height="40" loading="lazy" decoding="async" style={`max-height:${sizing.maxHeight};width:auto`} />
+                    </a>
+                  ) : (
+                    <img src={sponsor.logo} alt={sponsor.alt} width="50" height="40" loading="lazy" decoding="async" style={`max-height:${sizing.maxHeight};width:auto`} />
+                  )}
                 </div>
               )
             )}

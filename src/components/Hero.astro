@@ -24,29 +24,6 @@ const { hero, event } = siteConfig;
     style="position:absolute;right:0;top:49%;width:clamp(240px,27vw,440px);height:auto;transform:rotate(-4deg);mix-blend-mode:multiply;pointer-events:none;z-index:1" 
   />
 
-  <!-- Top Institutions Header Badges -->
-  <span style="position:absolute;top:16px;left:22px;display:inline-flex;align-items:center;gap:14px">
-    <img 
-      src="/assets/psg-logo.webp" 
-      alt="PSG College of Technology" 
-      width="62" 
-      height="62" 
-      fetchpriority="high"
-      decoding="async"
-      style="height:clamp(44px,5vw,62px);width:auto;mix-blend-mode:multiply" 
-    />
-    <span style="width:1.5px;height:36px;background:var(--ink);opacity:.35"></span>
-    <img 
-      src="/assets/csa-logo.webp" 
-      alt="Computational Sciences Association" 
-      width="44" 
-      height="44" 
-      fetchpriority="high"
-      decoding="async"
-      style="height:clamp(30px,3.6vw,44px);width:auto;mix-blend-mode:multiply" 
-    />
-  </span>
-
   <span style="position:absolute;top:18px;right:20px;color:var(--r5);opacity:.55;pointer-events:none">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
       <circle cx="12" cy="12" r="5"></circle>
@@ -56,10 +33,15 @@ const { hero, event } = siteConfig;
   </span>
 
   <div style="max-width:1320px;width:100%;margin:0 auto;padding:34px 24px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,2.1vh,30px)">
+    <!-- SEO: descriptive H1 for crawlers/screen readers; the visual title is the AXIOS wordmark image below -->
+    <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
+      {event.name} '26 — {event.symposiumType} by {event.organizer.name} at {event.date.venueName}, {event.date.venueCity}
+    </h1>
+
     <!-- Subtitle Header -->
     <div style="display:flex;align-items:center;gap:16px;justify-content:center">
       <span style="height:2px;flex:1;max-width:200px;background:var(--ink)"></span>
-      <h1 style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);margin:0">{hero.eyebrow}</h1>
+      <p style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);margin:0">{hero.eyebrow}</p>
       <span style="height:2px;flex:1;max-width:200px;background:var(--ink)"></span>
     </div>
 

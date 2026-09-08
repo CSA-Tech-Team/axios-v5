@@ -45,6 +45,7 @@ export interface OrganizerInfo {
   name: string;
   shortName: string;
   department: string;
+  departmentUrl: string;
   collegeName: string;
   collegeUrl: string;
 }
@@ -181,6 +182,7 @@ export interface SponsorLogo {
   label: string;
   alt: string;
   logo: string;
+  href?: string;
 }
 
 export interface SponsorTier {
@@ -286,17 +288,18 @@ const event: EventInfo = {
     name: "Computational Sciences Association (CSA)",
     shortName: "CSA",
     department: "Department of Applied Mathematics & Computational Sciences",
+    departmentUrl: "https://www.psgtech.edu/department_page.php?dept=AMCS",
     collegeName: "PSG College of Technology, Coimbatore, 641004",
     collegeUrl: "https://www.psgtech.edu",
   },
 };
 
 const meta: SiteMeta = {
-  title: "Axios '26 | PSGCT",
+  title: "Axios '26 | Technical Symposium at PSG Tech, Coimbatore",
   description:
     "Axios '26: The premier national technical symposium presented by the Computational Sciences Association (CSA) at PSG College of Technology, Coimbatore. 9 arenas, 2 days, ₹1,50,000 prize pool. Sept 25–26, 2026.",
   keywords:
-    "Axios 2026, Axios PSG Tech, Technical Symposium Coimbatore, Computational Sciences Association, CSA PSG, Breach Point CTF, DataQuest, Math Mania, QFactor, Survivors Court, Valorant tournament",
+    "Axios 2026, Axios '26, Axios PSG Tech, Axios technical symposium, national technical symposium Coimbatore, PSG College of Technology events, PSG Tech fest, Computational Sciences Association, CSA PSG, AMCS PSG Tech, Breach Point CTF, DataQuest, Math Mania, QFactor, Survivors Court, Technical Triathlon, Big Bull, Valorant tournament, FIFA tournament, college fest Coimbatore, hackathon Coimbatore, coding competition Tamil Nadu",
   author: "Computational Sciences Association (CSA)",
   ogImagePath: "/assets/axios-logo-text.webp",
 };
@@ -663,8 +666,8 @@ const sponsors: SponsorsContent = {
     {
       title: "Title Sponsors",
       logos: [
-        { label: "Title Sponsor", alt: "Title Sponsor", logo: "/assets/psg-logo.webp" },
-        { label: "Title Co-Sponsor", alt: "Title Co-Sponsor", logo: "/assets/csa-logo.webp" },
+        { label: "Title Sponsor", alt: "Title Sponsor", logo: "/assets/psg-logo.webp", href: "https://www.psgtech.edu" },
+        { label: "Title Co-Sponsor", alt: "Title Co-Sponsor", logo: "/assets/csa-logo.webp", href: "https://www.psgtech.edu/department_page.php?dept=AMCS" },
       ],
     },
     {
