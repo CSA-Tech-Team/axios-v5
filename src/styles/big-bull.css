@@ -35,7 +35,7 @@
   font-weight: 400;
   line-height: .85;
   letter-spacing: normal;
-  background: radial-gradient(circle, var(--paper) .6px, transparent .9px), #183c2b;
+  background: radial-gradient(circle, var(--paper) .6px, transparent .9px), var(--ink);
   background-size: 4px 5px;
   background-clip: text;
   -webkit-background-clip: text;
@@ -81,14 +81,14 @@
   height: 62px;
   margin-bottom: 14px;
   object-fit: contain;
-  mix-blend-mode: multiply;
+  mix-blend-mode: normal;
 }
 
 .big-bull-card-category {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .08em;
-  color: #183c2b;
+  color: var(--acc);
   margin-bottom: 6px;
 }
 
@@ -120,11 +120,10 @@
 
 .big-bull-card-prize strong {
   font-size: 15px;
-  color: #183c2b;
+  color: var(--acc);
 }
 
-.big-bull-wall-link:hover,
-.big-bull-card:hover {
+.big-bull-wall-link:hover {
   transform: translateY(-3px);
 }
 

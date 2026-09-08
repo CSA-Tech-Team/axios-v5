@@ -82,6 +82,8 @@
 <script>
   interface EventDetails {
     logo: string;
+    logoFilter?: string;
+    logoBlendMode?: 'normal' | 'multiply';
     name: string;
     cat: string;
     team: string;
@@ -94,11 +96,15 @@
 
   const eventsData: Record<string, EventDetails> = {
     bb: {
-      logo: '/assets/logo-bb.png', name: 'Big Bull', cat: 'Non Technical', team: 'To be announced', prize: 'To be announced',
-      about: 'Read the market. Back your instincts. Big Bull is a non-technical stock market event where financial curiosity meets strategy. Put your market thinking to the test and make your move as the next Big Bull. The event format and participation details will be announced soon.',
-      rounds: [{ t: 'Event format · Coming soon', d: 'The rounds, rules and schedule will be announced soon. Check back for the full event brief.' }],
-      convenors: [],
-      prizes: []
+      logo: '/assets/logo-bb-badge.webp', logoBlendMode: 'normal', name: 'Big Bull', cat: 'Non Technical', team: '2–4 Members', prize: '₹25,000',
+      about: 'Read the market. Back your instincts. Big Bull is a stock market strategy challenge where teams build a simulated portfolio, react to breaking market news, and defend the choices behind every trade.',
+      rounds: [
+        { t: 'Round 1 · Market Open', d: 'Build a balanced portfolio from the stocks and market data provided within the opening window.' },
+        { t: 'Round 2 · The Bull Run', d: 'Respond to price swings, news alerts, and changing market conditions while protecting your returns.' },
+        { t: 'Final · Closing Bell', d: 'Present your final portfolio and explain the strategy, risks, and decisions that shaped your performance.' }
+      ],
+      convenors: [{ n: 'Riya Krishnan', p: '+91 90000 00101' }, { n: 'Adithya S', p: '+91 90000 00102' }],
+      prizes: [{ p: 'Winner', v: '₹15,000', w: '100%' }, { p: 'Runner-up', v: '₹7,000', w: '47%' }, { p: 'Third', v: '₹3,000', w: '20%' }]
     },
     tri: {
       logo: '/assets/logo-tri.webp', name: 'Technical Triathlon', cat: 'Technical', team: '3 Members', prize: '₹60,000',
@@ -186,6 +192,13 @@
       ],
       convenors: [{ n: 'Naveen Kumar', p: '+91 90000 00025' }, { n: 'Aditya Menon', p: '+91 90000 00026' }],
       prizes: [{ p: 'Champion', v: '₹16,000', w: '100%' }, { p: 'Runner-up', v: '₹9,000', w: '56%' }, { p: 'Third', v: '₹5,000', w: '32%' }]
+    },
+    chess: {
+      logo: '/assets/ev-go.webp', logoFilter: 'invert(45%) sepia(65%) saturate(620%) hue-rotate(92deg) brightness(82%) contrast(88%)', name: 'Game Over — Chess', cat: 'Gaming', team: 'Solo Entry', prize: 'To be announced',
+      about: 'Calculate the position, control the clock, and find the winning line. Game Over — Chess brings over-the-board strategy to the arena, where every move counts.',
+      rounds: [{ t: 'Tournament format · Coming soon', d: 'The time control, pairing format, rules, and schedule will be announced soon.' }],
+      convenors: [],
+      prizes: []
     }
   };
 
@@ -271,7 +284,11 @@
       const roundsEl = document.getElementById('content-rounds');
       const prizeSplitsEl = document.getElementById('modal-prize-splits');
 
-      if (logoEl) logoEl.src = ev.logo;
+      if (logoEl) {
+        logoEl.src = ev.logo;
+        logoEl.style.filter = ev.logoFilter || '';
+        logoEl.style.mixBlendMode = ev.logoBlendMode || 'multiply';
+      }
       if (catEl) catEl.textContent = ev.cat;
       if (titleEl) {
         titleEl.textContent = ev.name;
