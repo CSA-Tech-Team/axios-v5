@@ -252,10 +252,7 @@ const eventsDataJson = JSON.stringify(
         logoEl.style.mixBlendMode = ev.logoBlendMode || 'multiply';
       }
       if (catEl) catEl.textContent = ev.category;
-      if (titleEl) {
-        titleEl.textContent = ev.name;
-        titleEl.classList.toggle('big-bull-title', key === 'bb');
-      }
+      if (titleEl) titleEl.textContent = ev.name;
       if (prizeEl) prizeEl.textContent = ev.prize;
       if (prizeDupEl) prizeDupEl.textContent = ev.prize;
       if (teamEl) teamEl.textContent = ev.teamSize;
