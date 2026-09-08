@@ -9,7 +9,7 @@ interface Props {
   /** Replay on every load instead of once per session */
   alwaysReplay?: boolean;
 }
-const { duration = 8, stars = 0, logo = '/assets/logo26.svg', alwaysReplay = false } = Astro.props;
+const { duration = 8, stars = 0, logo = '/assets/logo26.webp', alwaysReplay = false } = Astro.props;
 ---
 
 <div
@@ -37,7 +37,7 @@ const { duration = 8, stars = 0, logo = '/assets/logo26.svg', alwaysReplay = fal
   const hud = document.getElementById('warp-hud');
   if (host && canvas) {
     const D = Math.max(3, parseFloat(host.dataset.duration) || 8);
-    const LOGO = host.dataset.logo || '/assets/logo26.svg';
+    const LOGO = host.dataset.logo || '/assets/logo26.webp';
     const KEY = 'axios_warp_intro_v1';
     const mobile = Math.min(window.innerWidth, window.innerHeight) < 700;
     const STARS = parseInt(host.dataset.stars, 10) || (mobile ? 900 : 2200);

@@ -29,13 +29,13 @@ const tileSizing: Record<string, { minWidth: string; height: string; maxHeight: 
               showLabels ? (
                 <div>
                   <div style="font-family:inherit;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-bottom:8px">{sponsor.label}</div>
-                  <div style={`background:var(--wcard);border:2px solid var(--ink);height:${sizing.height};display:grid;place-items:center`}>
+                  <div style={`background:${sponsor.background ?? 'var(--wcard)'};border:2px solid var(--ink);height:${sizing.height};display:grid;place-items:center`}>
                     {sponsor.href ? (
                       <a href={sponsor.href} target="_blank" rel="noopener" style="display:grid;place-items:center;width:100%;height:100%">
-                        <img src={sponsor.logo} alt={sponsor.alt} width="160" height="70" loading="lazy" decoding="async" style={`max-height:${sizing.maxHeight};width:auto`} />
+                        <img src={sponsor.logo} alt={sponsor.alt} width="160" height="70" loading="lazy" decoding="async" style={`max-height:${sizing.maxHeight};max-width:80%;width:auto;height:auto`} />
                       </a>
                     ) : (
-                      <img src={sponsor.logo} alt={sponsor.alt} width="160" height="70" loading="lazy" decoding="async" style={`max-height:${sizing.maxHeight};width:auto`} />
+                      <img src={sponsor.logo} alt={sponsor.alt} width="160" height="70" loading="lazy" decoding="async" style={`max-height:${sizing.maxHeight};max-width:80%;width:auto;height:auto`} />
                     )}
                   </div>
                 </div>

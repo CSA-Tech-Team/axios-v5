@@ -196,9 +196,16 @@ const eventsDataJson = JSON.stringify(
       const prizeSplitsEl = document.getElementById('modal-prize-splits');
       const timelineEl = document.getElementById('content-timeline');
 
-      if (logoEl) logoEl.src = ev.logo;
+      if (logoEl) {
+        logoEl.src = ev.logo;
+        logoEl.style.filter = ev.logoFilter || '';
+        logoEl.style.mixBlendMode = ev.logoBlendMode || 'multiply';
+      }
       if (catEl) catEl.textContent = ev.category;
-      if (titleEl) titleEl.textContent = ev.name;
+      if (titleEl) {
+        titleEl.textContent = ev.name;
+        titleEl.classList.toggle('big-bull-title', key === 'bb');
+      }
       if (prizeEl) prizeEl.textContent = ev.prize;
       if (prizeDupEl) prizeDupEl.textContent = ev.prize;
       if (teamEl) teamEl.textContent = ev.teamSize;

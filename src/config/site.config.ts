@@ -156,6 +156,10 @@ export interface EventDetail {
   teamSize: string;
   prize: string;
   logo: string;
+  /** Optional CSS filter applied to the modal logo, for marks that need recolouring */
+  logoFilter?: string;
+  /** Modal logo blend mode. Defaults to "multiply" when omitted. */
+  logoBlendMode?: 'normal' | 'multiply';
   /** Shortened display name for the big poster-style typography in the lineup header, e.g. "Tech Triathlon". Defaults to `name` when omitted. */
   posterLabel?: string;
   /** Short uppercase badge shown on the lineup card, e.g. "RELAY · 3 ROUNDS" */
@@ -183,6 +187,8 @@ export interface SponsorLogo {
   alt: string;
   logo: string;
   href?: string;
+  /** Optional tile background override, for marks that need a dark plate */
+  background?: string;
 }
 
 export interface SponsorTier {
@@ -228,6 +234,7 @@ export interface FooterLink {
 export interface FooterSocial {
   label: string;
   href: string;
+  external?: boolean;
 }
 
 export interface FooterContent {
@@ -297,9 +304,9 @@ const event: EventInfo = {
 const meta: SiteMeta = {
   title: "Axios '26 | Technical Symposium at PSG Tech, Coimbatore",
   description:
-    "Axios '26: The premier national technical symposium presented by the Computational Sciences Association (CSA) at PSG College of Technology, Coimbatore. 9 arenas, 2 days, ₹1,50,000 prize pool. Sept 25–26, 2026.",
+    "Axios '26: The premier national technical symposium presented by the Computational Sciences Association (CSA) at PSG College of Technology, Coimbatore. 10 arenas, 2 days, ₹1,50,000 prize pool. Sept 25–26, 2026.",
   keywords:
-    "Axios 2026, Axios '26, Axios PSG Tech, Axios technical symposium, national technical symposium Coimbatore, PSG College of Technology events, PSG Tech fest, Computational Sciences Association, CSA PSG, AMCS PSG Tech, Breach Point CTF, DataQuest, Math Mania, QFactor, Survivors Court, Technical Triathlon, Big Bull, Valorant tournament, FIFA tournament, college fest Coimbatore, hackathon Coimbatore, coding competition Tamil Nadu",
+    "Axios 2026, Axios '26, Axios PSG Tech, Axios technical symposium, national technical symposium Coimbatore, PSG College of Technology events, PSG Tech fest, Computational Sciences Association, CSA PSG, AMCS PSG Tech, Breach Point CTF, DataQuest, Math Mania, QFactor, Survivors Court, Technical Triathlon, Big Bull stock market event, Valorant tournament, FIFA tournament, chess tournament, college fest Coimbatore, hackathon Coimbatore, coding competition Tamil Nadu",
   author: "Computational Sciences Association (CSA)",
   ogImagePath: "/assets/axios-logo-text.webp",
 };
@@ -321,7 +328,7 @@ const hero: HeroContent = {
 
 const lineup: LineupContent = {
   eyebrow: "The Event Lineup",
-  arenaSummary: "9 arenas · 2 days",
+  arenaSummary: "10 arenas · 2 days",
   hint: "✂ tap any name for the full brief",
   technicalHeading: "technical events",
   nonTechnicalHeading: "non-technical events",
@@ -370,18 +377,17 @@ const events: EventDetail[] = [
     logo: "/assets/logo-tri.webp",
     posterLabel: "Tech Triathlon",
     tag: "RELAY · 3 ROUNDS",
-    shortDescription:
-      "Three back-to-back rounds against the clock: code, logic, build. One team, one relay.",
+    shortDescription: "Step into TRIATHLON: a battle where knowledge meets strategy and code.",
     about:
-      "Three back-to-back rounds run relay-style against a shared clock. Your team splits the load across code, logic and build, and hands off cleanly, because the timer never stops. Fastest cumulative finish takes the crown.",
+      "Step into TRIATHLON, a epic battle where knowledge meets strategy and code! Compete your way through rapid-fire technical challenges, strategic aptitude face-offs, and an intense multi-agent programming arena. Think fast, play smart, code smarter, and conquer every stage!",
     rounds: [
-      { title: "Round 1 · Code Sprint", description: "Timed algorithmic problems on the judge. Clear as many as you can before the handoff." },
-      { title: "Round 2 · Logic Grid", description: "Pen-and-paper puzzles, circuit tracing and bit-twiddling. No compiler, just wits." },
-      { title: "Round 3 · Build & Ship", description: "A mini-spec dropped live. Ship a working prototype before the buzzer." },
+      { title: "Chrono Casino", description: "Navigate a carnival of fast-paced technical face-offs where your knowledge is currency. Wager wisely, outsmart rivals, and rise through the ranks to survive." },
+      { title: "Card Conquest", description: "A high-stakes battle of aptitude and strategy where teams challenge rivals to capture opponents’ question cards. Sharp problem-solving, timing, and calculated risks decide who rises to the final round." },
+      { title: "Turf Wars", description: "Teams program Python bots to capture territory, manage resources, and outsmart opponents on a hidden battlefield. Using strategy, pathfinding, and multi-agent decision-making, they compete to become the ultimate TRIATHLON champion." },
     ],
     convenors: [
-      { name: "Aravind Kumar", phone: "+91 90000 00001" },
-      { name: "Nisha Verma", phone: "+91 90000 00002" },
+      { name: "Arul Kevin", phone: "+91 80569 90243" },
+      { name: "Anirudhan", phone: "+91 80885 72371" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹35,000", widthPercent: "100%" },
@@ -389,8 +395,8 @@ const events: EventDetail[] = [
       { place: "Third", amount: "₹10,000", widthPercent: "38%" },
     ],
     timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:00", endTime: "13:00", duration: "4:00", location: "4 rooms – G Block Classroom" },
-      { round: "Round 2", day: "Day 1", startTime: "14:30", endTime: "16:00", duration: "1:30", location: "2 rooms – G Block Classroom" },
+      { round: "Round 1", day: "Day 1", startTime: "09:00", endTime: "13:00", duration: "4:00", location: "4 rooms · G Block Classroom" },
+      { round: "Round 2", day: "Day 1", startTime: "14:30", endTime: "16:00", duration: "1:30", location: "2 rooms · G Block Classroom" },
       { round: "Round 3", day: "Day 2", startTime: "16:30", endTime: "17:30", duration: "1:00", location: "F-Block Assembly Hall" },
     ],
     isSignature: true,
@@ -403,20 +409,16 @@ const events: EventDetail[] = [
     prize: "₹75,000",
     logo: "/assets/logo-brc.webp",
     tag: "CTF · 5 TRACKS",
-    shortDescription:
-      "A capture-the-flag arena. Crypto, web, forensics, reversing. Find the flag, own the board.",
+    shortDescription: "Every system has a weakness. Every story has a hidden layer.",
     about:
-      "A jeopardy-style capture-the-flag arena. Five tracks, dozens of flags, one scoreboard. Points scale with difficulty and drop as more teams solve, so first blood is worth the most.",
+      "Every system has a weakness. Every story has a hidden layer. Step into Breach Point, where cybersecurity meets narrative, and every flag you capture unravels the next piece of the puzzle. From cracking jeopardy-style challenges woven into a gripping storyline to defending your own systems while breaching your rivals’, only the sharpest hackers will make it out with the final flag.",
     rounds: [
-      { title: "Cryptography", description: "Break the cipher, recover the key, read what was never meant for you." },
-      { title: "Web Exploitation", description: "Find the bug in the stack and pop the flag out of it." },
-      { title: "Forensics", description: "Carve the truth out of packet captures and disk images." },
-      { title: "Reverse Engineering", description: "Read the binary like it owes you money." },
-      { title: "Miscellaneous", description: "OSINT, steganography and the curveballs that do not fit a box." },
+      { title: "Signal Zero", description: "Three dead systems just woke up after a decade of silence, broadcasting the same six words: “We have already tried this once.” Step into a jeopardy-style CTF told through an unfolding investigation — chase down who built ECHO, how it’s moving through the wires, and why its predictions keep coming true. Every flag you capture peels back another layer of a truth the story has been hiding in plain sight." },
+      { title: "Red vs Blue", description: "An intense Attack-Defence CTF where teams must patch and defend their own vulnerable systems while simultaneously breaching opponents’ infrastructure to plant flags. Offense and defense in equal measure — falter on either side, and you’re exposed." },
     ],
     convenors: [
-      { name: "Rahul Menon", phone: "+91 90000 00003" },
-      { name: "Sana Iqbal", phone: "+91 90000 00004" },
+      { name: "Aditya", phone: "+91 77955 88955" },
+      { name: "Saivenketraj", phone: "+91 80569 92112" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹40,000", widthPercent: "100%" },
@@ -435,18 +437,18 @@ const events: EventDetail[] = [
     teamSize: "3 Members",
     prize: "₹70,000",
     logo: "/assets/logo-dq.webp",
-    tag: "DATA · 2 ROUNDS",
-    shortDescription:
-      "A dataset, a deadline, and a story to find in the noise. Model it, explain it, defend it.",
+    tag: "DATA · 3 ROUNDS",
+    shortDescription: "Time does not wait, and neither does data. Turn chaos into insight.",
     about:
-      "One raw dataset, one deadline, one story hiding in the noise. Clean it, model it, and defend your findings to a panel. There are marks for rigour and marks for a narrative that lands.",
+      "Time doesn’t wait, and neither does data. Step into a data science showdown where every dataset hides a story — race the clock, decode the patterns, and prove you can turn chaos into insight before time runs out.",
     rounds: [
-      { title: "Round 1 · Modelling", description: "Wrangle the dataset and build your model in a fixed window. Push predictions to the live leaderboard." },
-      { title: "Round 2 · Finals & Defence", description: "Top teams present their insight and defend the method to the judges." },
+      { title: "Blitz", description: "A rapid volley of challenges tests how quickly and accurately you can think on your feet. Only the sharpest, fastest teams earn their place in what comes next." },
+      { title: "Odyssey", description: "A web of interconnected puzzles, each one unlocking the next. Odyssey tests how well you can think, strategize, and adapt as the challenge deepens with every step." },
+      { title: "Forge", description: "The final trial. Armed with a real-world dataset, teams forge insight into impact — analyzing, storytelling, and presenting a solution that can stand before the judges." },
     ],
     convenors: [
-      { name: "Priya Nair", phone: "+91 90000 00005" },
-      { name: "Karthik R", phone: "+91 90000 00006" },
+      { name: "Tanaz", phone: "+91 63800 22981" },
+      { name: "Livin Joseph", phone: "+91 99943 92653" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹40,000", widthPercent: "100%" },
@@ -466,18 +468,18 @@ const events: EventDetail[] = [
     teamSize: "2 Members",
     prize: "₹50,000",
     logo: "/assets/logo-mm.webp",
-    tag: "MATH · 2 ROUNDS",
-    shortDescription:
-      "An integration bee with teeth. From clean substitutions to problems that fight back.",
+    tag: "MATH · 3 ROUNDS",
+    shortDescription: "Precision is power. Logic, strategy, and problem-solving decide who advances.",
     about:
-      "An integration bee with teeth. Solve against the clock, one integral at a time, head-to-head. Clean substitutions early; by the finals the problems fight back.",
+      "Precision is Power. Step beyond conventional mathematics with a competition that blends logic, strategy, and problem-solving. Take calculated risks, crack challenging puzzles, and prove that precision can lead you all the way to victory.",
     rounds: [
-      { title: "Round 1 · Warm-up", description: "Timed integrals of rising difficulty. Accuracy and speed both count." },
-      { title: "Round 2 · The Gauntlet", description: "Head-to-head elimination at the board. Last solver standing wins." },
+      { title: "Base Case", description: "A qualifier that puts mathematics, logic, reasoning, and visual problem-solving to the test. Think fast, work smart, and secure your place in the next round." },
+      { title: "Math Heist", description: "Risk it, solve it, and build your loot. Teams make calculated decisions, tackle mathematical challenges, and use strategic power-ups to maximise their virtual fortune." },
+      { title: "Trail to Triumph", description: "The final challenge is a race through an interconnected trail of mathematical and logical puzzles. Choose your path wisely, overcome every challenge, and make your way to triumph." },
     ],
     convenors: [
-      { name: "Vivek Anand", phone: "+91 90000 00009" },
-      { name: "Meera Joshi", phone: "+91 90000 00010" },
+      { name: "Keerthi Menon", phone: "+91 93632 58127" },
+      { name: "Niveda", phone: "+971 54 744 0352" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹28,000", widthPercent: "100%" },
@@ -498,17 +500,16 @@ const events: EventDetail[] = [
     prize: "₹45,000",
     logo: "/assets/logo-qz.webp",
     tag: "QUIZ · PRELIM+FINAL",
-    shortDescription:
-      "Prelims to knockout finals. Tech, trivia and lateral thinking on the buzzer. Boot your brain.",
+    shortDescription: "Mind-boggling questions from almost every topic, with no expertise required.",
     about:
-      "Prelims to knockout finals. Tech, trivia and lateral thinking on the buzzer. Boot your brain and test your knowledge against the brightest minds.",
+      "Prelims to knockout finals. Mind-boggling questions from (almost) every topic, no expertise or previous experience required. Test your knowledge against the brightest minds!",
     rounds: [
-      { title: "Written Prelims", description: "Top scoring teams advance to the stage." },
-      { title: "Stage Finals", description: "Buzzer rounds, pounce and bounce, and speed trivia." },
+      { title: "Written Prelims", description: "Written round with questions displayed on screens, top 6 teams advance to the finals." },
+      { title: "On-Stage Finals", description: "Dry rounds, pounce and bounce, and special rounds await those who can challenge questions from across time." },
     ],
     convenors: [
-      { name: "Siddharth M", phone: "+91 90000 00007" },
-      { name: "Ananya S", phone: "+91 90000 00008" },
+      { name: "Kaaviya", phone: "+91 63825 80231" },
+      { name: "Shambhavi", phone: "+91 80959 43626" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹25,000", widthPercent: "100%" },
@@ -529,17 +530,18 @@ const events: EventDetail[] = [
     logo: "/assets/logo-svc.webp",
     tag: "STRATEGY · ELIMINATION",
     shortDescription:
-      "Alliances, betrayals and one immunity token. Outwit the room across rounds of negotiation, then survive the vote.",
+      "High-stakes crises where every decision has consequences. Defend your actions in court.",
     about:
-      "A social-strategy game of alliances and betrayals. Talk your way into a bloc, spot the double-cross before it lands, and hold an immunity token when the room turns.",
+      "Survivors Court puts teams at the centre of high-stakes crises where every decision has consequences. Navigate chaos, make strategic choices, and gather evidence — because when the dust settles, you’ll have to defend your actions in court.",
     rounds: [
-      { title: "Round 1 · Alliances", description: "Open negotiation. Form blocs, trade favours and read the table." },
-      { title: "Round 2 · The Trials", description: "Challenges hand out immunity and information." },
-      { title: "Final · The Verdict", description: "The jury of the eliminated decides who outplayed whom." },
+      { title: "Round 1 — Survival / Scenario Phase", description: "Teams are placed in an unfolding crisis and must navigate challenges, make critical decisions, and work with limited resources. Every choice can create consequences that affect their journey and future conflicts." },
+      { title: "Round 2 — Conflict / Bridging Phase", description: "Teams face the consequences of their decisions as their actions intersect with another team. Conflicts arise from competing choices, forcing teams to analyse events, build their case, and prepare to justify their actions. The provided scenario includes conflicts where one team’s decisions directly create setbacks for another." },
+      { title: "Round 3 — Court / Trial Phase", description: "Teams enter the courtroom to defend their actions and challenge their opponents. Using the evidence and decisions from earlier rounds, they must present their case, respond to opposing arguments, and convince the court that their choices were justified." },
+      { title: "Round 4 · Verdict", description: "The final verdict is delivered after teams present their evidence and defend the choices made throughout the crisis." },
     ],
     convenors: [
-      { name: "Anjali Rao", phone: "+91 90000 00021" },
-      { name: "Suresh Babu", phone: "+91 90000 00022" },
+      { name: "Mithun Senthil", phone: "+91 74182 50339" },
+      { name: "Ranjana", phone: "94957 71225" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹20,000", widthPercent: "100%" },
@@ -555,25 +557,23 @@ const events: EventDetail[] = [
   },
   {
     key: "val",
-    name: "Game Over: Valorant",
+    name: "Game Over — Valorant",
     category: "Gaming",
     teamSize: "5 Members",
     prize: "₹55,000",
     logo: "/assets/logo-val.webp",
     posterLabel: "Valorant",
     tag: "5v5 · KNOCKOUT",
-    shortDescription:
-      "Five-a-side tactical shooter on a single-elimination bracket. Clutch the round, take the map, advance.",
+    shortDescription: "Step onto the virtual battleground and lock in your agent.",
     about:
-      "Five-a-side tactical shooter run on a single-elimination bracket. Lock in your agents, trade sites, and win rounds on economy and nerve.",
+      "Step onto the virtual battleground and lock in your agent. Valorant is the ultimate test of precise gunplay, tactical synergy, and high-stakes strategy. Only the sharpest aim and smartest utility usage will withstand the crossfire.",
     rounds: [
-      { title: "Group Stage", description: "Best-of-one seeding matches." },
-      { title: "Playoffs", description: "Best-of-three, double elimination." },
-      { title: "Grand Final", description: "Best-of-five on the main stage." },
+      { title: "Knockout Phase", description: "Teams go head-to-head in single-elimination knockout matches where every round counts. Top 4 teams advance to Round 2." },
+      { title: "Semi-Finals & Grand Finals", description: "The surviving teams step into a best-of-series showdown where adapting to opponents and economy management are critical. Out-aim, out-smart, and plant your flag at the top of the leaderboard to claim ultimate victory." },
     ],
     convenors: [
-      { name: "Rohit Sharma", phone: "+91 90000 00023" },
-      { name: "Farhan Ali", phone: "+91 90000 00024" },
+      { name: "Harshavardhan", phone: "+91 63697 21991" },
+      { name: "Dharaneesh", phone: "+91 86678 57284" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹30,000", widthPercent: "100%" },
@@ -582,30 +582,28 @@ const events: EventDetail[] = [
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "F203" },
-      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "12:30", duration: "3:00", location: "Same as Round 1 (F203)" },
+      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "F203" },
     ],
   },
   {
     key: "fifa",
-    name: "Game Over: FIFA",
+    name: "Game Over — FIFA",
     category: "Gaming",
     teamSize: "Solo Entry",
     prize: "₹30,000",
     logo: "/assets/logo-fifa.webp",
     posterLabel: "FIFA",
     tag: "1v1 · KNOCKOUT",
-    shortDescription:
-      "One on one on the pitch. Short halves, single-elimination, and the golden boot on the line.",
+    shortDescription: "Lace up your boots and take control of the pitch.",
     about:
-      "One on one on the pitch. Short halves keep it frantic, single-elimination keeps it honest. Pick your club, park the bus or press high.",
+      "Lace up your boots and take control of the pitch. FIFA brings the electric thrill of world-class football right to your controller. From tactical build-up play to stunning long-range screamers, glory is only 90 minutes away.",
     rounds: [
-      { title: "Group Stage", description: "Round-robin within small groups." },
-      { title: "Knockouts", description: "Single-elimination ties with golden goal." },
-      { title: "Final", description: "One match for the golden boot." },
+      { title: "Knockout Phase", description: "In this intense knockout round, one mistake can end your tournament run. Keep your defense tight, clinical on the counter-attack, and make every shot count to survive the first whistle. Top 4 players advance to Round 2." },
+      { title: "Semi-Finals & Grand Finals", description: "The top 4 players step into a high-stakes showdown where tactical adaptability and composure under pressure are critical. Out-play, out-smart, and dominate the pitch to lift the ultimate trophy." },
     ],
     convenors: [
-      { name: "Naveen Kumar", phone: "+91 90000 00025" },
-      { name: "Aditya Menon", phone: "+91 90000 00026" },
+      { name: "Harshavardhan", phone: "+91 63697 21991" },
+      { name: "Dharaneesh", phone: "+91 86678 57284" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹16,000", widthPercent: "100%" },
@@ -614,39 +612,65 @@ const events: EventDetail[] = [
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "F202" },
-      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "12:30", duration: "3:00", location: "Same as Round 1 (F202)" },
+      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "F202" },
     ],
   },
   {
     key: "bb",
     name: "Big Bull",
     category: "Non Technical",
-    teamSize: "2 Members",
-    prize: "₹35,000",
-    logo: "/assets/logo-bb.webp",
-    tag: "MARKET SIM · 3 ROUNDS",
+    teamSize: "2–4 Members",
+    prize: "₹25,000",
+    logo: "/assets/logo-bb-badge.webp",
+    logoBlendMode: "normal",
+    tag: "STOCK MARKET · STRATEGY",
     shortDescription:
-      "A live stock market simulation. Trade smart, read the swings, and finish with the fattest portfolio.",
+      "Read the market. Back your instincts. Put your stock market strategy to the test and make your move as the next Big Bull.",
     about:
-      "A three-round trading simulation where virtual capital meets real market psychology. Build a portfolio, react to breaking news events, and out-trade the room without going bust.",
+      "Read the market. Back your instincts. Big Bull is a stock market strategy challenge where teams build a simulated portfolio, react to breaking market news, and defend the choices behind every trade.",
     rounds: [
-      { title: "Round 1 · Market Open", description: "Initial capital allocation across a live simulated index. React fast as prices move." },
-      { title: "Round 2 · Volatility Event", description: "A market shock hits the floor. Hedge, short, or double down before the dust settles." },
-      { title: "Round 3 · Closing Bell", description: "Final trades locked in. Portfolios are marked to market and ranked." },
+      { title: "Round 1 · Market Open", description: "Build a balanced portfolio from the stocks and market data provided within the opening window." },
+      { title: "Round 2 · The Bull Run", description: "Respond to price swings, news alerts, and changing market conditions while protecting your returns." },
+      { title: "Final · Closing Bell", description: "Present your final portfolio and explain the strategy, risks, and decisions that shaped your performance." },
     ],
     convenors: [
-      { name: "Arjun Das", phone: "+91 90000 00027" },
-      { name: "Divya Suresh", phone: "+91 90000 00028" },
+      { name: "Durga", phone: "+91 96989 20880" },
+      { name: "Shansita", phone: "+91 83348 12473" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹18,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹10,000", widthPercent: "55%" },
-      { place: "Third", amount: "₹7,000", widthPercent: "38%" },
+      { place: "Winner", amount: "₹15,000", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹7,000", widthPercent: "47%" },
+      { place: "Third", amount: "₹3,000", widthPercent: "20%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "F-Block Assembly Hall" },
       { round: "Round 2", day: "Day 2", startTime: "14:00", endTime: "17:00", duration: "3:00", location: "F-Block Assembly Hall" },
       { round: "Round 3", day: "Day 2", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "F201" },
+    ],
+  },
+  {
+    key: "chess",
+    name: "Game Over — Chess",
+    category: "Gaming",
+    teamSize: "Solo Entry",
+    prize: "To be announced",
+    logo: "/assets/ev-go.webp",
+    logoFilter: "invert(45%) sepia(65%) saturate(620%) hue-rotate(92deg) brightness(82%) contrast(88%)",
+    posterLabel: "Chess",
+    tag: "BOARD · STRATEGY",
+    shortDescription: "Sit across the board and outsmart your opponent in an intellectual battle.",
+    about:
+      "Sit across the board and outsmart your opponent in the ultimate test of intellectual warfare. Chess demands absolute concentration, deep calculation, and flawless long-term strategy. Only the sharpest minds and most precise positional play will survive the grueling battle of wits.",
+    rounds: [
+      { title: "League Stage", description: "This is a custom matching system, the system pairs leaders against leaders, matching you exclusively with opponents on your exact point level. To stay at the top, you must continuously beat the very best. Only the top 10 players will secure a spot on the prize leaderboard." },
+    ],
+    convenors: [
+      { name: "Harshavardhan", phone: "+91 63697 21991" },
+      { name: "Dharaneesh", phone: "+91 86678 57284" },
+    ],
+    prizeSplits: [],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "CSL 1, 2, 3" },
     ],
   },
 ];
@@ -666,8 +690,8 @@ const sponsors: SponsorsContent = {
     {
       title: "Title Sponsors",
       logos: [
-        { label: "Title Sponsor", alt: "Title Sponsor", logo: "/assets/psg-logo.webp", href: "https://www.psgtech.edu" },
-        { label: "Title Co-Sponsor", alt: "Title Co-Sponsor", logo: "/assets/csa-logo.webp", href: "https://www.psgtech.edu/department_page.php?dept=AMCS" },
+        { label: "Title Sponsor", alt: "Arcesium", logo: "/assets/arcesium-logo.webp", background: "#000" },
+        { label: "Title Co-Sponsor", alt: "KLA", logo: "/assets/kla-logo.webp" },
       ],
     },
     {
@@ -702,27 +726,27 @@ const faq: FaqContent = {
     {
       question: "Who can participate in Axios?",
       answer:
-        "Any undergraduate or postgraduate student from any college can register. You do not need to be from a computing branch, the events reward clear thinking as much as technical skill.",
+        "Any undergraduate or postgraduate student from any college can register. You do not need to be from a computing branch — the events reward clear thinking as much as technical skill.",
     },
     {
-      question: "Do I need to be an expert coder?",
+      question: "Can I participate in more than one event?",
       answer:
-        "No. Only Breach Point and the Triathlon build round assume coding comfort. DataQuest, the Quiz and Math Mania are open to anyone who enjoys problem-solving, beginners regularly place well.",
+        "Absolutely! You can participate in multiple events given that event timings do not clash.",
     },
     {
       question: "Can I register solo, or need a team?",
       answer:
-        "Both work. A Delegate pass lets you enter every individual event alone; a Team of Five is best for the relay. You can also form teams on-site during boot-up.",
+        "Both work. Each event has its own team size specification, so if you're in doubt, please feel free to reach a coordinator!",
     },
     {
       question: "What should I bring?",
       answer:
-        "A laptop with a charger, your college ID, and the registration QR from your confirmation email. Wi-Fi and power strips are provided at every station.",
+        "Your college ID, and the registration QR from your confirmation email. Wi-Fi and power strips are provided at appropriate event venues.",
     },
     {
       question: "Is accommodation available?",
       answer:
-        "Yes, limited hostel accommodation is available on request at a nominal charge. Flag it during registration or write to the contact below.",
+        "Yes. Limited hostel accommodation is available on a first come, first serve basis. Place a request for accommodation at the time of registration.",
     },
   ],
 };
@@ -736,10 +760,10 @@ const footer: FooterContent = {
   mapsUrl: event.date.venueMapsUrl,
   mapsLabel: "▸ Open in Maps",
   contacts: [
-    { name: "Dinesh", role: "Secretary", phone: "+91 90000 00001" },
-    { name: "Bhuvanesh", role: "Executive Co-ordinator", phone: "+91 90000 00002" },
-    { name: "Aravind", role: "Tech Co-ordinator", phone: "+91 90000 00003" },
-    { name: "Ravi Varma", role: "Accommodation Co-ordinator", phone: "+91 90000 00004" },
+    { name: "Dinesh", role: "Secretary", phone: "+91 98420 52589" },
+    { name: "Ashvanth Kumar", role: "Treasurer", phone: "+91 93441 95468" },
+    { name: "Prem Dharshan", role: "Tech Co-ordinator", phone: "+91 94457 669716" },
+    { name: "Ravi Varma", role: "Accommodation Co-ordinator", phone: "+91 89460 72123" },
   ],
   email: "axios@psgtech.ac.in",
   links: [
@@ -747,12 +771,16 @@ const footer: FooterContent = {
     { label: "▸ PSG College of Technology", href: "https://www.psgtech.edu", external: true },
   ],
   socials: [
-    { label: "Instagram", href: "#about" },
-    { label: "LinkedIn", href: "#about" },
-    { label: "Email", href: "mailto:axios@psgtech.ac.in" },
+    { label: "Instagram", href: "https://instagram.com/axios.psgtech", external: true },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/applied-mathematics-and-computational-sciences-psg-college-of-technology-a6aa58388",
+      external: true,
+    },
+    { label: "Email", href: "mailto:csa.amcs@psgtech.ac.in" },
   ],
   copyright:
-    "© MMXXVI Computational Sciences Association · PSG College of Technology, best viewed at 800×600 or higher ✦ Not licensed for resale to any garage startup.",
+    "© MMXXVI Computational Sciences Association ✦ PSG College of Technology",
 };
 
 export const siteConfig: SiteConfig = {

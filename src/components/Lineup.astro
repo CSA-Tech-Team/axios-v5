@@ -23,12 +23,13 @@ const nonTechnicalCardStyle: Record<string, { shadow: string; rotate: string; bo
   val: { shadow: 'var(--acc2)', rotate: 'rotate(-.8deg) translateY(5px)' },
   fifa: { shadow: 'var(--ink)', rotate: 'rotate(1.1deg) translateY(-3px)' },
   bb: { shadow: 'var(--r4)', rotate: 'rotate(-.5deg) translateY(3px)' },
+  chess: { shadow: 'var(--r4)', rotate: 'rotate(-.5deg) translateY(2px)' },
 };
 
 const technicalEvents = ['tri', 'brc', 'dq', 'mm'].map(byKey);
-const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa'].map(byKey);
-// Split into a 3-then-2 layout so cards keep the same size as the technical
-// grid (not shrunk to fit all 5 across) instead of reflowing via auto-fit.
+const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey);
+// Split into two equal rows so cards keep the same size as the technical
+// grid (not shrunk to fit all of them across) instead of reflowing via auto-fit.
 const nonTechnicalRow1 = nonTechnicalEvents.slice(0, 3);
 const nonTechnicalRow2 = nonTechnicalEvents.slice(3);
 ---
@@ -181,6 +182,7 @@ const nonTechnicalRow2 = nonTechnicalEvents.slice(3);
       <span style="display:flex;flex-direction:column;gap:10px">
         <a href="#e-val" data-open="val" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--ink);background:var(--card);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(-3deg);transition:transform .15s">▸ {byKey('val').posterLabel?.toUpperCase()}</a>
         <a href="#e-fifa" data-open="fifa" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--ink);background:var(--acc2);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(2.5deg);transition:transform .15s">▸ {byKey('fifa').posterLabel?.toUpperCase()}</a>
+        <a href="#e-chess" data-open="chess" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--paper);background:var(--r4);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(-1.5deg);transition:transform .15s">▸ {byKey('chess').posterLabel?.toUpperCase()}</a>
       </span>
     </div>
   </div>
