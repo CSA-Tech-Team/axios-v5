@@ -762,7 +762,7 @@ const footer: FooterContent = {
   contacts: [
     { name: "Dinesh", role: "Secretary", phone: "+91 98420 52589" },
     { name: "Ashvanth Kumar", role: "Treasurer", phone: "+91 93441 95468" },
-    { name: "Prem Dharshan", role: "Tech Co-ordinator", phone: "+91 94457 669716" },
+    { name: "Prem Dharshan", role: "Tech Team Director", phone: "+91 94457 669716" },
     { name: "Ravi Varma", role: "Accommodation Co-ordinator", phone: "+91 89460 72123" },
   ],
   email: "axios@psgtech.ac.in",

@@ -8,35 +8,33 @@ const byKey = (key: string) => {
   if (!found) throw new Error(`Lineup.astro: no event configured with key "${key}"`);
   return found;
 };
+const posterName = (key: string) => {
+  const ev = byKey(key);
+  return (ev.posterLabel ?? ev.name).toUpperCase();
+};
 
 // Per-card decorative styling (rotation, accent shadow) — kept here since it is
 // presentational, not content, and stays fixed regardless of copy edits.
-const technicalCardStyle: Record<string, { shadow: string; rotate: string; border?: string }> = {
+const cardStyles: Record<string, { shadow: string; rotate: string; border?: string }> = {
   tri: { shadow: 'var(--ink)', rotate: 'rotate(-1deg)' },
   brc: { shadow: 'var(--acc)', rotate: 'rotate(.8deg) translateY(6px)' },
   dq: { shadow: 'var(--r3)', rotate: 'rotate(-.6deg)' },
   mm: { shadow: 'var(--r6)', rotate: 'rotate(-.9deg) translateY(4px)' },
-};
-const nonTechnicalCardStyle: Record<string, { shadow: string; rotate: string; border?: string }> = {
   qz: { shadow: 'var(--r5)', rotate: 'rotate(1deg) translateY(-5px)' },
-  svc: { shadow: 'var(--ink)', rotate: 'rotate(.7deg)', border: 'border:2px solid var(--ink);' },
+  svc: { shadow: 'var(--ink)', rotate: 'rotate(.7deg)', border: 'border:2px dashed var(--ink);' },
   val: { shadow: 'var(--acc2)', rotate: 'rotate(-.8deg) translateY(5px)' },
   fifa: { shadow: 'var(--ink)', rotate: 'rotate(1.1deg) translateY(-3px)' },
-  bb: { shadow: 'var(--r4)', rotate: 'rotate(-.5deg) translateY(3px)' },
   chess: { shadow: 'var(--r4)', rotate: 'rotate(-.5deg) translateY(2px)' },
 };
 
 const technicalEvents = ['tri', 'brc', 'dq', 'mm'].map(byKey);
+// Big Bull sits in this row but renders through its own bespoke card treatment.
 const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey);
-// Split into two equal rows so cards keep the same size as the technical
-// grid (not shrunk to fit all of them across) instead of reflowing via auto-fit.
-const nonTechnicalRow1 = nonTechnicalEvents.slice(0, 3);
-const nonTechnicalRow2 = nonTechnicalEvents.slice(3);
 ---
 
-<section id="events" class="cv-auto" style="max-width:1180px;margin:0 auto;padding:52px 24px">
+<section id="events" class="cv-auto" style="max-width:1440px;margin:0 auto;padding:52px clamp(16px,2vw,24px)">
   <!-- Festival Poster Lineup: Gig-bill Paste-up -->
-  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:8px">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;max-width:1132px;margin:0 auto 8px">
     <div style="display:flex;align-items:center;gap:14px;width:100%;max-width:760px;margin-bottom:10px">
       <span style="height:2px;flex:1;background:var(--ink)"></span>
       <h2 style="margin:0;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);white-space:nowrap">{lineup.eyebrow}</h2>
@@ -47,142 +45,155 @@ const nonTechnicalRow2 = nonTechnicalEvents.slice(3);
 
     <!-- Festival Poster Typography & Hover Previews -->
     <span style="position:relative;display:inline-block">
-      <a 
-        href="#e-qz" 
-        data-open="qz" 
-        data-court-trigger="qf" 
+      <a
+        href="#e-qz"
+        data-open="qz"
+        data-court-trigger="qf"
         style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s;font-size:clamp(48px,10vw,120px);color:var(--ink);transform:skewX(-6deg) rotate(.6deg);text-shadow:5px 5px 0 var(--r5)"
-        onmouseover="this.style.color='var(--r5)'"
-        onmouseout="this.style.color='var(--ink)'"
+        onmouseover="this.style.color='var(--r5)';this.style.textShadow='5px 5px 0 var(--ink)'"
+        onmouseout="this.style.color='var(--ink)';this.style.textShadow='5px 5px 0 var(--r5)'"
       >
-        {byKey('qz').name.toUpperCase()}
+        {posterName('qz')}
       </a>
-      <img 
-        src="/assets/thinker-halftone.webp" 
-        alt="" 
-        width="132" 
-        height="132" 
-        data-court="qf" 
+      <img
+        src="/assets/thinker-halftone.webp"
+        alt=""
+        width="132"
+        height="132"
+        data-court="qf"
         loading="lazy"
         decoding="async"
-        style="position:absolute;right:-118px;top:-58px;width:132px;height:auto;opacity:0;transform:rotate(6deg) translateY(6px);transition:opacity .12s steps(2),transform .18s steps(3);mix-blend-mode:multiply;pointer-events:none" 
+        style="position:absolute;right:-118px;top:-58px;width:132px;height:auto;opacity:0;transform:rotate(6deg) translateY(6px);transition:opacity .12s steps(2),transform .18s steps(3);mix-blend-mode:multiply;pointer-events:none"
       />
     </span>
 
     <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:6px 26px">
       <span style="position:relative;display:inline-block">
-        <a 
-          href="#e-brc" 
-          data-open="brc" 
-          data-court-trigger="brc" 
+        <a
+          href="#e-brc"
+          data-open="brc"
+          data-court-trigger="brc"
           style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s;font-size:clamp(34px,6.5vw,76px);color:transparent;-webkit-text-stroke:2.5px var(--acc);transform:rotate(1deg) translateY(2px)"
           onmouseover="this.style.webkitTextStrokeColor='var(--ink)'"
           onmouseout="this.style.webkitTextStrokeColor='var(--acc)'"
         >
-          {byKey('brc').name.toUpperCase()}
+          {posterName('brc')}
         </a>
-        <img 
-          src="/assets/eye-crop.webp" 
-          alt="" 
-          width="150" 
-          height="150" 
-          data-court="brc" 
+        <img
+          src="/assets/eye-crop.webp"
+          alt=""
+          width="150"
+          height="150"
+          data-court="brc"
           loading="lazy"
           decoding="async"
-          style="position:absolute;left:-34px;top:-66px;width:150px;height:auto;opacity:0;transform:rotate(-4deg) translateY(6px);transition:opacity .12s steps(2),transform .18s steps(3);border:1.5px solid var(--ink);box-shadow:4px 4px 0 rgba(36,26,18,.3);pointer-events:none" 
+          style="position:absolute;left:-34px;top:-66px;width:150px;height:auto;opacity:0;transform:rotate(-4deg) translateY(6px);transition:opacity .12s steps(2),transform .18s steps(3);border:1.5px solid var(--ink);box-shadow:4px 4px 0 rgba(36,26,18,.3);pointer-events:none"
         />
       </span>
       <span style="color:var(--acc2);font-size:clamp(18px,3vw,30px);transform:rotate(12deg)">✶</span>
       <span style="position:relative;display:inline-block">
-        <a 
-          href="#e-dq" 
-          data-open="dq" 
-          data-court-trigger="dq" 
+        <a
+          href="#e-dq"
+          data-open="dq"
+          data-court-trigger="dq"
           style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s;font-size:clamp(34px,6.5vw,76px);color:var(--ink);text-shadow:3px 3px 0 var(--r3);transform:rotate(-.9deg)"
           onmouseover="this.style.color='var(--r4)'"
           onmouseout="this.style.color='var(--ink)'"
         >
-          {byKey('dq').name.toUpperCase()}
+          {posterName('dq')}
         </a>
-        <img 
-          src="/assets/lens-cut.webp" 
-          alt="" 
-          width="126" 
-          height="126" 
-          data-court="dq" 
+        <img
+          src="/assets/lens-cut.webp"
+          alt=""
+          width="126"
+          height="126"
+          data-court="dq"
           loading="lazy"
           decoding="async"
-          style="position:absolute;right:-30px;top:-84px;width:126px;height:auto;opacity:0;transform:rotate(9deg) translateY(6px);transition:opacity .12s steps(2),transform .18s steps(3);filter:drop-shadow(4px 5px 0 rgba(36,26,18,.24));pointer-events:none" 
+          style="position:absolute;right:-30px;top:-84px;width:126px;height:auto;opacity:0;transform:rotate(9deg) translateY(6px);transition:opacity .12s steps(2),transform .18s steps(3);filter:drop-shadow(4px 5px 0 rgba(36,26,18,.24));pointer-events:none"
         />
       </span>
     </div>
 
-    <span style="position:relative;display:inline-block;transform:rotate(-1.4deg)">
-      <a 
-        href="#e-tri" 
-        data-open="tri" 
+    <span class="triathlon-wall" style="position:relative;display:inline-block;transform:rotate(-1.4deg)">
+      <a
+        href="#e-tri"
+        data-open="tri"
+        data-court-trigger="tri"
         style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s;font-size:clamp(44px,9vw,110px);color:var(--ink);text-shadow:-4px 3px 0 var(--acc2)"
         onmouseover="this.style.color='var(--r1)'"
         onmouseout="this.style.color='var(--ink)'"
       >
-        {(byKey('tri').posterLabel ?? byKey('tri').name).toUpperCase()}
+        {posterName('tri')}
       </a>
       <span aria-hidden="true" style="position:absolute;left:-26px;top:-14px;font-size:clamp(20px,3.4vw,40px);color:var(--acc2);animation:twk 2.4s ease-in-out infinite;pointer-events:none">✦</span>
       <span aria-hidden="true" style="position:absolute;right:-20px;top:6px;font-size:clamp(16px,2.6vw,30px);color:var(--r1);animation:twk 2.4s ease-in-out .8s infinite;pointer-events:none">✦</span>
+      <img src="/assets/triathlon-runner.webp" alt="" width="150" height="100" data-court="tri" loading="lazy" decoding="async" class="triathlon-preview" style="opacity:0;transform:translateY(-46%) rotate(-4deg) translateY(6px)" />
     </span>
 
     <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:6px 26px">
-      <a 
-        href="#e-mm" 
-        data-open="mm" 
-        style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s;font-size:clamp(32px,6vw,70px);color:var(--r6);background:repeating-linear-gradient(-16deg,var(--r6) 0 5px,var(--r7) 5px 10px);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transform:rotate(1.2deg)"
+      <a
+        href="#e-mm"
+        data-open="mm"
+        class="lineup-name-size"
+        style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s;color:var(--r6);background:repeating-linear-gradient(-16deg,var(--r6) 0 5px,var(--r7) 5px 10px);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transform:rotate(1.2deg)"
       >
-        {byKey('mm').name.toUpperCase()}
+        {posterName('mm')}
       </a>
       <span style="color:var(--acc);font-size:clamp(18px,3vw,30px);transform:rotate(-8deg)">✶</span>
-      <span style="position:relative;display:inline-block">
-        <a 
-          href="#e-svc" 
-          data-open="svc" 
-          data-court-trigger="svc" 
-          style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s;font-size:clamp(32px,6vw,70px);color:var(--paper);background:var(--ink);padding:2px 12px 5px;transform:rotate(-1deg) translateY(-3px)"
-          onmouseover="this.style.color='var(--acc2)'"
-          onmouseout="this.style.color='var(--paper)'"
-        >
-          {byKey('svc').name.toUpperCase()}
+      <span class="big-bull-wall">
+        <a href="#e-bb" data-open="bb" data-court-trigger="bb" class="big-bull-wall-link" aria-label={`${byKey('bb').name} — stock market event details`}>
+          <span class="big-bull-title lineup-name-size">{posterName('bb')}</span>
         </a>
-        <img 
-          src="/assets/court-statue-sm.webp" 
-          alt="" 
-          width="150" 
-          height="150" 
-          data-court="svc" 
-          loading="lazy"
-          decoding="async"
-          style="position:absolute;right:-96px;top:-124px;width:150px;height:auto;opacity:0;transform:rotate(-7deg) translateY(6px);transition:opacity .12s steps(2),transform .18s steps(3);mix-blend-mode:multiply;pointer-events:none" 
-        />
+        <img src="/assets/big-bull-duotone.webp" alt="" width="100" height="100" data-court="bb" loading="lazy" decoding="async" class="big-bull-preview" style="opacity:0;transform:rotate(7deg) translateY(6px)" />
       </span>
     </div>
 
+    <span class="survivors-wall" style="position:relative;display:inline-block">
+      <a
+        href="#e-svc"
+        data-open="svc"
+        data-court-trigger="svc"
+        style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s;font-size:clamp(32px,6vw,70px);color:var(--paper);background:var(--ink);padding:2px 12px 5px;transform:rotate(-1deg) translateY(-3px)"
+        onmouseover="this.style.color='var(--acc2)'"
+        onmouseout="this.style.color='var(--paper)'"
+      >
+        {posterName('svc')}
+      </a>
+      <img
+        src="/assets/court-statue-sm.webp"
+        alt=""
+        width="150"
+        height="150"
+        data-court="svc"
+        loading="lazy"
+        decoding="async"
+        class="survivors-preview"
+        style="opacity:0;transform:rotate(-11deg) translateY(6px)"
+      />
+    </span>
+
     <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 22px;margin-top:2px">
-      <span style="font-family:'Shrikhand',serif;font-size:clamp(16px,2.6vw,26px);color:var(--r2);transform:rotate(-5deg)">{lineup.gamingLeadIn}</span>
+      <span style="position:relative;font-family:'Shrikhand',serif;font-size:clamp(16px,2.6vw,26px);color:var(--r2);transform:rotate(-5deg);z-index:2">
+        {lineup.gamingLeadIn}
+      </span>
       <span style="position:relative;display:inline-block">
         <span data-court-trigger="go" style="font-family:'Anton',sans-serif;font-size:clamp(44px,8.5vw,104px);line-height:.85;color:var(--r7);display:inline-block;transform:rotate(.8deg) skewX(-4deg);text-shadow:5px 5px 0 var(--ink)">{lineup.gamingHeading}</span>
-        <img 
-          src="/assets/jett-crop.webp" 
-          alt="" 
-          width="115" 
-          height="115" 
-          data-court="go" 
+        <img
+          src="/assets/jett-crop.webp"
+          alt=""
+          width="115"
+          height="115"
+          data-court="go"
           loading="lazy"
           decoding="async"
-          style="position:absolute;left:-46px;top:74px;width:115px;height:auto;opacity:0;transform:rotate(-6deg) translateY(6px);transition:opacity .12s steps(2),transform .18s steps(3);border:1.5px solid var(--ink);box-shadow:4px 4px 0 rgba(36,26,18,.3);pointer-events:none" 
+          style="position:absolute;left:-46px;top:74px;width:115px;height:auto;opacity:0;transform:rotate(-6deg) translateY(6px);transition:opacity .12s steps(2),transform .18s steps(3);border:1.5px solid var(--ink);box-shadow:4px 4px 0 rgba(36,26,18,.3);pointer-events:none"
         />
       </span>
       <span style="display:flex;flex-direction:column;gap:10px">
-        <a href="#e-val" data-open="val" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--ink);background:var(--card);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(-3deg);transition:transform .15s">▸ {byKey('val').posterLabel?.toUpperCase()}</a>
-        <a href="#e-fifa" data-open="fifa" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--ink);background:var(--acc2);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(2.5deg);transition:transform .15s">▸ {byKey('fifa').posterLabel?.toUpperCase()}</a>
-        <a href="#e-chess" data-open="chess" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--paper);background:var(--r4);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(-1.5deg);transition:transform .15s">▸ {byKey('chess').posterLabel?.toUpperCase()}</a>
+        <a href="#e-val" data-open="val" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--ink);background:var(--card);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(-3deg);transition:transform .15s">▸ {posterName('val')}</a>
+        <a href="#e-fifa" data-open="fifa" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--ink);background:var(--acc2);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(2.5deg);transition:transform .15s">▸ {posterName('fifa')}</a>
+        <a href="#e-chess" data-open="chess" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--paper);background:var(--r4);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(-1.5deg);transition:transform .15s">▸ {posterName('chess')}</a>
       </span>
     </div>
   </div>
@@ -192,43 +203,184 @@ const nonTechnicalRow2 = nonTechnicalEvents.slice(3);
   </div>
 
   <!-- Event Cards Grid -->
-  <div style="display:flex;flex-direction:column;gap:16px;margin-top:32px">
-    <!-- Technical Events Subheading -->
-    <div style="display:flex;align-items:baseline;gap:14px;color:var(--acc)">
-      <h3 style="margin:0;font-family:'Shrikhand',serif;font-weight:400;font-size:clamp(20px,3vw,28px);transform:rotate(1.6deg);display:inline-block">{lineup.technicalHeading}</h3>
-      <span style="height:2px;flex:1;background:var(--line);align-self:center"></span>
+  <div class="event-card-container">
+    <div class="event-section-heading event-section-heading-technical">
+      <h3>{lineup.technicalHeading}</h3>
+      <i></i>
     </div>
-    
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px">
+
+    <div class="event-cards-grid event-cards-grid-technical">
       {technicalEvents.map((ev) => (
-        <EventCard event={ev} cardStyle={technicalCardStyle[ev.key]} prizeLabel={lineup.prizeLabel} signatureBadge={lineup.signatureBadge} />
+        <EventCard event={ev} cardStyle={cardStyles[ev.key]} prizeLabel={lineup.prizeLabel} signatureBadge={lineup.signatureBadge} />
       ))}
     </div>
 
-    <div style="height:14px"></div>
-
-    <!-- Non-Technical Events Subheading -->
-    <div style="display:flex;align-items:baseline;gap:14px;color:var(--r5)">
-      <h3 style="margin:0;font-family:'Shrikhand',serif;font-weight:400;font-size:clamp(20px,3vw,28px);transform:rotate(-2.4deg);display:inline-block">{lineup.nonTechnicalHeading}</h3>
-      <span style="height:2px;flex:1;background:var(--line);align-self:center"></span>
+    <div class="event-section-heading event-section-heading-nontechnical">
+      <h3>{lineup.nonTechnicalHeading}</h3>
+      <i></i>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px">
-      {nonTechnicalRow1.map((ev) => (
-        <EventCard event={ev} cardStyle={nonTechnicalCardStyle[ev.key]} prizeLabel={lineup.prizeLabel} />
+    <div class="event-cards-grid event-cards-grid-nontechnical">
+      {nonTechnicalEvents.map((ev) => (
+        <EventCard
+          event={ev}
+          cardStyle={cardStyles[ev.key]}
+          prizeLabel={lineup.prizeLabel}
+          variant={ev.key === 'bb' ? 'bigBull' : 'default'}
+        />
       ))}
-    </div>
-
-    <!-- Second row of non-technical cards, centered and sized to match row 1 -->
-    <div style="max-width:calc((100% - 36px) / 3 * 2 + 18px);margin:18px auto 0">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px">
-        {nonTechnicalRow2.map((ev) => (
-          <EventCard event={ev} cardStyle={nonTechnicalCardStyle[ev.key]} prizeLabel={lineup.prizeLabel} />
-        ))}
-      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .triathlon-wall > a {
+    position: relative;
+    z-index: 2;
+  }
+
+  .triathlon-preview {
+    position: absolute;
+    left: calc(100% - 18px);
+    top: 48%;
+    z-index: 8;
+    width: clamp(120px, 15vw, 150px);
+    height: auto;
+    border: 1.5px solid var(--ink);
+    box-shadow: 4px 4px 0 rgb(36 26 18 / 30%);
+    transition: opacity .12s steps(2), transform .18s steps(3);
+    pointer-events: none;
+  }
+
+  .survivors-wall > a {
+    position: relative;
+    z-index: 2;
+  }
+
+  .survivors-preview {
+    position: absolute;
+    left: auto;
+    right: calc(100% - 40px);
+    top: -50px;
+    z-index: 7;
+    width: 150px;
+    height: auto;
+    mix-blend-mode: multiply;
+    transition: opacity .12s steps(2), transform .18s steps(3);
+    pointer-events: none;
+  }
+
+  .event-card-container {
+    max-width: 1240px;
+    margin: 34px auto 0;
+    padding: 0 clamp(8px, 2vw, 28px) 18px;
+  }
+
+  .event-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 22px;
+    font-family: 'Shrikhand', serif;
+    font-size: clamp(20px, 3vw, 28px);
+  }
+
+  .event-section-heading h3 {
+    display: inline-block;
+    margin: 0;
+    font: inherit;
+    font-weight: 400;
+  }
+
+  .event-section-heading i {
+    height: 2px;
+    flex: 1;
+    background: var(--line);
+  }
+
+  .event-section-heading-technical {
+    color: var(--acc);
+  }
+
+  .event-section-heading-technical h3 {
+    transform: rotate(1.2deg);
+  }
+
+  .event-section-heading-nontechnical {
+    margin-top: 44px;
+    color: var(--r5);
+  }
+
+  .event-section-heading-nontechnical h3 {
+    transform: rotate(-1.4deg);
+  }
+
+  .event-cards-grid {
+    display: grid;
+    gap: 30px 26px;
+    align-items: stretch;
+  }
+
+  .event-cards-grid > .ecard {
+    min-width: 0;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    transition: none !important;
+  }
+
+  .event-cards-grid-technical {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .event-cards-grid-nontechnical {
+    max-width: 1000px;
+    margin: 0 auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .event-cards-grid .big-bull-card-title {
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ink);
+    text-transform: none;
+    text-shadow: none;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 980px) {
+    .event-cards-grid-technical,
+    .event-cards-grid-nontechnical {
+      max-width: none;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .triathlon-preview {
+      left: calc(100% - 14px);
+      width: 120px;
+    }
+
+    .survivors-preview {
+      left: auto;
+      right: calc(100% - 38px);
+      top: -40px;
+      width: 120px;
+    }
+
+    .event-cards-grid-technical,
+    .event-cards-grid-nontechnical {
+      grid-template-columns: 1fr;
+    }
+
+    .event-section-heading-nontechnical {
+      margin-top: 36px;
+    }
+  }
+</style>
 
 <script>
   function initCourtTriggers() {
