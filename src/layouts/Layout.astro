@@ -67,6 +67,18 @@ const eventJsonLd = {
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <!-- The SVG favicon carries its own prefers-color-scheme rule, but Chromium only
+       evaluates it at fetch time. Re-point the href on theme change to force a re-render. -->
+  <script is:inline>
+    (() => {
+      const dark = window.matchMedia('(prefers-color-scheme: dark)');
+      if (!dark.addEventListener) return;
+      dark.addEventListener('change', (e) => {
+        const link = document.querySelector('link[rel="icon"][type="image/svg+xml"]');
+        if (link) link.href = `/assets/favicon.svg?scheme=${e.matches ? 'dark' : 'light'}`;
+      });
+    })();
+  </script>
 
   <!-- OpenGraph Metadata -->
   <meta property="og:site_name" content={`${siteConfig.event.name} '26`} />
@@ -89,7 +101,7 @@ const eventJsonLd = {
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Shrikhand&family=Monoton&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Jost:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 
   <!-- Preload Key LCP Image -->
-  <link rel="preload" as="image" href="/assets/axios-logo-text.webp" type="image/webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="/assets/logo26.webp" type="image/webp" fetchpriority="high" />
 
   <!-- Schema.org JSON-LD Event Data -->
   <script type="application/ld+json" set:html={JSON.stringify(eventJsonLd)}></script>

@@ -30,28 +30,170 @@ import { siteConfig } from '../config/site.config';
     </a>
   </span>
 
-  <nav class="topnav" style="display:flex;align-items:center;justify-content:flex-end;gap:2px;flex:1;min-width:0;margin-left:auto;overflow:hidden">
+  <nav class="topnav" id="topnav">
     {siteConfig.nav.map((link) => (
-      <a href={`#${link.target}`} data-go={link.target} style="color:#c9b48c;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:6px 9px;white-space:nowrap">{link.label}</a>
+      <a href={`#${link.target}`} data-go={link.target}>{link.label}</a>
     ))}
   </nav>
 
   <span class="hdr-sep" style="width:1.5px;height:24px;background:#fff;opacity:.18;flex-shrink:0"></span>
-  <a href="#register" data-go="register" style="background:var(--acc);color:#fff;padding:7px 14px;font-size:12px;font-weight:700;letter-spacing:.04em;border:2px solid #fff2;flex-shrink:0;white-space:nowrap">▶ REGISTER</a>
+  <a class="hdr-register" href="#register" data-go="register">▶ REGISTER</a>
+
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="topnav">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </button>
 </header>
 
 <style>
+  .topnav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+    margin-left: auto;
+  }
+
+  .topnav a {
+    color: #c9b48c;
+    font-size: 12px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: 6px 9px;
+    white-space: nowrap;
+  }
+
+  .hdr-register {
+    background: var(--acc);
+    color: #fff;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    border: 2px solid #fff2;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* Hamburger — only ever shown on the narrow layout. */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 42px;
+    height: 38px;
+    padding: 0 9px;
+    flex-shrink: 0;
+    background: transparent;
+    border: 2px solid #fff3;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .nav-toggle span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: var(--termfg);
+    transition: transform .18s, opacity .18s;
+  }
+
+  .nav-toggle[aria-expanded='true'] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded='true'] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
   @media (max-width: 780px) {
     .hdr-sep { display: none; }
   }
+
+  /* Below this width the five links plus the CTA cannot sit on one row without
+     being clipped, so they collapse into a drop panel. */
+  @media (max-width: 860px) {
+    .nav-toggle { display: flex; }
+
+    .topnav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 0;
+      margin: 0;
+      padding: 6px 0 10px;
+      background: var(--term);
+      border-bottom: 2px solid var(--ink);
+      box-shadow: 0 10px 18px rgb(0 0 0 / 28%);
+      display: none;
+    }
+
+    .topnav[data-open='true'] { display: flex; }
+
+    .topnav a {
+      padding: 13px 20px;
+      font-size: 14px;
+      border-bottom: 1px solid #ffffff14;
+    }
+
+    .topnav a:last-child { border-bottom: 0; }
+  }
+
   @media (max-width: 560px) {
     header { height: 60px !important; }
     .hdr-logos img:first-of-type { height: 40px !important; }
     .hdr-logos img:last-of-type { height: 32px !important; }
+    .hdr-register { padding: 7px 10px; font-size: 11px; }
+  }
+
+  @media (max-width: 380px) {
+    header { gap: 8px !important; padding: 0 12px !important; }
+    .hdr-logos { gap: 8px !important; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-toggle span { transition: none; }
   }
 </style>
 
 <script>
+  function setupNavToggle() {
+    const toggle = document.getElementById('nav-toggle');
+    const nav = document.getElementById('topnav');
+    if (!toggle || !nav) return;
+
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      if (open) nav.setAttribute('data-open', 'true');
+      else nav.removeAttribute('data-open');
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Any nav choice dismisses the panel so the target section is visible.
+    nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        (toggle as HTMLElement).focus();
+      }
+    });
+
+    // Leaving the narrow layout must not strand the panel in the open state.
+    const wide = window.matchMedia('(min-width: 861px)');
+    wide.addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+
   function setupHeader() {
     // Scrollspy for nav links
     const links = Array.from(document.querySelectorAll('.topnav a[data-go]'));
@@ -98,5 +240,8 @@ import { siteConfig } from '../config/site.config';
     });
   }
 
-  document.addEventListener('DOMContentLoaded', setupHeader);
+  document.addEventListener('DOMContentLoaded', () => {
+    setupNavToggle();
+    setupHeader();
+  });
 </script>

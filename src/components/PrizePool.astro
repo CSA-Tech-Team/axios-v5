@@ -27,7 +27,7 @@ const { prizePool } = siteConfig;
   <div style="position:relative;max-width:1180px;margin:0 auto;padding:0 24px;text-align:center">
     <div style="position:relative;display:inline-block;margin-top:26px">
       <h2 style="margin:0;font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(72px,16vw,220px);line-height:.85;letter-spacing:.01em;color:#f3e7d3;transform:rotate(-1.5deg);text-shadow:4px 4px 0 var(--r1),8px 8px 0 var(--r3),12px 12px 0 var(--r5),16px 16px 0 var(--r6)"><span style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Axios '26 Prize Pool: </span>{prizePool.totalPrize}</h2>
-      <div style="position:absolute;bottom:-30px;right:-26px;font-family:'Shrikhand',serif;font-size:clamp(17px,2.8vw,26px);color:var(--acc2);transform:rotate(3.5deg)">{prizePool.calloutText}</div>
+      <div class="prize-callout" style="position:absolute;bottom:-30px;right:-26px;font-family:'Shrikhand',serif;font-size:clamp(17px,2.8vw,26px);color:var(--acc2);transform:rotate(3.5deg)">{prizePool.calloutText}</div>
     </div>
     <div style="margin:34px auto 0;max-width:36em;font-size:16px;line-height:1.6;color:#c9b48c">{prizePool.subtext}</div>
     <div style="margin-top:30px">
@@ -64,3 +64,14 @@ const { prizePool } = siteConfig;
 
   document.addEventListener('DOMContentLoaded', initBillCrawl);
 </script>
+
+<style>
+  /* The callout is tucked past the right edge of the figure; on a phone the
+     figure already fills the width, so it is pulled back inside. */
+  @media (max-width: 480px) {
+    .prize-callout {
+      right: 0 !important;
+      bottom: -26px !important;
+    }
+  }
+</style>

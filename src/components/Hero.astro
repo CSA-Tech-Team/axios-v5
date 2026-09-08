@@ -32,7 +32,7 @@ const { hero, event } = siteConfig;
     </svg>
   </span>
 
-  <div style="max-width:1320px;width:100%;margin:0 auto;padding:34px 24px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,2.1vh,30px)">
+  <div style="position:relative;z-index:2;max-width:1320px;width:100%;margin:0 auto;padding:34px 24px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,2.1vh,30px)">
     <!-- SEO: descriptive H1 for crawlers/screen readers; the visual title is the AXIOS wordmark image below -->
     <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
       {event.name} '26 — {event.symposiumType} by {event.organizer.name} at {event.date.venueName}, {event.date.venueCity}
@@ -65,7 +65,7 @@ const { hero, event } = siteConfig;
     </div>
 
     <!-- Tagline -->
-    <span style="align-self:center;margin-top:-4px;display:inline-flex;align-items:center;gap:14px;white-space:nowrap;background:var(--paper);padding:6px 18px;font-family:'Jost','Futura',sans-serif;font-size:clamp(12px,1.5vw,19px);font-weight:600;line-height:1;letter-spacing:.32em;text-transform:uppercase;color:var(--ink);animation:passIn .01s steps(1) 1.35s both;pointer-events:none">
+    <span class="hero-tagline" style="align-self:center;margin-top:-4px;display:inline-flex;align-items:center;gap:14px;white-space:nowrap;max-width:100%;background:var(--paper);padding:6px 18px;font-family:'Jost','Futura',sans-serif;font-size:clamp(12px,1.5vw,19px);font-weight:600;line-height:1;letter-spacing:.32em;text-transform:uppercase;color:var(--ink);animation:passIn .01s steps(1) 1.35s both;pointer-events:none">
       <span style="color:var(--acc);font-size:.8em;letter-spacing:0">✦</span>
       {hero.taglineQuote}
       <span style="color:var(--acc);font-size:.8em;letter-spacing:0">✦</span>
@@ -120,6 +120,29 @@ const { hero, event } = siteConfig;
     </div>
   </div>
 </section>
+
+<style>
+  /* The tagline is set in wide tracking on one line; below ~700px that line is
+     wider than the viewport, so it is allowed to wrap and the tracking eases. */
+  @media (max-width: 700px) {
+    .hero-tagline {
+      white-space: normal !important;
+      text-align: center;
+      text-wrap: balance;
+      gap: 10px !important;
+      padding: 6px 10px !important;
+      letter-spacing: .2em !important;
+      line-height: 1.45 !important;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .hero-tagline {
+      letter-spacing: .14em !important;
+      font-size: 11px !important;
+    }
+  }
+</style>
 
 <script>
   function initHeroParallax() {

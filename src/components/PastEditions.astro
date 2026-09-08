@@ -5,7 +5,7 @@ const [photo1, photo2, photo3, photo4] = pastEditions.photos;
 ---
 
 <section id="board" class="cv-auto" style="position:relative;padding:56px 0 60px;overflow:hidden;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);background:var(--paper)">
-  <div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(280px,.85fr) 1.15fr;gap:44px;align-items:start">
+  <div class="pe-grid" style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(280px,.85fr) 1.15fr;gap:44px;align-items:start">
     <!-- Left Column: Copy & Stats -->
     <div>
       <div style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:5px 10px;transform:rotate(-1.5deg);margin-bottom:14px">{pastEditions.badge}</div>
@@ -107,3 +107,21 @@ const [photo1, photo2, photo3, photo4] = pastEditions.photos;
     </div>
   </div>
 </section>
+
+<style>
+  /* The copy column has a 280px floor, so the two-track layout cannot fit a
+     phone. Stack it, and give the polaroids the full width instead. */
+  @media (max-width: 860px) {
+    .pe-grid {
+      grid-template-columns: 1fr !important;
+      gap: 34px !important;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .pe-grid {
+      padding: 0 16px !important;
+      gap: 26px !important;
+    }
+  }
+</style>

@@ -20,13 +20,13 @@ const eventsDataJson = JSON.stringify(
     <button id="modal-close-btn" title="Close" style="position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;background:var(--wcard);color:var(--ink);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-size:16px;font-weight:800;font-family:inherit;cursor:pointer">✕</button>
 
     <!-- Header Section -->
-    <div style="position:relative;z-index:2;padding:30px 64px 0 140px;text-align:right">
+    <div class="modal-head" style="position:relative;z-index:2;padding:30px 64px 0 140px;text-align:right">
       <span id="modal-cat" style="display:inline-block;background:var(--acc);color:#fff;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:5px 13px;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transform:rotate(-1deg)">Technical</span>
       <h3 id="modal-title" style="margin:14px 0 0;font-family:'Anton',sans-serif;font-size:clamp(34px,6vw,58px);line-height:.88;color:var(--ink);text-shadow:3px 3px 0 var(--acc2)">Event Title</h3>
     </div>
 
     <!-- Tabs Navigation -->
-    <div style="display:flex;gap:2px;padding:20px 26px 0;margin-top:16px;border-bottom:2px solid var(--ink)">
+    <div class="modal-tabs" style="display:flex;gap:2px;padding:20px 26px 0;margin-top:16px;border-bottom:2px solid var(--ink)">
       <button id="tab-overview-btn" style="background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:.05em;color:var(--ink);padding:10px 14px 13px;position:relative">
         OVERVIEW
         <span id="indicator-overview" style="position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--acc)"></span>
@@ -49,7 +49,7 @@ const eventsDataJson = JSON.stringify(
     <div style="padding:24px 26px 6px">
       <!-- Tab 1: Overview -->
       <div id="content-overview">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="modal-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
           <div style="background:var(--wcard);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:16px 18px">
             <div style="font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--ink2);text-transform:uppercase">Total Prize</div>
             <div id="modal-prize" style="font-family:'Anton',sans-serif;font-size:34px;color:var(--acc);margin-top:2px">₹60,000</div>
@@ -95,6 +95,56 @@ const eventsDataJson = JSON.stringify(
     </div>
   </div>
 </div>
+
+<style>
+  /* The header reserves a 140px gutter for the corner watermark, which leaves
+     almost nothing for the title on a phone — shrink the mark and the gutter. */
+  @media (max-width: 620px) {
+    .modal-head {
+      padding: 24px 54px 0 20px !important;
+      text-align: left !important;
+    }
+
+    #modal-logo {
+      width: 118px !important;
+      height: 118px !important;
+      top: -34px !important;
+      left: -30px !important;
+      opacity: .18 !important;
+    }
+
+    /* Four tabs cannot fit across a phone, so the strip scrolls instead. */
+    .modal-tabs {
+      padding: 16px 14px 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      flex-wrap: nowrap;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .modal-tabs::-webkit-scrollbar { display: none; }
+
+    .modal-tabs button {
+      flex: 0 0 auto;
+      font-size: 12px !important;
+      padding: 10px 10px 13px !important;
+    }
+
+    /* 34px Anton does not fit a half-width tile at this size — "2–4 Members"
+       was running past the card edge. */
+    .modal-stats > div {
+      padding: 13px 14px !important;
+    }
+
+    #modal-prize,
+    #modal-team {
+      font-size: clamp(20px, 6.2vw, 30px) !important;
+      line-height: 1.05;
+      overflow-wrap: anywhere;
+    }
+  }
+</style>
 
 <script type="application/json" id="events-data" set:html={eventsDataJson}></script>
 

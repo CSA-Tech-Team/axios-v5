@@ -31,7 +31,7 @@ const cardStyle = [
 
   <h2 style="margin:0 0 30px;text-align:right;font-family:'Futura','Jost','Century Gothic',sans-serif;font-size:clamp(40px,7vw,80px);letter-spacing:-.03em;line-height:.85;text-shadow:2px 0 0 rgba(226,59,46,.42),-2px 1px 0 rgba(47,143,208,.34)">{faq.heading}</h2>
 
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:26px 24px">
+  <div class="faq-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:26px 24px">
     {faq.items.map((item, i) => {
       const s = cardStyle[i % cardStyle.length];
       return (
@@ -59,3 +59,23 @@ const cardStyle = [
     })}
   </div>
 </section>
+
+<style>
+  /* The right-hand stamp block is pure decoration; on a phone the question
+     needs the whole card, so that column is dropped rather than squeezed. */
+  @media (max-width: 620px) {
+    .faq-grid .faq-card {
+      grid-template-columns: 1fr !important;
+      transform: none !important;
+    }
+
+    .faq-grid .faq-card > div:first-child {
+      padding-right: 0 !important;
+      border-right: 0 !important;
+    }
+
+    .faq-grid .faq-card > div:last-child {
+      display: none !important;
+    }
+  }
+</style>

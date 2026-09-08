@@ -22,6 +22,8 @@ const cardStyles: Record<string, { shadow: string; rotate: string; border?: stri
   mm: { shadow: 'var(--r6)', rotate: 'rotate(-.9deg) translateY(4px)' },
   qz: { shadow: 'var(--r5)', rotate: 'rotate(1deg) translateY(-5px)' },
   svc: { shadow: 'var(--ink)', rotate: 'rotate(.7deg)', border: 'border:2px dashed var(--ink);' },
+  // Keeps Big Bull's deep-green plate, but otherwise it is a standard card.
+  bb: { shadow: '#183c2b', rotate: 'rotate(-.6deg)' },
   val: { shadow: 'var(--acc2)', rotate: 'rotate(-.8deg) translateY(5px)' },
   fifa: { shadow: 'var(--ink)', rotate: 'rotate(1.1deg) translateY(-3px)' },
   chess: { shadow: 'var(--r4)', rotate: 'rotate(-.5deg) translateY(2px)' },
@@ -35,12 +37,12 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
 <section id="events" class="cv-auto" style="max-width:1440px;margin:0 auto;padding:52px clamp(16px,2vw,24px)">
   <!-- Festival Poster Lineup: Gig-bill Paste-up -->
   <div style="display:flex;flex-direction:column;align-items:center;gap:10px;max-width:1132px;margin:0 auto 8px">
-    <div style="display:flex;align-items:center;gap:14px;width:100%;max-width:760px;margin-bottom:10px">
-      <span style="height:2px;flex:1;background:var(--ink)"></span>
+    <div class="lineup-eyebrow" style="display:flex;align-items:center;justify-content:center;gap:14px;width:100%;max-width:760px;margin-bottom:10px">
+      <span class="lineup-rule" style="height:2px;flex:1;background:var(--ink)"></span>
       <h2 style="margin:0;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);white-space:nowrap">{lineup.eyebrow}</h2>
       <span style="color:var(--acc);font-size:13px">✦</span>
       <span style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);white-space:nowrap">{lineup.arenaSummary}</span>
-      <span style="height:2px;flex:1;background:var(--ink)"></span>
+      <span class="lineup-rule" style="height:2px;flex:1;background:var(--ink)"></span>
     </div>
 
     <!-- Festival Poster Typography & Hover Previews -->
@@ -222,12 +224,7 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
 
     <div class="event-cards-grid event-cards-grid-nontechnical">
       {nonTechnicalEvents.map((ev) => (
-        <EventCard
-          event={ev}
-          cardStyle={cardStyles[ev.key]}
-          prizeLabel={lineup.prizeLabel}
-          variant={ev.key === 'bb' ? 'bigBull' : 'default'}
-        />
+        <EventCard event={ev} cardStyle={cardStyles[ev.key]} prizeLabel={lineup.prizeLabel} />
       ))}
     </div>
   </div>
@@ -268,6 +265,19 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
     mix-blend-mode: multiply;
     transition: opacity .12s steps(2), transform .18s steps(3);
     pointer-events: none;
+  }
+
+  /* The two labels cannot share a row with the rules on a narrow phone, so the
+     row wraps and the rules drop out rather than forcing an overflow. */
+  @media (max-width: 460px) {
+    .lineup-eyebrow {
+      flex-wrap: wrap;
+      gap: 6px 10px;
+    }
+
+    .lineup-rule {
+      display: none;
+    }
   }
 
   .event-card-container {
@@ -337,17 +347,6 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
     max-width: 1000px;
     margin: 0 auto;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .event-cards-grid .big-bull-card-title {
-    font-family: inherit;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--ink);
-    text-transform: none;
-    text-shadow: none;
-    margin-bottom: 8px;
   }
 
   @media (max-width: 980px) {
