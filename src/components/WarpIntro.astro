@@ -30,12 +30,15 @@ const { duration = 8, stars = 0, logo = '/assets/logo26.webp', alwaysReplay = fa
 </div>
 
 <script>
-  import * as THREE from 'three';
-
   const host = document.getElementById('warp-intro');
   const canvas = document.getElementById('warp-canvas');
   const hud = document.getElementById('warp-hud');
   if (host && canvas) {
+    // Loaded here rather than at module scope so the ~470kB three.js chunk is
+    // only fetched when the intro actually rendered. With PUBLIC_WARP_INTRO
+    // off the elements do not exist, and three.js is never requested.
+    const THREE = await import('three');
+
     const D = Math.max(3, parseFloat(host.dataset.duration) || 8);
     const LOGO = host.dataset.logo || '/assets/logo26.webp';
     const KEY = 'axios_warp_intro_v1';

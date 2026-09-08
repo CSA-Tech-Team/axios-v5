@@ -12,10 +12,16 @@ import Sponsors from '../components/Sponsors.astro';
 import Faq from '../components/Faq.astro';
 import Footer from '../components/Footer.astro';
 import EventModal from '../components/EventModal.astro';
+
+// Landing animation toggle, read at build time from .env.
+// PUBLIC_WARP_INTRO=true plays the hyperspace intro; anything else — including
+// the variable being absent — skips it. Skipping also keeps three.js out of the
+// client bundle entirely, since the component's script never ships.
+const showWarpIntro = import.meta.env.PUBLIC_WARP_INTRO === 'true';
 ---
 
 <Layout>
-  <WarpIntro />
+  {showWarpIntro && <WarpIntro />}
   <Header />
   <main>
     <Hero />
