@@ -32,3 +32,6 @@ dist/
 
 # Local merge scratch (Claude Code)
 .merge-tmp/
+
+# Design-canvas working files, same as the root-level *.dc.html above
+.design-canvas/
