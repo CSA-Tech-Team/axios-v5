@@ -16,7 +16,7 @@
     </div>
 
     <!-- Tabs Navigation -->
-    <div style="display:flex;gap:2px;padding:20px 26px 0;margin-top:16px;border-bottom:2px solid var(--ink)">
+    <div style="display:flex;gap:2px;padding:20px 26px 0;margin-top:16px;border-bottom:2px solid var(--ink);overflow-x:auto">
       <button id="tab-overview-btn" style="background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:.05em;color:var(--ink);padding:10px 14px 13px;position:relative">
         OVERVIEW
         <span id="indicator-overview" style="position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--acc)"></span>
@@ -24,6 +24,10 @@
       <button id="tab-rounds-btn" style="background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:.05em;color:var(--ink2);padding:10px 14px 13px;position:relative">
         ROUNDS
         <span id="indicator-rounds" style="display:none;position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--acc2)"></span>
+      </button>
+      <button id="tab-timeline-btn" style="background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:.05em;color:var(--ink2);padding:10px 14px 13px;position:relative">
+        TIMELINE
+        <span id="indicator-timeline" style="display:none;position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--r4)"></span>
       </button>
       <button id="tab-prizes-btn" style="background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:.05em;color:var(--ink2);padding:10px 14px 13px;position:relative">
         PRIZES &amp; TEAM
@@ -54,7 +58,10 @@
       <!-- Tab 2: Rounds -->
       <div id="content-rounds" style="display:none;flex-direction:column;gap:12px"></div>
 
-      <!-- Tab 3: Prizes & Team -->
+      <!-- Tab 3: Timeline -->
+      <div id="content-timeline" style="display:none;flex-direction:column;gap:12px"></div>
+
+      <!-- Tab 4: Prizes & Team -->
       <div id="content-prizes" style="display:none">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
           <div style="background:var(--wcard);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:16px 18px">
@@ -89,7 +96,7 @@
     team: string;
     prize: string;
     about: string;
-    rounds: { t: string; d: string }[];
+    rounds: { t: string; d: string; date: string; start: string; end: string; venue: string }[];
     convenors: { n: string; p: string }[];
     prizes: { p: string; v: string; w: string }[];
   }
@@ -99,105 +106,103 @@
       logo: '/assets/logo-bb-badge.webp', logoBlendMode: 'normal', name: 'Big Bull', cat: 'Non Technical', team: '2–4 Members', prize: '₹25,000',
       about: 'Read the market. Back your instincts. Big Bull is a stock market strategy challenge where teams build a simulated portfolio, react to breaking market news, and defend the choices behind every trade.',
       rounds: [
-        { t: 'Round 1 · Market Open', d: 'Build a balanced portfolio from the stocks and market data provided within the opening window.' },
-        { t: 'Round 2 · The Bull Run', d: 'Respond to price swings, news alerts, and changing market conditions while protecting your returns.' },
-        { t: 'Final · Closing Bell', d: 'Present your final portfolio and explain the strategy, risks, and decisions that shaped your performance.' }
+        { t: 'Round 1 · Market Open', d: 'Build a balanced portfolio from the stocks and market data provided within the opening window.', date: '25 Sep', start: '9:30 AM', end: '1:00 PM', venue: 'F-Block Assembly Hall' },
+        { t: 'Round 2 · The Bull Run', d: 'Respond to price swings, news alerts, and changing market conditions while protecting your returns.', date: '26 Sep', start: '2:00 PM', end: '5:00 PM', venue: 'F-Block Assembly Hall' },
+        { t: 'Final · Closing Bell', d: 'Present your final portfolio and explain the strategy, risks, and decisions that shaped your performance.', date: '26 Sep', start: '9:30 AM', end: '1:00 PM', venue: 'F201' }
       ],
-      convenors: [{ n: 'Riya Krishnan', p: '+91 90000 00101' }, { n: 'Adithya S', p: '+91 90000 00102' }],
+      convenors: [{ n: 'Durga', p: '+91 96989 20880' }, { n: 'Shansita', p: '+91 83348 12473' }],
       prizes: [{ p: 'Winner', v: '₹15,000', w: '100%' }, { p: 'Runner-up', v: '₹7,000', w: '47%' }, { p: 'Third', v: '₹3,000', w: '20%' }]
     },
     tri: {
       logo: '/assets/logo-tri.webp', name: 'Technical Triathlon', cat: 'Technical', team: '3 Members', prize: '₹60,000',
-      about: 'Three back-to-back rounds run relay-style against a shared clock. Your team splits the load across code, logic and build, and hands off cleanly — because the timer never stops. Fastest cumulative finish takes the crown.',
+      about: 'Step into TRIATHLON, a epic battle where knowledge meets strategy and code! Compete your way through rapid-fire technical challenges, strategic aptitude face-offs, and an intense multi-agent programming arena. Think fast, play smart, code smarter, and conquer every stage!',
       rounds: [
-        { t: 'Round 1 · Code Sprint', d: 'Timed algorithmic problems on the judge. Clear as many as you can before the handoff.' },
-        { t: 'Round 2 · Logic Grid', d: 'Pen-and-paper puzzles, circuit tracing and bit-twiddling. No compiler — just wits.' },
-        { t: 'Round 3 · Build & Ship', d: 'A mini-spec dropped live. Ship a working prototype before the buzzer.' }
+        { t: 'Chrono Casino', d: 'Navigate a carnival of fast-paced technical face-offs where your knowledge is currency. Wager wisely, outsmart rivals, and rise through the ranks to survive.', date: '25 Sep', start: '9:00 AM', end: '1:00 PM', venue: '4 rooms · G Block Classroom' },
+        { t: 'Card Conquest', d: 'A high-stakes battle of aptitude and strategy where teams challenge rivals to capture opponents’ question cards. Sharp problem-solving, timing, and calculated risks decide who rises to the final round.', date: '25 Sep', start: '2:30 PM', end: '4:00 PM', venue: '2 rooms · G Block Classroom' },
+        { t: 'Turf Wars', d: 'Teams program Python bots to capture territory, manage resources, and outsmart opponents on a hidden battlefield. Using strategy, pathfinding, and multi-agent decision-making, they compete to become the ultimate TRIATHLON champion.', date: '26 Sep', start: '4:30 PM', end: '5:30 PM', venue: 'F-Block Assembly Hall' }
       ],
-      convenors: [{ n: 'Aravind Kumar', p: '+91 90000 00001' }, { n: 'Nisha Verma', p: '+91 90000 00002' }],
+      convenors: [{ n: 'Arul Kevin', p: '+91 80569 90243' }, { n: 'Anirudhan', p: '+91 80885 72371' }],
       prizes: [{ p: 'Champion', v: '₹35,000', w: '100%' }, { p: 'Runner-up', v: '₹15,000', w: '58%' }, { p: 'Third', v: '₹10,000', w: '38%' }]
     },
     brc: {
       logo: '/assets/logo-brc.webp', name: 'Breach Point', cat: 'Technical', team: '4 Members', prize: '₹75,000',
-      about: 'A jeopardy-style capture-the-flag arena. Five tracks, dozens of flags, one scoreboard. Points scale with difficulty and drop as more teams solve — so first blood is worth the most.',
+      about: 'Every system has a weakness. Every story has a hidden layer. Step into Breach Point, where cybersecurity meets narrative, and every flag you capture unravels the next piece of the puzzle. From cracking jeopardy-style challenges woven into a gripping storyline to defending your own systems while breaching your rivals’, only the sharpest hackers will make it out with the final flag.',
       rounds: [
-        { t: 'Cryptography', d: 'Break the cipher, recover the key, read what was never meant for you.' },
-        { t: 'Web Exploitation', d: 'Find the bug in the stack and pop the flag out of it.' },
-        { t: 'Forensics', d: 'Carve the truth out of packet captures and disk images.' },
-        { t: 'Reverse Engineering', d: 'Read the binary like it owes you money.' },
-        { t: 'Miscellaneous', d: 'OSINT, steganography and the curveballs that do not fit a box.' }
+        { t: 'Signal Zero', d: 'Three dead systems just woke up after a decade of silence, broadcasting the same six words: “We have already tried this once.” Step into a jeopardy-style CTF told through an unfolding investigation — chase down who built ECHO, how it’s moving through the wires, and why its predictions keep coming true. Every flag you capture peels back another layer of a truth the story has been hiding in plain sight.', date: '25 Sep', start: '9:30 AM', end: '5:00 PM', venue: 'D Block Assembly Hall' },
+        { t: 'Red vs Blue', d: 'An intense Attack-Defence CTF where teams must patch and defend their own vulnerable systems while simultaneously breaching opponents’ infrastructure to plant flags. Offense and defense in equal measure — falter on either side, and you’re exposed.', date: '26 Sep', start: '9:30 AM', end: '2:00 PM', venue: 'M503' }
       ],
-      convenors: [{ n: 'Rahul Menon', p: '+91 90000 00003' }, { n: 'Sana Iqbal', p: '+91 90000 00004' }],
+      convenors: [{ n: 'Aditya', p: '+91 77955 88955' }, { n: 'Saivenketraj', p: '+91 80569 92112' }],
       prizes: [{ p: 'Champion', v: '₹40,000', w: '100%' }, { p: 'Runner-up', v: '₹20,000', w: '56%' }, { p: 'Third', v: '₹15,000', w: '42%' }]
     },
     dq: {
       logo: '/assets/logo-dq.webp', name: 'DataQuest', cat: 'Technical', team: '3 Members', prize: '₹70,000',
-      about: 'One raw dataset, one deadline, one story hiding in the noise. Clean it, model it, and defend your findings to a panel. There are marks for rigour and marks for a narrative that lands.',
+      about: 'Time doesn’t wait, and neither does data. Step into a data science showdown where every dataset hides a story — race the clock, decode the patterns, and prove you can turn chaos into insight before time runs out.',
       rounds: [
-        { t: 'Round 1 · Modelling', d: 'Wrangle the dataset and build your model in a fixed window. Push predictions to the live leaderboard.' },
-        { t: 'Round 2 · Finals & Defence', d: 'Top teams present their insight and defend the method to the judges.' }
+        { t: 'Blitz', d: 'A rapid volley of challenges tests how quickly and accurately you can think on your feet. Only the sharpest, fastest teams earn their place in what comes next.', date: '25 Sep', start: '10:00 AM', end: '11:30 AM', venue: 'SIL, OSL, NSL, IIL' },
+        { t: 'Odyssey', d: 'A web of interconnected puzzles, each one unlocking the next. Odyssey tests how well you can think, strategize, and adapt as the challenge deepens with every step.', date: '25 Sep', start: '1:00 PM', end: '3:30 PM', venue: 'SIL, OSL' },
+        { t: 'Forge', d: 'The final trial. Armed with a real-world dataset, teams forge insight into impact — analyzing, storytelling, and presenting a solution that can stand before the judges.', date: '26 Sep', start: '8:30 AM', end: '1:00 PM', venue: 'SIL, OSL' }
       ],
-      convenors: [{ n: 'Priya Nair', p: '+91 90000 00005' }, { n: 'Karthik R', p: '+91 90000 00006' }],
+      convenors: [{ n: 'Tanaz', p: '+91 63800 22981' }, { n: 'Livin Joseph', p: '+91 99943 92653' }],
       prizes: [{ p: 'Champion', v: '₹40,000', w: '100%' }, { p: 'Runner-up', v: '₹20,000', w: '56%' }, { p: 'Third', v: '₹10,000', w: '34%' }]
     },
     qz: {
       logo: '/assets/logo-qz.webp', name: 'QFactor', cat: 'Non Technical', team: '2 Members', prize: '₹45,000',
-      about: 'Prelims to knockout finals. Tech, trivia and lateral thinking on the buzzer. Boot your brain and test your knowledge against the brightest minds.',
+      about: 'Prelims to knockout finals. Mind-boggling questions from (almost) every topic, no expertise or previous experience required. Test your knowledge against the brightest minds!',
       rounds: [
-        { t: 'Written Prelims', d: 'Top scoring teams advance to the stage.' },
-        { t: 'Stage Finals', d: 'Buzzer rounds, pounce and bounce, and speed trivia.' }
+        { t: 'Written Prelims', d: 'Written round with questions displayed on screens, top 6 teams advance to the finals.', date: '26 Sep', start: '9:30 AM', end: '12:00 PM', venue: 'F-Block Assembly Hall' },
+        { t: 'On-Stage Finals', d: 'Dry rounds, pounce and bounce, and special rounds await those who can challenge questions from across time.', date: '26 Sep', start: '1:00 PM', end: '4:00 PM', venue: 'F-Block Assembly Hall' }
       ],
-      convenors: [{ n: 'Siddharth M', p: '+91 90000 00007' }, { n: 'Ananya S', p: '+91 90000 00008' }],
+      convenors: [{ n: 'Kaaviya', p: '+91 63825 80231' }, { n: 'Shambhavi', p: '+91 80959 43626' }],
       prizes: [{ p: 'Champion', v: '₹25,000', w: '100%' }, { p: 'Runner-up', v: '₹12,000', w: '50%' }, { p: 'Third', v: '₹8,000', w: '32%' }]
     },
     mm: {
       logo: '/assets/logo-mm.webp', name: 'Math Mania', cat: 'Technical', team: '2 Members', prize: '₹50,000',
-      about: 'An integration bee with teeth. Solve against the clock, one integral at a time, head-to-head. Clean substitutions early; by the finals the problems fight back.',
+      about: 'Precision is Power. Step beyond conventional mathematics with a competition that blends logic, strategy, and problem-solving. Take calculated risks, crack challenging puzzles, and prove that precision can lead you all the way to victory.',
       rounds: [
-        { t: 'Round 1 · Warm-up', d: 'Timed integrals of rising difficulty. Accuracy and speed both count.' },
-        { t: 'Round 2 · The Gauntlet', d: 'Head-to-head elimination at the board. Last solver standing wins.' }
+        { t: 'Base Case', d: 'A qualifier that puts mathematics, logic, reasoning, and visual problem-solving to the test. Think fast, work smart, and secure your place in the next round.', date: '25 Sep', start: '9:30 AM', end: '12:30 PM', venue: 'J515, J514, J516' },
+        { t: 'Math Heist', d: 'Risk it, solve it, and build your loot. Teams make calculated decisions, tackle mathematical challenges, and use strategic power-ups to maximise their virtual fortune.', date: '25 Sep', start: '2:00 PM', end: '5:00 PM', venue: 'J515, J516' },
+        { t: 'Trail to Triumph', d: 'The final challenge is a race through an interconnected trail of mathematical and logical puzzles. Choose your path wisely, overcome every challenge, and make your way to triumph.', date: '26 Sep', start: '9:30 AM', end: '12:00 PM', venue: 'J515' }
       ],
-      convenors: [{ n: 'Vivek Anand', p: '+91 90000 00009' }, { n: 'Meera Joshi', p: '+91 90000 00010' }],
+      convenors: [{ n: 'Keerthi Menon', p: '+91 93632 58127' }, { n: 'Niveda', p: '+971 54 744 0352' }],
       prizes: [{ p: 'Champion', v: '₹28,000', w: '100%' }, { p: 'Runner-up', v: '₹14,000', w: '58%' }, { p: 'Third', v: '₹8,000', w: '40%' }]
     },
     svc: {
       logo: '/assets/logo-svc.webp', name: "Survivors' Court", cat: 'Non Technical', team: 'Solo Entry', prize: '₹40,000',
-      about: 'A social-strategy game of alliances and betrayals. Talk your way into a bloc, spot the double-cross before it lands, and hold an immunity token when the room turns.',
+      about: 'Survivors Court puts teams at the centre of high-stakes crises where every decision has consequences. Navigate chaos, make strategic choices, and gather evidence — because when the dust settles, you’ll have to defend your actions in court.',
       rounds: [
-        { t: 'Round 1 · Alliances', d: 'Open negotiation. Form blocs, trade favours and read the table.' },
-        { t: 'Round 2 · The Trials', d: 'Challenges hand out immunity and information.' },
-        { t: 'Final · The Verdict', d: 'The jury of the eliminated decides who outplayed whom.' }
+        { t: 'Round 1 — Survival / Scenario Phase', d: 'Teams are placed in an unfolding crisis and must navigate challenges, make critical decisions, and work with limited resources. Every choice can create consequences that affect their journey and future conflicts.', date: '25 Sep', start: '10:00 AM', end: '12:00 PM', venue: 'M503, M504' },
+        { t: 'Round 2 — Conflict / Bridging Phase', d: 'Teams face the consequences of their decisions as their actions intersect with another team. Conflicts arise from competing choices, forcing teams to analyse events, build their case, and prepare to justify their actions. The provided scenario includes conflicts where one team’s decisions directly create setbacks for another.', date: '25 Sep', start: '2:00 PM', end: '4:00 PM', venue: 'M503, M504' },
+        { t: 'Round 3 — Court / Trial Phase', d: 'Teams enter the courtroom to defend their actions and challenge their opponents. Using the evidence and decisions from earlier rounds, they must present their case, respond to opposing arguments, and convince the court that their choices were justified.', date: '26 Sep', start: '10:00 AM', end: '12:00 PM', venue: 'D-Block Conference Hall' },
+        { t: 'Round 4 · Verdict', d: 'The final verdict is delivered after teams present their evidence and defend the choices made throughout the crisis.', date: '26 Sep', start: '4:15 PM', end: '5:00 PM', venue: 'D-Block Conference Hall' }
       ],
-      convenors: [{ n: 'Anjali Rao', p: '+91 90000 00021' }, { n: 'Suresh Babu', p: '+91 90000 00022' }],
+      convenors: [{ n: 'Mithun Senthil', p: '+91 74182 50339' }, { n: 'Ranjana', p: '94957 71225' }],
       prizes: [{ p: 'Champion', v: '₹20,000', w: '100%' }, { p: 'Runner-up', v: '₹12,000', w: '60%' }, { p: 'Third', v: '₹8,000', w: '40%' }]
     },
     val: {
       logo: '/assets/logo-val.webp', name: 'Game Over — Valorant', cat: 'Gaming', team: '5 Members', prize: '₹55,000',
-      about: 'Five-a-side tactical shooter run on a single-elimination bracket. Lock in your agents, trade sites, and win rounds on economy and nerve.',
+      about: 'Step onto the virtual battleground and lock in your agent. Valorant is the ultimate test of precise gunplay, tactical synergy, and high-stakes strategy. Only the sharpest aim and smartest utility usage will withstand the crossfire.',
       rounds: [
-        { t: 'Group Stage', d: 'Best-of-one seeding matches.' },
-        { t: 'Playoffs', d: 'Best-of-three, double elimination.' },
-        { t: 'Grand Final', d: 'Best-of-five on the main stage.' }
+        { t: 'Knockout Phase', d: 'Teams go head-to-head in single-elimination knockout matches where every round counts. Top 4 teams advance to Round 2.', date: '25 Sep', start: '9:30 AM', end: '5:00 PM', venue: 'F203' },
+        { t: 'Semi-Finals & Grand Finals', d: 'The surviving teams step into a best-of-series showdown where adapting to opponents and economy management are critical. Out-aim, out-smart, and plant your flag at the top of the leaderboard to claim ultimate victory.', date: '26 Sep', start: '9:30 AM', end: '12:00 PM', venue: 'F203' }
       ],
-      convenors: [{ n: 'Rohit Sharma', p: '+91 90000 00023' }, { n: 'Farhan Ali', p: '+91 90000 00024' }],
+      convenors: [{ n: 'Harshavardhan', p: '+91 63697 21991' }, { n: 'Dharaneesh', p: '+91 86678 57284' }],
       prizes: [{ p: 'Champion', v: '₹30,000', w: '100%' }, { p: 'Runner-up', v: '₹16,000', w: '54%' }, { p: 'Third', v: '₹9,000', w: '32%' }]
     },
     fifa: {
       logo: '/assets/logo-fifa.webp', name: 'Game Over — FIFA', cat: 'Gaming', team: 'Solo Entry', prize: '₹30,000',
-      about: 'One on one on the pitch. Short halves keep it frantic, single-elimination keeps it honest. Pick your club, park the bus or press high.',
+      about: 'Lace up your boots and take control of the pitch. FIFA brings the electric thrill of world-class football right to your controller. From tactical build-up play to stunning long-range screamers, glory is only 90 minutes away.',
       rounds: [
-        { t: 'Group Stage', d: 'Round-robin within small groups.' },
-        { t: 'Knockouts', d: 'Single-elimination ties with golden goal.' },
-        { t: 'Final', d: 'One match for the golden boot.' }
+        { t: 'Knockout Phase', d: 'In this intense knockout round, one mistake can end your tournament run. Keep your defense tight, clinical on the counter-attack, and make every shot count to survive the first whistle. Top 4 players advance to Round 2.', date: '25 Sep', start: '9:30 AM', end: '5:00 PM', venue: 'F202' },
+        { t: 'Semi-Finals & Grand Finals', d: 'The top 4 players step into a high-stakes showdown where tactical adaptability and composure under pressure are critical. Out-play, out-smart, and dominate the pitch to lift the ultimate trophy.', date: '26 Sep', start: '9:30 AM', end: '12:00 PM', venue: 'F202' }
       ],
-      convenors: [{ n: 'Naveen Kumar', p: '+91 90000 00025' }, { n: 'Aditya Menon', p: '+91 90000 00026' }],
+      convenors: [{ n: 'Harshavardhan', p: '+91 63697 21991' }, { n: 'Dharaneesh', p: '+91 86678 57284' }],
       prizes: [{ p: 'Champion', v: '₹16,000', w: '100%' }, { p: 'Runner-up', v: '₹9,000', w: '56%' }, { p: 'Third', v: '₹5,000', w: '32%' }]
     },
     chess: {
       logo: '/assets/ev-go.webp', logoFilter: 'invert(45%) sepia(65%) saturate(620%) hue-rotate(92deg) brightness(82%) contrast(88%)', name: 'Game Over — Chess', cat: 'Gaming', team: 'Solo Entry', prize: 'To be announced',
-      about: 'Calculate the position, control the clock, and find the winning line. Game Over — Chess brings over-the-board strategy to the arena, where every move counts.',
-      rounds: [{ t: 'Tournament format · Coming soon', d: 'The time control, pairing format, rules, and schedule will be announced soon.' }],
-      convenors: [],
+      about: 'Sit across the board and outsmart your opponent in the ultimate test of intellectual warfare. Chess demands absolute concentration, deep calculation, and flawless long-term strategy. Only the sharpest minds and most precise positional play will survive the grueling battle of wits.',
+      rounds: [{ t: 'League Stage', d: 'This is a custom matching system, the system pairs leaders against leaders, matching you exclusively with opponents on your exact point level. To stay at the top, you must continuously beat the very best. Only the top 10 players will secure a spot on the prize leaderboard.', date: '25 Sep', start: '9:30 AM', end: '5:00 PM', venue: 'CSL 1, 2, 3' }],
+      convenors: [{ n: 'Harshavardhan', p: '+91 63697 21991' }, { n: 'Dharaneesh', p: '+91 86678 57284' }],
       prizes: []
     }
   };
@@ -211,34 +216,41 @@
 
     const tabOverviewBtn = document.getElementById('tab-overview-btn');
     const tabRoundsBtn = document.getElementById('tab-rounds-btn');
+    const tabTimelineBtn = document.getElementById('tab-timeline-btn');
     const tabPrizesBtn = document.getElementById('tab-prizes-btn');
 
     const contentOverview = document.getElementById('content-overview');
     const contentRounds = document.getElementById('content-rounds');
+    const contentTimeline = document.getElementById('content-timeline');
     const contentPrizes = document.getElementById('content-prizes');
 
     const indOverview = document.getElementById('indicator-overview');
     const indRounds = document.getElementById('indicator-rounds');
+    const indTimeline = document.getElementById('indicator-timeline');
     const indPrizes = document.getElementById('indicator-prizes');
 
     if (!modal) return;
 
-    const switchTab = (tab: 'overview' | 'rounds' | 'prizes') => {
+    const switchTab = (tab: 'overview' | 'rounds' | 'timeline' | 'prizes') => {
       if (contentOverview) contentOverview.style.display = tab === 'overview' ? 'block' : 'none';
       if (contentRounds) contentRounds.style.display = tab === 'rounds' ? 'flex' : 'none';
+      if (contentTimeline) contentTimeline.style.display = tab === 'timeline' ? 'flex' : 'none';
       if (contentPrizes) contentPrizes.style.display = tab === 'prizes' ? 'block' : 'none';
 
       if (indOverview) indOverview.style.display = tab === 'overview' ? 'block' : 'none';
       if (indRounds) indRounds.style.display = tab === 'rounds' ? 'block' : 'none';
+      if (indTimeline) indTimeline.style.display = tab === 'timeline' ? 'block' : 'none';
       if (indPrizes) indPrizes.style.display = tab === 'prizes' ? 'block' : 'none';
 
       if (tabOverviewBtn) tabOverviewBtn.style.color = tab === 'overview' ? 'var(--ink)' : 'var(--ink2)';
       if (tabRoundsBtn) tabRoundsBtn.style.color = tab === 'rounds' ? 'var(--ink)' : 'var(--ink2)';
+      if (tabTimelineBtn) tabTimelineBtn.style.color = tab === 'timeline' ? 'var(--ink)' : 'var(--ink2)';
       if (tabPrizesBtn) tabPrizesBtn.style.color = tab === 'prizes' ? 'var(--ink)' : 'var(--ink2)';
     };
 
     if (tabOverviewBtn) tabOverviewBtn.addEventListener('click', () => switchTab('overview'));
     if (tabRoundsBtn) tabRoundsBtn.addEventListener('click', () => switchTab('rounds'));
+    if (tabTimelineBtn) tabTimelineBtn.addEventListener('click', () => switchTab('timeline'));
     if (tabPrizesBtn) tabPrizesBtn.addEventListener('click', () => switchTab('prizes'));
 
     const closeModal = () => {
@@ -282,6 +294,7 @@
       const aboutEl = document.getElementById('modal-about');
       const convenorsEl = document.getElementById('modal-convenors');
       const roundsEl = document.getElementById('content-rounds');
+      const timelineEl = document.getElementById('content-timeline');
       const prizeSplitsEl = document.getElementById('modal-prize-splits');
 
       if (logoEl) {
@@ -316,6 +329,22 @@
             <div style="font-size:14px;line-height:1.55;color:var(--ink2);margin-top:5px">${r.d}</div>
           </div>
         `).join('');
+      }
+
+      if (timelineEl) {
+        timelineEl.innerHTML = ev.rounds.map((r, index) => `
+            <div style="display:grid;grid-template-columns:minmax(126px,160px) 1fr;gap:16px;background:var(--wcard);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:15px 18px;position:relative">
+              <span style="position:absolute;left:-9px;top:18px;width:16px;height:16px;border:2px solid var(--ink);border-radius:50%;background:${index % 2 === 0 ? 'var(--r4)' : 'var(--acc2)'}"></span>
+              <div style="font-family:inherit;font-size:12px;font-weight:800;line-height:1.55;color:var(--ink)">
+                <div style="letter-spacing:.05em;text-transform:uppercase;color:var(--acc)">${r.date}</div>
+                <div>${r.start}–${r.end}</div>
+              </div>
+              <div>
+                <div style="font-size:16px;font-weight:800;color:var(--ink)">${r.t}</div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--acc);margin-top:5px">⌖ ${r.venue}</div>
+              </div>
+            </div>
+          `).join('');
       }
 
       if (prizeSplitsEl) {
