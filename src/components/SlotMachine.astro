@@ -1,11 +1,75 @@
 ---
+import { siteConfig } from '../config/site.config';
+
+const { event, hero } = siteConfig;
+
+// The reel faces are a classic slot vocabulary -- cherries, bells, BAR, 7s,
+// money -- drawn entirely from type and inline SVG. Nothing here is shared
+// with another section: the illustrations that used to spin (piggy bank,
+// thinker, lens, eye, dollar bill, camera) all appear elsewhere on the page,
+// so the machine read as a shelf of site assets rather than a slot machine.
+type Face =
+  | { svg: string }
+  | { text: string; size: number; color: string; shadow?: string; bg?: string };
+
+const cherriesSvg = `
+<svg viewBox="0 0 100 100" width="84" height="84" aria-hidden="true" focusable="false">
+  <g style="fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round">
+    <path d="M57 20C44 33 34 45 31 58" />
+    <path d="M57 20C69 35 74 48 72 61" />
+  </g>
+  <path d="M57 20C66 5 83 4 93 11 84 24 67 29 57 20Z"
+        style="fill:var(--r4);stroke:var(--ink);stroke-width:4;stroke-linejoin:round" />
+  <circle cx="30" cy="72" r="19" style="fill:var(--acc);stroke:var(--ink);stroke-width:4" />
+  <circle cx="71" cy="76" r="16" style="fill:var(--acc);stroke:var(--ink);stroke-width:4" />
+  <circle cx="24" cy="66" r="4.5" style="fill:#fff;opacity:.85" />
+  <circle cx="66" cy="71" r="3.5" style="fill:#fff;opacity:.8" />
+</svg>`;
+
+const bellSvg = `
+<svg viewBox="0 0 100 100" width="78" height="78" aria-hidden="true" focusable="false">
+  <circle cx="50" cy="19" r="7" style="fill:var(--acc2);stroke:var(--ink);stroke-width:4" />
+  <path d="M25 70c0-27 8-43 25-43s25 16 25 43z"
+        style="fill:var(--acc2);stroke:var(--ink);stroke-width:4;stroke-linejoin:round" />
+  <rect x="15" y="69" width="70" height="11" style="fill:var(--acc2);stroke:var(--ink);stroke-width:4" />
+  <circle cx="50" cy="89" r="7" style="fill:var(--ink)" />
+</svg>`;
+
+const FACES: Record<string, Face> = {
+  free: { text: 'FREE', size: 60, color: 'var(--acc)', shadow: '3px 3px 0 var(--acc2)' },
+  seven: { text: '7', size: 78, color: 'var(--acc)', shadow: '3px 3px 0 var(--ink)' },
+  sevens: { text: '777', size: 42, color: 'var(--acc2)', shadow: '2px 2px 0 var(--ink)' },
+  cash: { text: '$$$', size: 46, color: 'var(--r4)' },
+  rupee: { text: '₹', size: 60, color: 'var(--r4)' },
+  wild: { text: 'AX', size: 50, color: 'var(--r5)' },
+  star: { text: '✶', size: 50, color: 'var(--acc2)' },
+  bar: { text: 'BAR', size: 30, color: 'var(--card)', bg: 'var(--ink)' },
+  cherries: { svg: cherriesSvg },
+  bell: { svg: bellSvg },
+};
+
+// Each reel is 14 faces at 110px. The spin ends at translateY(-1240px), which
+// centres index 12 in the 270px window, so FREE sits there on all three reels
+// for the jackpot line. The resting offset centres index 1, giving a
+// cherry-seven-cherry near miss before the lever is pulled.
+const REELS: string[][] = [
+  ['bar', 'cherries', 'seven', 'cash', 'bell', 'wild', 'rupee', 'sevens', 'cherries', 'star', 'bar', 'bell', 'free', 'cherries'],
+  ['cherries', 'seven', 'bell', 'bar', 'cash', 'cherries', 'star', 'rupee', 'wild', 'sevens', 'cherries', 'bar', 'free', 'bell'],
+  ['bell', 'cherries', 'bar', 'seven', 'cherries', 'cash', 'sevens', 'bell', 'rupee', 'wild', 'star', 'cherries', 'free', 'bar'],
+];
+
+const faceStyle = (f: Extract<Face, { text: string }>) =>
+  `font-family:'Anton',sans-serif;line-height:1;font-size:${f.size}px;color:${f.color}` +
+  (f.shadow ? `;text-shadow:${f.shadow}` : '') +
+  (f.bg ? `;background:${f.bg};padding:7px 15px;letter-spacing:.06em` : '');
 ---
 
-<section id="register" class="cv-auto" style="position:relative;background:var(--acc);color:#fff;padding:68px 0 70px;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)">
+<section id="register" class="cv-auto" style="position:relative;background:var(--acc);color:#fff;padding:68px 0 70px">
   <!-- Scalloped Stamp Edge Top -->
   <div style="position:absolute;top:0;left:0;right:0;height:13px;background-image:radial-gradient(circle at 50% 0,var(--paper) 12px,transparent 12.5px);background-size:34px 26px;background-position:center top;background-repeat:repeat-x;pointer-events:none"></div>
-  <!-- Scalloped Stamp Edge Bottom -->
-  <div style="position:absolute;bottom:0;left:0;right:0;height:13px;background-image:radial-gradient(circle at 50% 100%,var(--paper) 12px,transparent 12.5px);background-size:34px 26px;background-position:center bottom;background-repeat:repeat-x;pointer-events:none"></div>
+  <!-- No scallop on the bottom edge: its cream circles leave the section's red
+       showing between them, which read as a red line along the seam with the
+       section below. The bottom is a clean straight cut instead. -->
 
   <div style="max-width:1180px;margin:0 auto;padding:0 24px">
     <div class="slot-frame" style="display:inline-block;position:relative;margin:30px 74px 30px 0;transform:rotate(-1deg);max-width:calc(100% - 74px)">
@@ -24,68 +88,23 @@
 
         <!-- 3 Reels Container -->
         <div style="position:relative;background:var(--ink);padding:12px;display:flex;gap:12px;justify-content:center">
-          <!-- Reel 1 -->
-          <span style="display:block;position:relative;width:clamp(108px,15vw,206px);height:270px;overflow:hidden;background:var(--wcard)">
-            <span aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(36,26,18,.5) 0%,rgba(36,26,18,.12) 18%,rgba(255,255,255,0) 34%,rgba(255,255,255,.42) 50%,rgba(255,255,255,0) 66%,rgba(36,26,18,.12) 82%,rgba(36,26,18,.5) 100%)"></span>
-            <span id="reel-1" style="display:block;transform:translateY(-30px)">
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--acc2)">⌗</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:60px;color:var(--acc);text-shadow:3px 3px 0 var(--acc2)">FREE</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--r5)">AX</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/thinker-halftone.webp" alt="" width="80" height="80" style="max-height:80px;max-width:82%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">⌗</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/piggy-bank.webp" alt="" width="78" height="78" style="max-height:78px;max-width:82%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">50%</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/eye-crop.webp" alt="" width="72" height="72" style="max-height:72px;max-width:80%;border:1.5px solid var(--ink);mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">AX</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/crown-doodle.webp" alt="" width="74" height="74" style="max-height:74px;max-width:80%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">⌗</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--acc2)">99%</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:60px;color:var(--acc);text-shadow:3px 3px 0 var(--acc2)">FREE</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">AX</span>
+          {REELS.map((strip, i) => (
+            <span style="display:block;position:relative;width:clamp(108px,15vw,206px);height:270px;overflow:hidden;background:var(--wcard)">
+              <span aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(36,26,18,.5) 0%,rgba(36,26,18,.12) 18%,rgba(255,255,255,0) 34%,rgba(255,255,255,.42) 50%,rgba(255,255,255,0) 66%,rgba(36,26,18,.12) 82%,rgba(36,26,18,.5) 100%)"></span>
+              <span id={`reel-${i + 1}`} style="display:block;transform:translateY(-30px)">
+                {strip.map((key) => {
+                  const face = FACES[key];
+                  return (
+                    <span style="display:grid;place-items:center;height:110px">
+                      {'svg' in face
+                        ? <Fragment set:html={face.svg} />
+                        : <span style={faceStyle(face)}>{face.text}</span>}
+                    </span>
+                  );
+                })}
+              </span>
             </span>
-          </span>
-
-          <!-- Reel 2 -->
-          <span style="display:block;position:relative;width:clamp(108px,15vw,206px);height:270px;overflow:hidden;background:var(--wcard)">
-            <span aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(36,26,18,.5) 0%,rgba(36,26,18,.12) 18%,rgba(255,255,255,0) 34%,rgba(255,255,255,.42) 50%,rgba(255,255,255,0) 66%,rgba(36,26,18,.12) 82%,rgba(36,26,18,.5) 100%)"></span>
-            <span id="reel-2" style="display:block;transform:translateY(-30px)">
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/piggy-bank.webp" alt="" width="78" height="78" style="max-height:78px;max-width:82%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--acc2)">AX</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">⌗</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/lens-cut.webp" alt="" width="76" height="76" style="max-height:76px;max-width:82%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">₹</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/thinker-halftone.webp" alt="" width="80" height="80" style="max-height:80px;max-width:82%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">PAID</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--r5)">AX</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/dollar-bill.webp" alt="" width="70" height="70" style="max-height:70px;max-width:84%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--acc2)">⌗</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">✶</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--r5)">$$$</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:60px;color:var(--acc);text-shadow:3px 3px 0 var(--acc2)">FREE</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">AX</span>
-            </span>
-          </span>
-
-          <!-- Reel 3 -->
-          <span style="display:block;position:relative;width:clamp(108px,15vw,206px);height:270px;overflow:hidden;background:var(--wcard)">
-            <span aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(36,26,18,.5) 0%,rgba(36,26,18,.12) 18%,rgba(255,255,255,0) 34%,rgba(255,255,255,.42) 50%,rgba(255,255,255,0) 66%,rgba(36,26,18,.12) 82%,rgba(36,26,18,.5) 100%)"></span>
-            <span id="reel-3" style="display:block;transform:translateY(-30px)">
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">✶</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:60px;color:var(--acc);text-shadow:3px 3px 0 var(--acc2)">FREE</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/lens-cut.webp" alt="" width="76" height="76" style="max-height:76px;max-width:82%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--acc2)">AX</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">⌗</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/piggy-bank.webp" alt="" width="78" height="78" style="max-height:78px;max-width:82%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">₹</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/thinker-halftone.webp" alt="" width="80" height="80" style="max-height:80px;max-width:82%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">AX</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--r5)">⌗</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">₹</span>
-              <span style="display:grid;place-items:center;height:110px"><img src="/assets/camera-hand.webp" alt="" width="78" height="78" style="max-height:78px;max-width:82%;mix-blend-mode:multiply" /></span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:60px;color:var(--acc);text-shadow:3px 3px 0 var(--acc2)">FREE</span>
-              <span style="display:grid;place-items:center;height:110px;font-family:'Anton',sans-serif;font-size:50px;color:var(--ink)">AX</span>
-            </span>
-          </span>
+          ))}
         </div>
 
         <!-- Reel Result Footer Message -->
@@ -107,29 +126,25 @@
       <span id="slot-lever-btn" class="slot-lever" title="Pull the lever!" style="position:absolute;right:-62px;top:24%;width:66px;height:230px;cursor:pointer;display:block">
         <span style="position:absolute;left:0;top:48px;width:24px;height:66px;background:var(--ink)"></span>
         <span style="position:absolute;left:22px;top:56px;width:11px;height:146px;background:var(--ink)"></span>
-        <span id="lever-knob" style="position:absolute;left:8px;top:30px;width:38px;height:38px;background:var(--acc);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transition:top .24s cubic-bezier(.4,1.8,.5,1)"></span>
+        <!-- The knob is the same accent as the section behind it, so the ball
+             reads as a ball through its shading rather than its colour: a lit
+             highlight up and left, a shaded terminator down and right. -->
+        <span id="lever-knob" style="position:absolute;left:8px;top:30px;width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.62),rgba(255,255,255,0) 46%),radial-gradient(circle at 70% 76%,rgba(36,26,18,.38),rgba(36,26,18,0) 54%),var(--acc);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transition:top .24s cubic-bezier(.4,1.8,.5,1)"></span>
       </span>
     </div>
 
-    <!-- Description Copy -->
-    <p style="margin:0 0 28px;font-size:16px;max-width:40em;color:#ffeadd">Your free pass includes entry to every event, meals, and a delegate kit. No prior installation required.</p>
-
-    <!-- 3-Step Wizard Navigation -->
-    <div style="display:flex;align-items:center;gap:10px;font-family:inherit;font-size:12px;margin-bottom:22px;flex-wrap:wrap">
-      <span class="wstep" data-step="1" style="background:var(--wcard);color:var(--acc);padding:6px 12px;font-weight:700;border:2px solid var(--ink)">1 · Choose events</span>
-      <span style="color:#ffcdb8">──</span>
-      <span class="wstep" data-step="2" style="background:transparent;color:#ffcdb8;padding:6px 12px;border:2px solid #ffffff55">2 · Your details</span>
-      <span style="color:#ffcdb8">──</span>
-      <span class="wstep" data-step="3" style="background:transparent;color:#ffcdb8;padding:6px 12px;border:2px solid #ffffff55">3 · Confirm seat</span>
-    </div>
-
-    <!-- Step Controls -->
-    <div style="display:flex;align-items:center;gap:14px;margin-top:24px;flex-wrap:wrap">
-      <span class="wlabel" style="font-family:inherit;font-size:13px;color:#ffeadd">Step 1 of 3</span>
-      <div style="display:flex;gap:12px">
-        <button class="wback" style="background:transparent;color:#fff;border:2px solid #fff;padding:11px 20px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer">◀ Back</button>
-        <button class="wnext" style="background:var(--wcard);color:var(--acc);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:11px 22px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer">Next ▶</button>
-      </div>
+    <!-- The machine does the selling; this is the section's only call to
+         action, and it opens the registration portal like every other CTA.
+         The wrapper keeps it off the cabinet's line, which is inline-block. -->
+    <div style="margin-top:8px">
+      <a
+        href={event.registrationUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        style="display:inline-flex;align-items:center;gap:9px;background:var(--wcard);color:var(--acc);font-size:16px;font-weight:700;padding:14px 28px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink)"
+      >
+        {hero.registerCta}
+      </a>
     </div>
   </div>
 </section>
@@ -212,41 +227,6 @@
       leverBtn.addEventListener('click', pullLever);
     }
 
-    // Step Wizard Logic
-    let currentStep = 1;
-    const steps = Array.from(document.querySelectorAll('.wstep'));
-    const label = document.querySelector('.wlabel');
-    const nextBtn = document.querySelector('.wnext');
-    const backBtn = document.querySelector('.wback');
-
-    const updateWizard = () => {
-      steps.forEach((s) => {
-        const el = s as HTMLElement;
-        const n = parseInt(el.getAttribute('data-step') || '1', 10);
-        const on = n === currentStep;
-        el.style.background = on ? '#fff' : 'transparent';
-        el.style.color = on ? 'var(--acc)' : '#ffcdb8';
-        el.style.fontWeight = on ? '700' : '400';
-        el.style.borderColor = on ? 'var(--ink)' : '#ffffff55';
-      });
-      if (label) label.textContent = `Step ${currentStep} of 3`;
-      if (nextBtn) nextBtn.textContent = currentStep === 3 ? '✓ Finish' : 'Next ▶';
-    };
-
-    if (nextBtn && backBtn) {
-      nextBtn.addEventListener('click', () => {
-        if (currentStep < 3) {
-          currentStep++;
-          updateWizard();
-        }
-      });
-      backBtn.addEventListener('click', () => {
-        if (currentStep > 1) {
-          currentStep--;
-          updateWizard();
-        }
-      });
-    }
   }
 
   document.addEventListener('DOMContentLoaded', initSlotMachine);
