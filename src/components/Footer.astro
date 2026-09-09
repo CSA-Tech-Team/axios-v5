@@ -20,7 +20,17 @@ const { footer, event } = siteConfig;
     <div>
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
         <div style="width:56px;height:56px;background:var(--acc);display:grid;place-items:center;border:2px solid #4a3a24">
-          <span style="font-family:'Anton',sans-serif;font-size:24px;color:#fff">AX</span>
+          <!-- The favicon mark recolours itself by browser theme, so it is
+               forced to white here rather than trusted to land on white. -->
+          <img
+            src="/assets/favicon.svg"
+            alt=""
+            width="32"
+            height="32"
+            loading="lazy"
+            decoding="async"
+            style="display:block;width:32px;height:32px;filter:brightness(0) invert(1)"
+          />
         </div>
         <div>
           <div style="font-family:'Anton',sans-serif;font-size:26px">{event.name.toUpperCase()}</div>
