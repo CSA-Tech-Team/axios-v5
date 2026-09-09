@@ -14,9 +14,13 @@ const cardStyle = [
 ];
 ---
 
-<section id="faq" class="cv-auto" style="position:relative;max-width:1180px;margin:0 auto;padding:56px 24px">
+<!-- No cv-auto here: content-visibility implies paint containment, which clips
+     descendants to the section box, and the phone hangs off the left edge at
+     left:-14px. Contained, it was sliced off mid-swing. -->
+<section id="faq" style="position:relative;max-width:1180px;margin:0 auto;padding:56px 24px">
   <!-- Dangling Vintage Phone Graphic. Falls back to the CSS dangle; the script
-       upgrades it to a swinging, draggable pendulum once physics is live. -->
+       upgrades it to a physical swing once it is live. Decorative only -- it
+       does not take pointer input. -->
   <span id="faq-phone" class="faq-phone">
     <img
       src="/assets/tele-cut.webp"
@@ -75,20 +79,13 @@ const cardStyle = [
     animation: dangle 5.2s ease-in-out infinite;
   }
 
-  /* Physics has taken over: the script owns the transform, and the phone
-     becomes grabbable. */
+  /* Physics has taken over: the script owns the transform in place of the CSS
+     keyframes. The phone stays pointer-events:none from the base rule -- it is
+     decoration, not a control. */
   .faq-phone.is-live {
     animation: none;
-    pointer-events: auto;
-    cursor: grab;
-    touch-action: none;
     will-change: transform;
-    -webkit-user-select: none;
-    user-select: none;
   }
-
-  .faq-phone.is-live img { -webkit-user-drag: none; }
-  .faq-phone.is-held { cursor: grabbing; }
 
   .faq-phone-tape {
     position: absolute;
@@ -127,24 +124,17 @@ const cardStyle = [
 </style>
 
 <script>
-  // Physics for the dangling phone: a damped pendulum swinging from the tape.
-  // The wire is stuck fast — the phone can be swung, shoved and flicked, but it
-  // can never be pulled off the tape, so hanging is the only state there is.
-  //
-  // Every constant that shapes how heavy or how lively it feels lives in CFG —
-  // the values are deliberately soft-tuned so the motion stays graceful.
+  // The dangling phone is ambient decoration: a damped pendulum hanging from
+  // the tape, stirred by a slow synthetic breeze so it is never dead still.
+  // It takes no pointer input — nothing here reads the cursor, and the element
+  // stays pointer-events:none, so it never intercepts a click or a drag.
   const CFG = {
     swingW0: 2.4,       // pendulum angular frequency (rad/s) — ~2.6s per swing
     swingDamp: 0.5,     // pendulum damping (1/s)
     swingMax: 0.85,     // rad — hard stop, so it never wraps over the tape
     breeze: 0.2,        // idle sway torque (rad/s²) so it is never dead still
-    pushRadius: 120,    // px — how close the cursor has to sweep to shove it
-    pushGain: 0.008,    // rad/s² per px/s of cursor speed
-    pushMax: 3.2,       // rad/s — ceiling on swing speed from cursor shoves
-    tapImpulse: 1.6,    // rad/s added by a tap
+    omMax: 3.2,         // rad/s — ceiling on swing speed
   };
-
-  type Mode = 'hang' | 'drag';
 
   const clamp = (v: number, lo: number, hi: number) => (v < lo ? lo : v > hi ? hi : v);
 
@@ -156,66 +146,17 @@ const cardStyle = [
 
     phone.classList.add('is-live');
 
-    // --- Geometry -----------------------------------------------------------
-    let w = 0, h = 0;      // laid-out size of the phone
-    let ax = 0, ay = 0;    // the tape pivot
+    let th = 0.14, om = 0.35;   // pendulum angle / angular velocity
 
-    function measure() {
-      w = phone.offsetWidth;
-      h = phone.offsetHeight || w;   // the image may not have loaded yet
-      ax = phone.offsetLeft + w / 2;
-      ay = phone.offsetTop;
-    }
-
-    // --- State --------------------------------------------------------------
-    let mode: Mode = 'hang';
-    let th = 0, om = 0;                       // pendulum angle / angular velocity
-    let dragId = -1;
-    let px = 0, py = 0, pvx = 0, pvy = 0;     // pointer position / velocity
-    let pointerLive = false;
-
-    function render() {
-      phone.style.transform = `rotate(${th}rad)`;
-    }
-
-    // A CSS rotation about the top centre puts the phone's centre here.
-    const hangCentreX = () => ax - (h / 2) * Math.sin(th);
-    const hangCentreY = () => ay + (h / 2) * Math.cos(th);
-
-    // --- Integration --------------------------------------------------------
-    function stepHanging(dt: number, now: number) {
+    function step(dt: number, now: number) {
       const breeze =
         CFG.breeze * (Math.sin(now * 0.53) * 0.6 + Math.sin(now * 0.31 + 1.7) * 0.4);
       om += (-(CFG.swingW0 ** 2) * Math.sin(th) + breeze) * dt;
       om -= om * CFG.swingDamp * dt;
-
-      // A cursor sweeping past shoves the phone away from itself.
-      if (pointerLive) {
-        const d = Math.hypot(hangCentreX() - px, hangCentreY() - py);
-        const speed = Math.hypot(pvx, pvy);
-        if (d < CFG.pushRadius && speed > 40) {
-          const falloff = 1 - d / CFG.pushRadius;
-          const away = hangCentreX() > px ? 1 : -1;
-          // +theta swings left, so a rightward shove is a negative torque.
-          om += -away * Math.min(speed * CFG.pushGain * falloff, 26) * dt;
-        }
-      }
-
-      om = clamp(om, -CFG.pushMax, CFG.pushMax);
+      om = clamp(om, -CFG.omMax, CFG.omMax);
       th += om * dt;
       if (th > CFG.swingMax) { th = CFG.swingMax; om = Math.min(om, 0) * 0.6; }
       if (th < -CFG.swingMax) { th = -CFG.swingMax; om = Math.max(om, 0) * 0.6; }
-    }
-
-    // Dragging only ever aims the pendulum: the pivot is the tape, so however
-    // far the pointer travels the phone just swings out to that bearing.
-    function stepDrag(dt: number) {
-      const dx = px - ax;
-      const dy = py - ay;
-      const target = clamp(Math.atan2(-dx, Math.max(dy, 1)), -CFG.swingMax, CFG.swingMax);
-      const prev = th;
-      th += (target - th) * (1 - Math.exp(-18 * dt));
-      om = clamp((th - prev) / Math.max(dt, 1e-3), -CFG.pushMax, CFG.pushMax);
     }
 
     // --- Loop ---------------------------------------------------------------
@@ -227,16 +168,8 @@ const cardStyle = [
       raf = 0;
       const dt = Math.min(0.033, last ? (ts - last) / 1000 : 0.016);
       last = ts;
-      const now = ts / 1000;
-
-      if (mode === 'hang') stepHanging(dt, now);
-      else stepDrag(dt);
-
-      // The pointer only pushes while it is actually moving.
-      pvx *= 0.72;
-      pvy *= 0.72;
-
-      render();
+      step(dt, ts / 1000);
+      phone.style.transform = `rotate(${th}rad)`;
       if (visible) raf = requestAnimationFrame(frame);
     }
 
@@ -246,89 +179,7 @@ const cardStyle = [
       raf = requestAnimationFrame(frame);
     }
 
-    // --- Input --------------------------------------------------------------
-    function toLocal(e: PointerEvent) {
-      const r = section.getBoundingClientRect();
-      const nx = e.clientX - r.left;
-      const ny = e.clientY - r.top;
-      pvx = nx - px;
-      pvy = ny - py;
-      px = nx;
-      py = ny;
-      pointerLive = true;
-    }
-
-    section.addEventListener('pointermove', (e) => {
-      const r = section.getBoundingClientRect();
-      const nx = e.clientX - r.left;
-      const ny = e.clientY - r.top;
-      // Screen-space velocity, scaled to px/s for the push terms.
-      pvx = (nx - px) * 60;
-      pvy = (ny - py) * 60;
-      px = nx;
-      py = ny;
-      pointerLive = true;
-      wake();
-    }, { passive: true });
-
-    section.addEventListener('pointerleave', () => { pointerLive = false; });
-
-    let downAt = 0;
-    let downX = 0, downY = 0;
-
-    phone.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      phone.setPointerCapture(e.pointerId);
-      dragId = e.pointerId;
-      downAt = performance.now();
-      downX = e.clientX;
-      downY = e.clientY;
-      toLocal(e);
-      pvx = pvy = 0;
-      phone.classList.add('is-held');
-      mode = 'drag';
-      wake();
-    });
-
-    phone.addEventListener('pointermove', (e) => {
-      if (e.pointerId !== dragId) return;
-      const r = section.getBoundingClientRect();
-      px = e.clientX - r.left;
-      py = e.clientY - r.top;
-      wake();
-    });
-
-    function endDrag(e: PointerEvent) {
-      if (e.pointerId !== dragId) return;
-      dragId = -1;
-      phone.classList.remove('is-held');
-      if (phone.hasPointerCapture(e.pointerId)) phone.releasePointerCapture(e.pointerId);
-
-      // A tap rather than a drag: flick it into a swing on the side it was hit.
-      const quick = performance.now() - downAt < 220 &&
-        Math.hypot(e.clientX - downX, e.clientY - downY) < 8;
-
-      mode = 'hang';
-      if (quick) om += (px < ax ? -1 : 1) * CFG.tapImpulse;
-      wake();
-    }
-
-    phone.addEventListener('pointerup', endDrag);
-    phone.addEventListener('pointercancel', endDrag);
-
     // --- Lifecycle ----------------------------------------------------------
-    let resizeTimer = 0;
-    window.addEventListener('resize', () => {
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        measure();
-        wake();
-      }, 150);
-    });
-
-    const img = phone.querySelector('img');
-    if (img && !img.complete) img.addEventListener('load', () => { measure(); wake(); }, { once: true });
-
     // Idle off-screen: no simulation while the section is out of view.
     if ('IntersectionObserver' in window) {
       new IntersectionObserver((entries) => {
@@ -338,10 +189,7 @@ const cardStyle = [
       }, { rootMargin: '120px' }).observe(section);
     }
 
-    measure();
-    th = 0.14;
-    om = 0.35;
-    render();
+    phone.style.transform = `rotate(${th}rad)`;
     wake();
   }
 
