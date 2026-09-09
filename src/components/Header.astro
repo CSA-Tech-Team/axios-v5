@@ -38,7 +38,12 @@ import { siteConfig } from '../config/site.config';
   </nav>
 
   <span class="hdr-sep" style="width:1.5px;height:24px;background:#fff;opacity:.18;flex-shrink:0"></span>
-  <a class="hdr-register" href="#register" data-go="register">▶ REGISTER</a>
+  <a
+    class="hdr-register"
+    href={siteConfig.event.registrationUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+  >▶ REGISTER</a>
 
   <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="topnav">
     <span aria-hidden="true"></span>
