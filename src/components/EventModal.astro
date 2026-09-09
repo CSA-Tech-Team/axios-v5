@@ -1,7 +1,7 @@
 ---
 import { siteConfig } from '../config/site.config';
 
-const { hero } = siteConfig;
+const { hero, event } = siteConfig;
 
 // Serialized into the page as JSON below and consumed by the client-side
 // script — keeps the modal's data-open lookup driven by the same config
@@ -91,7 +91,7 @@ const eventsDataJson = JSON.stringify(
     <!-- Actions -->
     <div style="padding:8px 26px 26px;display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap">
       <button id="modal-close-footer" style="background:var(--card);color:var(--ink);border:2px solid var(--ink);font-family:inherit;font-size:15px;font-weight:700;padding:12px 20px;cursor:pointer">Close</button>
-      <button id="modal-register-btn" style="background:var(--acc);color:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);font-family:inherit;font-size:15px;font-weight:700;padding:12px 24px;cursor:pointer">{hero.registerCta}</button>
+      <a id="modal-register-btn" href={event.registrationUrl} target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;background:var(--acc);color:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);font-family:inherit;font-size:15px;font-weight:700;padding:12px 24px;cursor:pointer">{hero.registerCta}</a>
     </div>
   </div>
 </div>
@@ -219,15 +219,9 @@ const eventsDataJson = JSON.stringify(
       }
     });
 
-    if (regBtn) {
-      regBtn.addEventListener('click', () => {
-        closeModal();
-        const regSection = document.getElementById('register');
-        if (regSection) {
-          regSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    }
+    // The link itself opens the registration portal in a new tab; closing the
+    // modal just leaves the page tidy behind it.
+    if (regBtn) regBtn.addEventListener('click', closeModal);
 
     const openModal = (key: string) => {
       const ev = eventsData[key];

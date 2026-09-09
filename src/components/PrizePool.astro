@@ -1,6 +1,6 @@
 ---
 import { siteConfig } from '../config/site.config';
-const { prizePool } = siteConfig;
+const { prizePool, event } = siteConfig;
 ---
 
 <section id="prizes" class="cv-auto" style="position:relative;background:var(--ink);color:#f3e7d3;padding:64px 0 72px;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:22px 22px">
@@ -32,8 +32,9 @@ const { prizePool } = siteConfig;
     <div style="margin:34px auto 0;max-width:36em;font-size:16px;line-height:1.6;color:#c9b48c">{prizePool.subtext}</div>
     <div style="margin-top:30px">
       <a
-        href="#register"
-        data-go="register"
+        href={event.registrationUrl}
+        target="_blank"
+        rel="noopener noreferrer"
         style="display:inline-flex;align-items:center;gap:9px;background:var(--acc);color:#fff;font-size:16px;font-weight:700;padding:14px 28px;border:3px solid #f3e7d3;box-shadow:6px 6px 0 rgba(243,231,211,.35)"
       >
         {prizePool.ctaLabel}

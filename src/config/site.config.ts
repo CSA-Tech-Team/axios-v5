@@ -59,6 +59,8 @@ export interface EventInfo {
   tagline: string;
   presentedByLine: string;
   symposiumType: string;
+  /** External registration portal the header CTA opens */
+  registrationUrl: string;
   date: EventDateInfo;
   organizer: OrganizerInfo;
 }
@@ -282,6 +284,7 @@ const event: EventInfo = {
   tagline: "where excellence awaits the worthy",
   presentedByLine: "Computational Sciences Association presents",
   symposiumType: "Technical Symposium",
+  registrationUrl: "https://proleap.ewhizard.tech/join/EvB_iLQ2bm",
   date: {
     label: "25-26 SEP '26",
     startISO: "2026-09-25T09:00:00+05:30",
