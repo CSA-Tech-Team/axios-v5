@@ -182,6 +182,12 @@ export interface TeamMember {
   photo: string;
 }
 
+/** A titled sub-section of the "Meet the Team" wall, e.g. "Office Bearers". */
+export interface TeamGroup {
+  title: string;
+  members: TeamMember[];
+}
+
 export interface SponsorLogo {
   label: string;
   alt: string;
@@ -257,7 +263,7 @@ export interface SiteConfig {
   pastEditions: PastEditionsContent;
   prizePool: PrizePoolContent;
   events: EventDetail[];
-  team: TeamMember[];
+  team: TeamGroup[];
   sponsors: SponsorsContent;
   faq: FaqContent;
   footer: FooterContent;
@@ -675,12 +681,25 @@ const events: EventDetail[] = [
   },
 ];
 
-const team: TeamMember[] = [
-  { name: "Dinesh", role: "Secretary", photo: "/assets/court-statue.webp" },
-  { name: "Thithiksha", role: "Joint Secretary", photo: "/assets/eye-crop.webp" },
-  { name: "Ashvanth", role: "Treasurer", photo: "/assets/lens-cut.webp" },
-  { name: "Bhuvanesh", role: "Executive Coordinator", photo: "/assets/thinker-halftone.webp" },
-  { name: "Ravi Varma", role: "Convenor", photo: "/assets/heart-hands.webp" },
+const team: TeamGroup[] = [
+  {
+    title: "Office Bearers",
+    members: [
+      { name: "Dinesh", role: "Secretary", photo: "/assets/court-statue.webp" },
+      { name: "Thithiksha", role: "Joint Secretary", photo: "/assets/eye-crop.webp" },
+      { name: "Ashvanth", role: "Treasurer", photo: "/assets/lens-cut.webp" },
+      { name: "Bhuvanesh", role: "Executive Coordinator", photo: "/assets/thinker-halftone.webp" },
+      { name: "Ravi Varma", role: "Convenor", photo: "/assets/heart-hands.webp" },
+    ],
+  },
+  {
+    title: "Tech Team",
+    members: [
+      { name: "Prem Dharshan", role: "Tech Team Director", photo: "/assets/robot-hand5.webp" },
+      { name: "Mithun", role: "Tech Team Coordinator", photo: "/assets/floppy-cut.webp" },
+      { name: "Ajay", role: "Tech Team Member", photo: "/assets/brain.webp" },
+    ],
+  },
 ];
 
 const sponsors: SponsorsContent = {
