@@ -15,19 +15,21 @@ const cardStyle = [
 ---
 
 <section id="faq" class="cv-auto" style="position:relative;max-width:1180px;margin:0 auto;padding:56px 24px">
-  <!-- Dangling Vintage Phone Graphic -->
-  <span style="position:absolute;top:130px;left:-14px;z-index:2;pointer-events:none;display:block;width:clamp(50px,4.6vw,66px);transform-origin:50% 0;animation:dangle 5.2s ease-in-out infinite">
-    <span style="position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(-7deg);width:74px;height:20px;background:rgba(240,165,0,.5);border:1px dashed rgba(0,0,0,.22);z-index:2"></span>
-    <img 
-      src="/assets/tele-cut.webp" 
-      alt="Dangling telephone" 
-      width="66" 
-      height="66" 
-      loading="lazy" 
-      decoding="async" 
-      style="display:block;width:100%;height:auto;filter:drop-shadow(3px 4px 0 rgba(36,26,18,.22))" 
+  <!-- Dangling Vintage Phone Graphic. Falls back to the CSS dangle; the script
+       upgrades it to a swinging, draggable body once physics is live. -->
+  <span id="faq-phone" class="faq-phone">
+    <img
+      src="/assets/tele-cut.webp"
+      alt="Dangling telephone"
+      width="66"
+      height="66"
+      loading="lazy"
+      decoding="async"
+      style="display:block;width:100%;height:auto;filter:drop-shadow(3px 4px 0 rgba(36,26,18,.22))"
     />
   </span>
+  <!-- The tape stays stuck to the wall when the phone is pulled off it. -->
+  <span class="faq-phone-tape" aria-hidden="true"></span>
 
   <h2 style="margin:0 0 30px;text-align:right;font-family:'Futura','Jost','Century Gothic',sans-serif;font-size:clamp(40px,7vw,80px);letter-spacing:-.03em;line-height:.85;text-shadow:2px 0 0 rgba(226,59,46,.42),-2px 1px 0 rgba(47,143,208,.34)">{faq.heading}</h2>
 
@@ -61,6 +63,46 @@ const cardStyle = [
 </section>
 
 <style>
+  .faq-phone {
+    position: absolute;
+    top: 130px;
+    left: -14px;
+    z-index: 5;
+    display: block;
+    width: clamp(50px, 4.6vw, 66px);
+    pointer-events: none;
+    transform-origin: 50% 0;
+    animation: dangle 5.2s ease-in-out infinite;
+  }
+
+  /* Physics has taken over: the script owns the transform, and the phone
+     becomes grabbable. */
+  .faq-phone.is-live {
+    animation: none;
+    pointer-events: auto;
+    cursor: grab;
+    touch-action: none;
+    will-change: transform;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .faq-phone.is-live img { -webkit-user-drag: none; }
+  .faq-phone.is-held { cursor: grabbing; }
+
+  .faq-phone-tape {
+    position: absolute;
+    top: 124px;
+    left: calc(-14px + clamp(50px, 4.6vw, 66px) / 2);
+    z-index: 6;
+    width: 74px;
+    height: 20px;
+    transform: translateX(-50%) rotate(-7deg);
+    background: rgba(240, 165, 0, .5);
+    border: 1px dashed rgba(0, 0, 0, .22);
+    pointer-events: none;
+  }
+
   /* The right-hand stamp block is pure decoration; on a phone the question
      needs the whole card, so that column is dropped rather than squeezed. */
   @media (max-width: 620px) {
@@ -78,4 +120,454 @@ const cardStyle = [
       display: none !important;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-phone { animation: none; }
+  }
 </style>
+
+<script>
+  // Physics for the dangling phone: a damped pendulum on the tape, a free rigid
+  // body once it is pulled off. Cards act as one-way platforms, so the phone can
+  // be dropped onto one and will bounce, rock, and settle flat on it.
+  //
+  // Every constant that shapes how heavy or how lively it feels lives in CFG —
+  // the values are deliberately soft-tuned so the motion stays graceful.
+  const CFG = {
+    gravity: 1500,      // px/s², free-fall acceleration
+    swingW0: 2.4,       // pendulum angular frequency (rad/s) — ~2.6s per swing
+    swingDamp: 0.5,     // pendulum damping (1/s)
+    swingMax: 0.85,     // rad — hard stop, so it never wraps over the tape
+    breeze: 0.2,        // idle sway torque (rad/s²) so it is never dead still
+    pushRadius: 120,    // px — how close the cursor has to sweep to shove it
+    pushGain: 0.008,    // rad/s² per px/s of cursor speed (hanging)
+    pushMax: 3.2,       // rad/s — ceiling on swing speed from cursor shoves
+    nudgeGain: 0.5,     // px/s² per px/s of cursor speed (free body)
+    nudgeMax: 320,      // px/s — ceiling on a cursor shove
+    tapImpulse: 1.6,    // rad/s added by a tap while hanging
+    tearDistance: 34,   // px past the rope before the tape lets go
+    restitution: 0.3,   // bounce retained on impact
+    friction: 0.72,     // tangential speed retained on impact
+    slopeFriction: 0.42,// static friction holding it on a tilted card
+    airDrag: 0.5,       // 1/s
+    spinDamp: 2.4,      // 1/s
+    settleK: 30,        // angle spring pulling it flat onto a surface
+    settleDamp: 8,
+    throwMax: 900,      // px/s cap on a flung release
+    sleepV: 9,          // px/s below which a resting body falls asleep
+    sleepW: 0.12,       // rad/s
+    returnMs: 460,      // double-tap fly-back duration
+  };
+
+  type Mode = 'hang' | 'hangDrag' | 'free' | 'freeDrag' | 'rest' | 'return';
+  interface Surface { x0: number; x1: number; y: number; angle: number; }
+
+  const clamp = (v: number, lo: number, hi: number) => (v < lo ? lo : v > hi ? hi : v);
+
+  function setupFaqPhone() {
+    const section = document.getElementById('faq');
+    const phone = document.getElementById('faq-phone');
+    if (!section || !phone) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    phone.classList.add('is-live');
+
+    // --- Geometry -----------------------------------------------------------
+    let w = 0, h = 0;      // laid-out size of the phone
+    let ox = 0, oy = 0;    // its untransformed top-left, in section coordinates
+    let ax = 0, ay = 0;    // the tape pivot
+    let surfaces: Surface[] = [];
+
+    function measure() {
+      w = phone.offsetWidth;
+      h = phone.offsetHeight || w;   // the image may not have loaded yet
+      ox = phone.offsetLeft;
+      oy = phone.offsetTop;
+      ax = ox + w / 2;
+      ay = oy;
+
+      const sr = section.getBoundingClientRect();
+      const next: Surface[] = [];
+      section.querySelectorAll('.faq-card').forEach((node) => {
+        const card = node as HTMLElement;
+        const r = card.getBoundingClientRect();
+        const tf = getComputedStyle(card).transform;
+        const m = tf && tf !== 'none' ? new DOMMatrixReadOnly(tf) : null;
+        const angle = m ? Math.atan2(m.b, m.a) : 0;
+        // getBoundingClientRect is the *bounding* box of a rotated card, so the
+        // real top edge is derived from the centre and the laid-out size.
+        const midX = (r.left + r.right) / 2 - sr.left;
+        const midY = (r.top + r.bottom) / 2 - sr.top;
+        const span = (card.offsetWidth * Math.cos(angle)) / 2;
+        next.push({
+          x0: midX - span + 14,
+          x1: midX + span - 14,
+          y: midY - (card.offsetHeight * Math.cos(angle)) / 2 + 2,
+          angle,
+        });
+      });
+      // The section floor, so the phone can never leave the block.
+      next.push({ x0: -1e4, x1: 1e4, y: section.clientHeight - 12, angle: 0 });
+      surfaces = next;
+    }
+
+    // Lowest point of the phone below its centre, for the current tilt.
+    const halfDrop = (a: number) =>
+      (h * Math.abs(Math.cos(a)) + w * Math.abs(Math.sin(a))) / 2;
+
+    // --- State --------------------------------------------------------------
+    let mode: Mode = 'hang';
+    let th = 0, om = 0;                       // pendulum angle / angular velocity
+    let cx = 0, cy = 0, vx = 0, vy = 0;       // free body centre / velocity
+    let ang = 0, av = 0;                      // free body tilt / spin
+    let grabDX = 0, grabDY = 0, dragId = -1;
+    let retT = 0, retX = 0, retY = 0, retA = 0;
+    let px = 0, py = 0, pvx = 0, pvy = 0;     // pointer position / velocity
+    let pointerLive = false;
+
+    function render() {
+      if (mode === 'hang' || mode === 'hangDrag') {
+        phone.style.transformOrigin = '50% 0';
+        phone.style.transform = `rotate(${th}rad)`;
+      } else {
+        phone.style.transformOrigin = '50% 50%';
+        const dx = cx - (ox + w / 2);
+        const dy = cy - (oy + h / 2);
+        phone.style.transform = `translate(${dx}px, ${dy}px) rotate(${ang}rad)`;
+      }
+    }
+
+    // A CSS rotation about the top centre puts the phone's centre here.
+    const hangCentreX = () => ax - (h / 2) * Math.sin(th);
+    const hangCentreY = () => ay + (h / 2) * Math.cos(th);
+
+    function toFree() {
+      cx = hangCentreX();
+      cy = hangCentreY();
+      vx = -(h / 2) * Math.cos(th) * om;
+      vy = -(h / 2) * Math.sin(th) * om;
+      ang = th;
+      av = om * 0.5;
+      mode = 'free';
+    }
+
+    function toHang() {
+      const dx = cx - ax;
+      const dy = cy - ay;
+      th = clamp(Math.atan2(-dx, Math.max(dy, 1)), -CFG.swingMax, CFG.swingMax);
+      om = clamp(-vx / (h / 2), -2.4, 2.4);
+      mode = 'hang';
+    }
+
+    // --- Integration --------------------------------------------------------
+    function stepHanging(dt: number, now: number) {
+      const breeze =
+        CFG.breeze * (Math.sin(now * 0.53) * 0.6 + Math.sin(now * 0.31 + 1.7) * 0.4);
+      om += (-(CFG.swingW0 ** 2) * Math.sin(th) + breeze) * dt;
+      om -= om * CFG.swingDamp * dt;
+
+      // A cursor sweeping past shoves the phone away from itself.
+      if (pointerLive) {
+        const d = Math.hypot(hangCentreX() - px, hangCentreY() - py);
+        const speed = Math.hypot(pvx, pvy);
+        if (d < CFG.pushRadius && speed > 40) {
+          const falloff = 1 - d / CFG.pushRadius;
+          const away = hangCentreX() > px ? 1 : -1;
+          // +theta swings left, so a rightward shove is a negative torque.
+          om += -away * Math.min(speed * CFG.pushGain * falloff, 26) * dt;
+        }
+      }
+
+      om = clamp(om, -CFG.pushMax, CFG.pushMax);
+      th += om * dt;
+      if (th > CFG.swingMax) { th = CFG.swingMax; om = Math.min(om, 0) * 0.6; }
+      if (th < -CFG.swingMax) { th = -CFG.swingMax; om = Math.max(om, 0) * 0.6; }
+    }
+
+    function stepFree(dt: number) {
+      vy += CFG.gravity * dt;
+      const drag = Math.exp(-CFG.airDrag * dt);
+      vx *= drag;
+      vy *= drag;
+      av *= Math.exp(-CFG.spinDamp * dt);
+
+      if (pointerLive) {
+        const d = Math.hypot(cx - px, cy - py);
+        const speed = Math.hypot(pvx, pvy);
+        if (d < CFG.pushRadius && speed > 40) {
+          const falloff = 1 - d / CFG.pushRadius;
+          const push = Math.min(speed * CFG.nudgeGain * falloff, CFG.nudgeMax);
+          const away = Math.atan2(cy - py, cx - px);
+          vx += Math.cos(away) * push * dt * 6;
+          vy += Math.sin(away) * push * dt * 6;
+        }
+      }
+
+      const prevBottom = cy + halfDrop(ang);
+      cx += vx * dt;
+      cy += vy * dt;
+      ang += av * dt;
+      ang = ((ang + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
+
+      // Side walls of the section.
+      const lo = 10;
+      const hi = Math.max(lo + 1, section.clientWidth - 10);
+      if (cx < lo) { cx = lo; vx = Math.abs(vx) * CFG.restitution; }
+      if (cx > hi) { cx = hi; vx = -Math.abs(vx) * CFG.restitution; }
+
+      // Cards are one-way platforms: only caught on the way down, so the phone
+      // can never end up trapped inside one.
+      let contact: Surface | null = null;
+      if (vy >= 0) {
+        for (const s of surfaces) {
+          if (cx < s.x0 || cx > s.x1) continue;
+          const drop = halfDrop(ang);
+          if (prevBottom <= s.y + 2 && cy + drop >= s.y) {
+            cy = s.y - drop;
+            if (vy > 90) {
+              vy = -vy * CFG.restitution;
+              av += -vx * 0.004 + (Math.random() - 0.5) * 0.35;
+            } else {
+              vy = 0;
+            }
+            vx *= CFG.friction;
+            contact = s;
+            break;
+          }
+        }
+      }
+
+      if (!contact) return;
+
+      // Landed: ease flat onto the surface, and creep downhill only if the tilt
+      // actually beats friction (the cards barely lean, so it just parks).
+      const off = ang - contact.angle;
+      av += (-CFG.settleK * off - CFG.settleDamp * av) * dt;
+      if (Math.abs(Math.tan(contact.angle)) > CFG.slopeFriction) {
+        vx += CFG.gravity * Math.sin(contact.angle) * dt;
+      } else {
+        vx *= Math.exp(-6 * dt);
+      }
+
+      if (
+        Math.abs(vx) < CFG.sleepV && Math.abs(vy) < CFG.sleepV &&
+        Math.abs(av) < CFG.sleepW && Math.abs(off) < 0.02
+      ) {
+        ang = contact.angle;
+        vx = vy = av = 0;
+        mode = 'rest';
+      }
+    }
+
+    function stepDragHang(dt: number) {
+      const dx = px - ax;
+      const dy = py - ay;
+      const target = clamp(Math.atan2(-dx, Math.max(dy, 1)), -CFG.swingMax, CFG.swingMax);
+      const prev = th;
+      th += (target - th) * (1 - Math.exp(-18 * dt));
+      om = clamp((th - prev) / Math.max(dt, 1e-3), -CFG.pushMax, CFG.pushMax);
+      // Pull hard enough and the tape gives way.
+      if (Math.hypot(dx, dy) > h / 2 + CFG.tearDistance) {
+        toFree();
+        mode = 'freeDrag';
+        grabDX = cx - px;
+        grabDY = cy - py;
+      }
+    }
+
+    function stepDragFree(dt: number) {
+      const tx = clamp(px + grabDX, 6, Math.max(7, section.clientWidth - 6));
+      const ty = clamp(py + grabDY, -40, section.clientHeight - 10);
+      const k = 1 - Math.exp(-22 * dt);
+      const nx = cx + (tx - cx) * k;
+      const ny = cy + (ty - cy) * k;
+      vx = (nx - cx) / Math.max(dt, 1e-3);
+      vy = (ny - cy) / Math.max(dt, 1e-3);
+      cx = nx;
+      cy = ny;
+      // It trails behind the hand a little as it is carried.
+      const lean = clamp(vx * 0.0006, -0.5, 0.5);
+      av += ((lean - ang) * 40 - av * 9) * dt;
+      ang += av * dt;
+    }
+
+    function stepReturn(dt: number) {
+      retT = Math.min(1, retT + (dt * 1000) / CFG.returnMs);
+      const e = 1 - Math.pow(1 - retT, 3);
+      cx = retX + (ax - retX) * e;
+      cy = retY + (ay + h / 2 - retY) * e;
+      ang = retA * (1 - e);
+      if (retT >= 1) {
+        th = 0;
+        om = 0.7;          // a small swing as it takes up the slack
+        mode = 'hang';
+      }
+    }
+
+    // --- Loop ---------------------------------------------------------------
+    let raf = 0;
+    let last = 0;
+    let visible = true;
+
+    function frame(ts: number) {
+      raf = 0;
+      const dt = Math.min(0.033, last ? (ts - last) / 1000 : 0.016);
+      last = ts;
+      const now = ts / 1000;
+
+      if (mode === 'hang') stepHanging(dt, now);
+      else if (mode === 'hangDrag') stepDragHang(dt);
+      else if (mode === 'free') stepFree(dt);
+      else if (mode === 'freeDrag') stepDragFree(dt);
+      else if (mode === 'return') stepReturn(dt);
+
+      // The pointer only pushes while it is actually moving.
+      pvx *= 0.72;
+      pvy *= 0.72;
+
+      render();
+      if (mode !== 'rest' && visible) raf = requestAnimationFrame(frame);
+    }
+
+    function wake() {
+      if (!visible || raf) return;
+      last = 0;
+      raf = requestAnimationFrame(frame);
+    }
+
+    // --- Input --------------------------------------------------------------
+    function toLocal(e: PointerEvent) {
+      const r = section.getBoundingClientRect();
+      const nx = e.clientX - r.left;
+      const ny = e.clientY - r.top;
+      pvx = nx - px;
+      pvy = ny - py;
+      px = nx;
+      py = ny;
+      pointerLive = true;
+    }
+
+    section.addEventListener('pointermove', (e) => {
+      const r = section.getBoundingClientRect();
+      const nx = e.clientX - r.left;
+      const ny = e.clientY - r.top;
+      // Screen-space velocity, scaled to px/s for the push terms.
+      pvx = (nx - px) * 60;
+      pvy = (ny - py) * 60;
+      px = nx;
+      py = ny;
+      pointerLive = true;
+      if (mode === 'rest') {
+        const d = Math.hypot(cx - px, cy - py);
+        if (d < CFG.pushRadius) { mode = 'free'; wake(); }
+      } else {
+        wake();
+      }
+    }, { passive: true });
+
+    section.addEventListener('pointerleave', () => { pointerLive = false; });
+
+    let tapAt = 0;
+    let downAt = 0;
+    let downX = 0, downY = 0;
+
+    phone.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      phone.setPointerCapture(e.pointerId);
+      dragId = e.pointerId;
+      downAt = performance.now();
+      downX = e.clientX;
+      downY = e.clientY;
+      toLocal(e);
+      pvx = pvy = 0;
+      phone.classList.add('is-held');
+      if (mode === 'hang') {
+        mode = 'hangDrag';
+      } else {
+        if (mode === 'rest') mode = 'free';
+        grabDX = cx - px;
+        grabDY = cy - py;
+        mode = 'freeDrag';
+      }
+      wake();
+    });
+
+    phone.addEventListener('pointermove', (e) => {
+      if (e.pointerId !== dragId) return;
+      const r = section.getBoundingClientRect();
+      px = e.clientX - r.left;
+      py = e.clientY - r.top;
+      wake();
+    });
+
+    function endDrag(e: PointerEvent) {
+      if (e.pointerId !== dragId) return;
+      dragId = -1;
+      phone.classList.remove('is-held');
+      if (phone.hasPointerCapture(e.pointerId)) phone.releasePointerCapture(e.pointerId);
+
+      const quick = performance.now() - downAt < 220 &&
+        Math.hypot(e.clientX - downX, e.clientY - downY) < 8;
+
+      if (quick && performance.now() - tapAt < 320) {
+        // Double tap / double click sends it back to the tape.
+        tapAt = 0;
+        if (mode !== 'hang' && mode !== 'hangDrag') {
+          retT = 0; retX = cx; retY = cy; retA = ang;
+          mode = 'return';
+          wake();
+          return;
+        }
+      }
+      if (quick) tapAt = performance.now();
+
+      if (mode === 'hangDrag') {
+        mode = 'hang';
+        if (quick) om += (px < ax ? -1 : 1) * CFG.tapImpulse;
+      } else if (mode === 'freeDrag') {
+        vx = clamp(vx, -CFG.throwMax, CFG.throwMax);
+        vy = clamp(vy, -CFG.throwMax, CFG.throwMax);
+        // Dropped back over the tape? It hangs itself up again.
+        const pivotX = cx + (h / 2) * Math.sin(ang);
+        const pivotY = cy - (h / 2) * Math.cos(ang);
+        if (Math.hypot(pivotX - ax, pivotY - ay) < 78) toHang();
+        else mode = 'free';
+      }
+      wake();
+    }
+
+    phone.addEventListener('pointerup', endDrag);
+    phone.addEventListener('pointercancel', endDrag);
+
+    // --- Lifecycle ----------------------------------------------------------
+    let resizeTimer = 0;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        measure();
+        if (mode === 'rest') mode = 'free';   // the cards moved under it
+        wake();
+      }, 150);
+    });
+
+    const img = phone.querySelector('img');
+    if (img && !img.complete) img.addEventListener('load', () => { measure(); wake(); }, { once: true });
+
+    // Idle off-screen: no simulation while the section is out of view.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        visible = entries[0].isIntersecting;
+        if (visible) wake();
+        else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      }, { rootMargin: '120px' }).observe(section);
+    }
+
+    measure();
+    th = 0.14;
+    om = 0.35;
+    render();
+    wake();
+  }
+
+  document.addEventListener('DOMContentLoaded', setupFaqPhone);
+</script>
