@@ -207,10 +207,18 @@ export interface AlumniSponsor {
   batch: string;
 }
 
+export interface PreviousSponsor {
+  name: string;
+  /** Omitted for sponsors without a logo file yet — the card falls back to a text-only treatment. */
+  logo?: string;
+}
+
 export interface SponsorsContent {
   heading: string;
   subheading: string;
   tiers: SponsorTier[];
+  previousSponsorsHeading: string;
+  previousSponsors: PreviousSponsor[];
   alumniIntro: string;
   alumni: AlumniSponsor[];
 }
@@ -729,6 +737,17 @@ const sponsors: SponsorsContent = {
         { label: "Partner 4", alt: "Partner 4", logo: "/assets/logo-val.webp" },
       ],
     },
+  ],
+  previousSponsorsHeading: "Previous Sponsors",
+  previousSponsors: [
+    { name: "Wavicle Data Solutions", logo: "/assets/wavicle.jpg" },
+    { name: "Foxsense Innovations", logo: "/assets/foxsense.jpeg" },
+    { name: "The Cloud Company", logo: "/assets/thecloudcompany.jpg" },
+    { name: "Shankar IAS Academy", logo: "/assets/shankariasacademy.jpg" },
+    { name: "Zee Taurus", logo: "/assets/zeetaurus.png" },
+    { name: "Triumph Hub", logo: "/assets/triumphhub.jpg" },
+    { name: "Frozen Stick", logo: "/assets/frozenstick.jpg" },
+    { name: "Speed Step", logo: "/assets/speedstep.png" },
   ],
   alumniIntro: "With gratitude to the graduates who keep the lights on.",
   alumni: [

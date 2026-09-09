@@ -16,7 +16,8 @@ const tileSizing: Record<string, { minWidth: string; height: string; maxHeight: 
   <div style="font-family:'Shrikhand',serif;font-size:clamp(16px,2.4vw,22px);color:var(--r6);transform:rotate(2.2deg);margin:-22px 0 28px;display:inline-block">{sponsors.subheading}</div>
 
   <div style="display:flex;flex-direction:column;gap:20px">
-    {sponsors.tiers.map((tier) => {
+    {/* Event Sponsors and Partners tiers hidden */}
+    {sponsors.tiers.filter((tier) => tier.title !== 'Event Sponsors' && tier.title !== 'Partners').map((tier) => {
       const sizing = tileSizing[tier.title] ?? tileSizing['Partners'];
       const showLabels = tier.title !== 'Partners';
       return (
@@ -56,7 +57,29 @@ const tileSizing: Record<string, { minWidth: string; height: string; maxHeight: 
       );
     })}
 
-    <!-- Alumni Sponsors -->
+    <div style="background:var(--card);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:20px">
+      <div style="display:flex;align-items:center;gap:12px;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--acc);margin-bottom:16px">
+        ◆ {sponsors.previousSponsorsHeading}<span style="height:2px;flex:1;background:var(--line)"></span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:26px 24px">
+        {sponsors.previousSponsors.map((sponsor) => (
+          <div
+            class="ecard"
+            style="position:relative;background:var(--card);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:22px 20px;min-height:144px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px"
+          >
+            {sponsor.logo ? (
+              <img src={sponsor.logo} alt={sponsor.name} loading="lazy" decoding="async" style="max-width:100%;max-height:90px;width:auto;height:auto;object-fit:contain" />
+            ) : (
+              <span style="font-family:inherit;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)">◆ Sponsor</span>
+            )}
+            <h4 style="margin:0;font-family:inherit;font-size:16px;font-weight:700;text-align:center">{sponsor.name}</h4>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!--
+    Alumni Sponsors
     <div style="background:var(--card);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:20px">
       <div style="display:flex;align-items:center;gap:12px;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--acc);margin-bottom:6px">
         ◆ Alumni Sponsors<span style="height:2px;flex:1;background:var(--line)"></span>
@@ -68,5 +91,6 @@ const tileSizing: Record<string, { minWidth: string; height: string; maxHeight: 
         ))}
       </div>
     </div>
+    -->
   </div>
 </section>
