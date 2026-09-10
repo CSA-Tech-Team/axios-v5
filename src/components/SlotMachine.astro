@@ -71,10 +71,10 @@ const faceStyle = (f: Extract<Face, { text: string }>) =>
        showing between them, which read as a red line along the seam with the
        section below. The bottom is a clean straight cut instead. -->
 
-  <div style="max-width:1180px;margin:0 auto;padding:0 24px">
+  <div class="slot-wrap" style="max-width:1180px;margin:0 auto;padding:0 24px">
     <div class="slot-frame" style="display:inline-block;position:relative;margin:30px 74px 30px 0;transform:rotate(-1deg);max-width:calc(100% - 74px)">
       <!-- Hanger Clip Tab on top of frame -->
-      <span aria-hidden="true" style="position:absolute;left:50%;top:-30px;transform:translateX(-50%);display:block;width:36px;height:36px">
+      <span class="slot-hanger" aria-hidden="true" style="position:absolute;left:50%;top:-30px;transform:translateX(-50%);display:block;width:36px;height:36px">
         <span style="position:absolute;left:50%;transform:translateX(-50%);top:0;width:24px;height:15px;background:var(--acc);border:3px solid var(--ink)"></span>
         <span style="position:absolute;left:50%;transform:translateX(-50%);top:14px;width:36px;height:22px;background:var(--acc2);border:3px solid var(--ink)"></span>
       </span>
@@ -82,20 +82,20 @@ const faceStyle = (f: Extract<Face, { text: string }>) =>
       <!-- Cabinet Card Frame -->
       <div id="slot-cabinet" style="position:relative;background:var(--card);color:var(--ink);border:4px solid var(--ink);box-shadow:10px 10px 0 var(--ink);padding:16px 20px 18px">
         <!-- Frame Header -->
-        <div style="text-align:center;font-family:'Futura','Jost','Century Gothic',sans-serif;font-weight:900;font-size:clamp(28px,3.6vw,46px);letter-spacing:-.01em;line-height:.9;color:var(--ink);margin:2px 0 12px;text-shadow:2px 0 0 rgba(226,59,46,.42),-2px 1px 0 rgba(47,143,208,.34)">
+        <div class="slot-title" style="text-align:center;font-family:'Futura','Jost','Century Gothic',sans-serif;font-weight:900;font-size:clamp(28px,3.6vw,46px);letter-spacing:-.01em;line-height:.9;color:var(--ink);margin:2px 0 12px;text-shadow:2px 0 0 rgba(226,59,46,.42),-2px 1px 0 rgba(47,143,208,.34)">
           GRAB YOUR PASS
         </div>
 
         <!-- 3 Reels Container -->
-        <div style="position:relative;background:var(--ink);padding:12px;display:flex;gap:12px;justify-content:center">
+        <div class="slot-reels" style="position:relative;background:var(--ink);padding:12px;display:flex;gap:12px;justify-content:center">
           {REELS.map((strip, i) => (
-            <span style="display:block;position:relative;width:clamp(108px,15vw,206px);height:270px;overflow:hidden;background:var(--wcard)">
+            <span class="slot-reel" style="display:block;position:relative;width:clamp(108px,15vw,206px);height:270px;overflow:hidden;background:var(--wcard)">
               <span aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(36,26,18,.5) 0%,rgba(36,26,18,.12) 18%,rgba(255,255,255,0) 34%,rgba(255,255,255,.42) 50%,rgba(255,255,255,0) 66%,rgba(36,26,18,.12) 82%,rgba(36,26,18,.5) 100%)"></span>
               <span id={`reel-${i + 1}`} style="display:block;transform:translateY(-30px)">
                 {strip.map((key) => {
                   const face = FACES[key];
                   return (
-                    <span style="display:grid;place-items:center;height:110px">
+                    <span class="slot-face" style="display:grid;place-items:center;height:110px">
                       {'svg' in face
                         ? <Fragment set:html={face.svg} />
                         : <span style={faceStyle(face)}>{face.text}</span>}
@@ -108,18 +108,18 @@ const faceStyle = (f: Extract<Face, { text: string }>) =>
         </div>
 
         <!-- Reel Result Footer Message -->
-        <div style="margin:14px 8px 0;padding:6px 14px;text-align:center;font-family:'Shrikhand',serif;font-size:clamp(16px,2.3vw,24px);letter-spacing:.08em;line-height:1.15;color:var(--acc)">
+        <div class="slot-msgbox" style="margin:14px 8px 0;padding:6px 14px;text-align:center;font-family:'Shrikhand',serif;font-size:clamp(16px,2.3vw,24px);letter-spacing:.08em;line-height:1.15;color:var(--acc)">
           <span id="slot-msg" style="display:inline-block">pull the lever</span>
         </div>
       </div>
 
       <!-- Twinkle Sparkles around Cabinet -->
       <div id="slot-sparkles" style="display:none">
-        <span aria-hidden="true" style="position:absolute;left:-22px;top:-26px;color:var(--acc);font-size:30px;pointer-events:none;animation:twk 1.3s ease-in-out infinite">✶</span>
-        <span aria-hidden="true" style="position:absolute;right:26%;top:-34px;color:var(--acc2);font-size:24px;pointer-events:none;animation:twk 1.3s ease-in-out .35s infinite">✶</span>
-        <span aria-hidden="true" style="position:absolute;right:-28px;top:60px;color:var(--r5);font-size:34px;pointer-events:none;animation:twk 1.3s ease-in-out .6s infinite">✶</span>
-        <span aria-hidden="true" style="position:absolute;left:-28px;bottom:90px;color:var(--acc2);font-size:22px;pointer-events:none;animation:twk 1.3s ease-in-out .85s infinite">✶</span>
-        <span aria-hidden="true" style="position:absolute;right:-16px;bottom:-16px;color:var(--acc);font-size:26px;pointer-events:none;animation:twk 1.3s ease-in-out 1.05s infinite">✶</span>
+        <span class="spk1" aria-hidden="true" style="position:absolute;left:-22px;top:-26px;color:var(--acc);font-size:30px;pointer-events:none;animation:twk 1.3s ease-in-out infinite">✶</span>
+        <span class="spk2" aria-hidden="true" style="position:absolute;right:26%;top:-34px;color:var(--acc2);font-size:24px;pointer-events:none;animation:twk 1.3s ease-in-out .35s infinite">✶</span>
+        <span class="spk3" aria-hidden="true" style="position:absolute;right:-28px;top:60px;color:var(--r5);font-size:34px;pointer-events:none;animation:twk 1.3s ease-in-out .6s infinite">✶</span>
+        <span class="spk4" aria-hidden="true" style="position:absolute;left:-28px;bottom:90px;color:var(--acc2);font-size:22px;pointer-events:none;animation:twk 1.3s ease-in-out .85s infinite">✶</span>
+        <span class="spk5" aria-hidden="true" style="position:absolute;right:-16px;bottom:-16px;color:var(--acc);font-size:26px;pointer-events:none;animation:twk 1.3s ease-in-out 1.05s infinite">✶</span>
       </div>
 
       <!-- Lever Mechanism -->
@@ -150,18 +150,75 @@ const faceStyle = (f: Extract<Face, { text: string }>) =>
 </section>
 
 <style>
-  /* The lever hangs outside the cabinet, so the cabinet reserves margin for it.
-     On phones both shrink together to keep the lever fully on screen. */
-  @media (max-width: 560px) {
+  /* On desktop the lever hangs outside the frame, which reserves margin for it.
+     Below desktop the frame reserves that room as padding instead, so the lever
+     sits inside the frame's own box and cannot spill past it. The cabinet keeps
+     its size and place; the hanger and right-hand sparkles shift by the padding
+     so they stay where they were relative to the cabinet. */
+  @media (max-width: 1023px) {
     .slot-frame {
-      margin-right: 56px !important;
-      max-width: calc(100% - 56px) !important;
+      box-sizing: border-box;
+      padding-right: 62px;
+      margin-right: 12px !important;
+      max-width: calc(100% - 12px) !important;
     }
 
-    .slot-lever {
-      right: -46px !important;
-      width: 52px !important;
+    .slot-lever { right: 0 !important; }
+    .slot-hanger { left: calc(50% - 31px) !important; }
+    .spk2 { right: calc(46px + 26%) !important; }
+    .spk3 { right: 34px !important; }
+    .spk5 { right: 46px !important; }
+    /* The frame's tilt swings its lower-left corner outward, so this one
+       sits a little further in than on desktop to stay on screen. */
+    .spk4 { left: -14px !important; }
+  }
+
+  /* Phones: a slimmer lever, tighter cabinet padding and reel gutters so the
+     three windows keep usable width, and faces scaled down (zoom on the face content only, so
+     the 110px face pitch and the jackpot line are untouched). */
+  @media (max-width: 560px) {
+    .slot-wrap { padding: 0 16px !important; }
+
+    .slot-frame {
+      padding-right: 46px;
+      margin-right: 8px !important;
+      max-width: calc(100% - 8px) !important;
     }
+
+    .slot-lever { width: 52px !important; }
+    .slot-hanger { left: calc(50% - 23px) !important; }
+
+    #slot-cabinet { padding: 14px 10px 14px !important; }
+    .slot-title { font-size: min(28px, 7.2vw) !important; }
+    .slot-reels { padding: 7px !important; gap: 7px !important; }
+    .slot-face > :global(*) { zoom: .84; }
+    .slot-msgbox { margin: 12px 0 0 !important; padding: 6px 2px !important; }
+    /* The jackpot line wraps on phones; balance it so the star never sits
+       alone on the second line. */
+    #slot-msg { text-wrap: balance; }
+
+    .spk1 { left: -10px !important; }
+    .spk2 { right: calc(34px + 26%) !important; }
+    .spk3 { right: 16px !important; top: 40px !important; }
+    .spk4 { left: -2px !important; }
+    .spk5 { right: 30px !important; }
+  }
+
+  @media (max-width: 400px) {
+    .slot-face > :global(*) { zoom: .74; }
+  }
+
+  @media (max-width: 380px) {
+    .slot-wrap { padding: 0 12px !important; }
+    .slot-frame { margin-right: 6px !important; max-width: calc(100% - 6px) !important; }
+    #slot-cabinet { padding: 12px 8px !important; }
+    .slot-reels { padding: 5px !important; gap: 5px !important; }
+    .slot-face > :global(*) { zoom: .7; }
+    .slot-msgbox { font-size: 15px !important; }
+  }
+
+  @media (max-width: 340px) {
+    .slot-face > :global(*) { zoom: .6; }
   }
 </style>
 

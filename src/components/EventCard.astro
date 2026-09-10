@@ -29,7 +29,7 @@ const prizeSize = ev.prize.trim().startsWith('₹') ? '20px' : '16px';
   id={`e-${ev.key}`}
   class="ecard"
   data-open={ev.key}
-  style={`position:relative;background:var(--card);${cardStyle?.border ?? 'border:2px solid var(--ink);'}padding:22px 20px;box-shadow:5px 5px 0 ${cardStyle?.shadow ?? 'var(--ink)'};transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;scroll-margin-top:70px;transform:${cardStyle?.rotate ?? 'none'};cursor:pointer`}
+  style={`position:relative;background:var(--card);${cardStyle?.border ?? 'border:2px solid var(--ink);'}padding:22px 20px;--shade:${cardStyle?.shadow ?? 'var(--ink)'};--tilt:${cardStyle?.rotate ?? 'rotate(0deg)'};display:flex;flex-direction:column;scroll-margin-top:70px;cursor:pointer`}
 >
   {ev.isSignature && signatureBadge && (
     <div style="position:absolute;top:-16px;left:-12px;z-index:5;transform:rotate(-10deg);display:flex;flex-direction:column;align-items:center;gap:1px;pointer-events:none">
@@ -43,6 +43,70 @@ const prizeSize = ev.prize.trim().startsWith('₹') ? '20px' : '16px';
   <div style="font-size:14px;line-height:1.5;color:var(--ink2);flex:1">{ev.shortDescription}</div>
   <div style="margin-top:16px;padding-top:14px;border-top:1.5px dashed var(--line);display:flex;justify-content:space-between;align-items:baseline">
     <span style="font-family:inherit;font-size:11px;color:var(--ink2)">{prizeLabel}</span>
-    <span style={`font-size:${prizeSize};font-weight:800;color:var(--acc)`}>{ev.prize}</span>
+    <span data-prize style={`font-size:${prizeSize};font-weight:800;color:var(--acc);font-variant-numeric:tabular-nums;text-align:right`}>{ev.prize}</span>
   </div>
 </div>
+
+<style>
+  /* ACHRONOS motion, kept to the site's hard offsets and stepped timing: amber
+     is the past, ink the present and teal the future, the same reading the
+     intro gives its echo layers. Tilt and shade arrive as custom properties so
+     these rules, not the inline style, own transform and box-shadow. */
+  .ecard {
+    transform: var(--tilt);
+    box-shadow: 5px 5px 0 var(--shade);
+    transition: transform .16s steps(2, end), box-shadow .16s steps(2, end);
+  }
+
+  /* Hover splits the one shadow into past, present and future. */
+  @media (hover: hover) {
+    .ecard:hover {
+      transform: var(--tilt) translate(-3px, -3px);
+      box-shadow: 4px 4px 0 var(--acc2), 8px 8px 0 var(--ink), 12px 12px 0 var(--teal);
+    }
+  }
+
+  .ecard:active {
+    transform: var(--tilt) translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--shade);
+    transition-duration: 0s;
+  }
+
+  /* The deal-in: the card lands trailing a past echo up-left and a future echo
+     down-right, and both collapse into its shadow in three ticks. The fill is
+     backwards only, so once it ends the hover rules above take over again. */
+  .ecard[data-deal='pending'] { opacity: 0; }
+
+  .ecard[data-deal='play'] {
+    animation: ecardEchoArrive .48s var(--deal-delay, 0s) backwards;
+  }
+
+  @keyframes ecardEchoArrive {
+    0% {
+      opacity: 0;
+      animation-timing-function: steps(1, end);
+    }
+    8% {
+      opacity: 1;
+      translate: 0 -14px;
+      box-shadow: -16px -8px 0 var(--acc2), 16px 8px 0 var(--teal);
+      animation-timing-function: steps(1, end);
+    }
+    40% {
+      opacity: 1;
+      translate: 0 -6px;
+      box-shadow: -7px -3px 0 var(--acc2), 5px 5px 0 var(--shade), 9px 9px 0 var(--teal);
+      animation-timing-function: steps(1, end);
+    }
+    72%, 100% {
+      opacity: 1;
+      translate: 0 0;
+      box-shadow: 5px 5px 0 var(--shade);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ecard { transition: none; }
+    .ecard[data-deal] { opacity: 1; animation: none; }
+  }
+</style>

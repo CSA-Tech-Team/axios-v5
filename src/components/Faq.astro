@@ -100,6 +100,31 @@ const cardStyle = [
     pointer-events: none;
   }
 
+  /* Below desktop the section starts at the screen edge, so the phone and tape
+     at left:-14px would be sliced by the viewport. Pull them inside, slimmer,
+     so the handset stays clear of the card text. */
+  @media (max-width: 1023px) {
+    .faq-phone {
+      left: 4px;
+      width: 36px;
+    }
+
+    .faq-phone-tape {
+      left: 27px;
+      width: 44px;
+      height: 18px;
+    }
+  }
+
+  /* Tablet two-up cards: the stamp column is narrow, so the tilted postmark
+     would poke past it; shrink it a touch. */
+  @media (min-width: 621px) and (max-width: 1023px) {
+    .faq-grid .faq-card > div:last-child > div:first-child > span:last-child {
+      width: 52px !important;
+      height: 52px !important;
+    }
+  }
+
   /* The right-hand stamp block is pure decoration; on a phone the question
      needs the whole card, so that column is dropped rather than squeezed. */
   @media (max-width: 620px) {
