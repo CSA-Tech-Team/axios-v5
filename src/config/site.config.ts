@@ -85,6 +85,12 @@ export interface LineupContent {
   nonTechnicalHeading: string;
   gamingLeadIn: string;
   gamingHeading: string;
+  /** Cover card that stands in for the gaming events until it is split open */
+  gameOver: {
+    tag: string;
+    description: string;
+    poolLabel: string;
+  };
   signatureBadge: string;
   prizeLabel: string;
 }
@@ -351,6 +357,11 @@ const lineup: LineupContent = {
   nonTechnicalHeading: "non-technical events",
   gamingLeadIn: "plus",
   gamingHeading: "GAME OVER",
+  gameOver: {
+    tag: "GAMING · 3 ARENAS",
+    description: "Three arenas for players who never press pause: a 5v5 shooter, a 1v1 pitch and a board of pure strategy. Pick your game.",
+    poolLabel: "PRIZE POOL",
+  },
   signatureBadge: "SIGNATURE",
   prizeLabel: "PRIZE",
 };

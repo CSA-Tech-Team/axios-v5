@@ -119,7 +119,17 @@ import { siteConfig } from '../config/site.config';
   /* Below this width the five links plus the CTA cannot sit on one row without
      being clipped, so they collapse into a drop panel. */
   @media (max-width: 860px) {
-    .nav-toggle { display: flex; }
+    .nav-toggle { display: flex; height: 40px; }
+
+    /* With the nav collapsed, the logos take the free space so the CTA and
+       hamburger sit flush right instead of bunching up on the left. */
+    .hdr-logos { margin-right: auto; }
+
+    .hdr-register {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+    }
 
     .topnav {
       position: absolute;
@@ -141,7 +151,7 @@ import { siteConfig } from '../config/site.config';
     .topnav[data-open='true'] { display: flex; }
 
     .topnav a {
-      padding: 13px 20px;
+      padding: 13px 18px;
       font-size: 14px;
       border-bottom: 1px solid #ffffff14;
     }
@@ -160,6 +170,7 @@ import { siteConfig } from '../config/site.config';
   @media (max-width: 380px) {
     header { gap: 8px !important; padding: 0 12px !important; }
     .hdr-logos { gap: 8px !important; }
+    .topnav a { padding-left: 12px; padding-right: 12px; }
   }
 
   @media (prefers-reduced-motion: reduce) {

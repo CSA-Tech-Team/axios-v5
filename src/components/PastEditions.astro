@@ -13,7 +13,7 @@ const [photo1, photo2, photo3, photo4] = pastEditions.photos;
       {pastEditions.paragraphs.map((paragraph) => (
         <p style="margin:20px 0 0;font-size:16px;line-height:1.55;color:var(--ink2);max-width:38ch;text-wrap:pretty">{paragraph}</p>
       ))}
-      <div style="display:flex;gap:26px;margin-top:26px;flex-wrap:wrap">
+      <div class="pe-stats" style="display:flex;gap:26px;margin-top:26px;flex-wrap:wrap">
         {pastEditions.stats.map((stat, i) => (
           <div>
             <div style={`font-family:'Anton',sans-serif;font-size:40px;line-height:.9;color:${i === 0 ? 'var(--r1)' : 'var(--acc2)'}`}>{stat.value}</div>
@@ -25,7 +25,7 @@ const [photo1, photo2, photo3, photo4] = pastEditions.photos;
 
     <!-- Right Column: Polaroid Grid -->
     <div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;align-items:start">
+      <div class="pe-photos" style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;align-items:start">
         <!-- Photo 1: Edition I -->
         <div style="background:var(--wcard);padding:9px 9px 28px;border:1px solid #0002;box-shadow:5px 7px 0 rgba(36,26,18,.18);transform:rotate(-2.2deg)">
           <span style="position:relative;display:block">
@@ -41,10 +41,10 @@ const [photo1, photo2, photo3, photo4] = pastEditions.photos;
             <span style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;background:radial-gradient(circle,#241a12 30%,transparent 32%);background-size:3.2px 3.2px;opacity:.11"></span>
             <span style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:var(--acc);opacity:.08"></span>
           </span>
-          <div style="font-family:'Shrikhand',serif;font-size:13px;color:var(--r5);text-align:center;margin-top:8px">{photo1.caption}</div>
+          <div style="font-family:'Shrikhand',serif;font-size:13px;color:var(--teal);text-align:center;margin-top:8px">{photo1.caption}</div>
         </div>
 
-        <div style="display:grid;gap:18px;align-content:start;margin-top:26px">
+        <div class="pe-stack" style="display:grid;gap:18px;align-content:start;margin-top:26px">
           <!-- Photo 2 -->
           <div style="background:var(--wcard);padding:9px 9px 9px;border:1px solid #0002;box-shadow:5px 7px 0 rgba(36,26,18,.18);transform:rotate(1.8deg)">
             <span style="position:relative;display:block">
@@ -103,7 +103,7 @@ const [photo1, photo2, photo3, photo4] = pastEditions.photos;
         </div>
       </div>
 
-      <div style="font-family:'Shrikhand',serif;font-size:19px;color:var(--r5);transform:rotate(2.6deg);margin-top:22px;text-align:right">{pastEditions.footerNote}</div>
+      <div style="font-family:'Shrikhand',serif;font-size:19px;color:var(--teal);transform:rotate(2.6deg);margin-top:22px;text-align:right">{pastEditions.footerNote}</div>
     </div>
   </div>
 </section>
@@ -116,12 +116,31 @@ const [photo1, photo2, photo3, photo4] = pastEditions.photos;
       grid-template-columns: 1fr !important;
       gap: 34px !important;
     }
+    /* Room for the tilted polaroids' corners and hard shadows, so they sit
+       inside their column instead of spilling past it. */
+    .pe-photos {
+      padding: 0 8px;
+      gap: 18px 16px !important;
+    }
+    .pe-stack {
+      padding-right: 6px;
+    }
   }
 
   @media (max-width: 560px) {
     .pe-grid {
       padding: 0 16px !important;
       gap: 26px !important;
+    }
+  }
+
+  /* Keep both stats on one row on the narrowest phones. */
+  @media (max-width: 374px) {
+    .pe-stats {
+      gap: 16px !important;
+    }
+    .pe-stats > div > div:last-child {
+      letter-spacing: .08em !important;
     }
   }
 </style>

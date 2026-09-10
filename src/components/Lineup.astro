@@ -1,6 +1,7 @@
 ---
 import { siteConfig } from '../config/site.config';
 import EventCard from './EventCard.astro';
+import GameOverDeck from './GameOverDeck.astro';
 
 const { events, lineup } = siteConfig;
 const byKey = (key: string) => {
@@ -22,16 +23,19 @@ const cardStyles: Record<string, { shadow: string; rotate: string; border?: stri
   mm: { shadow: 'var(--r6)', rotate: 'rotate(-.9deg) translateY(4px)' },
   qz: { shadow: 'var(--r5)', rotate: 'rotate(1deg) translateY(-5px)' },
   svc: { shadow: 'var(--ink)', rotate: 'rotate(.7deg)', border: 'border:2px dashed var(--ink);' },
-  // Keeps Big Bull's deep-green plate, but otherwise it is a standard card.
-  bb: { shadow: '#183c2b', rotate: 'rotate(-.6deg)' },
+  // Big Bull's deep plate is shaded from the teal so it sits with it rather
+  // than against it; otherwise it is a standard card.
+  bb: { shadow: 'var(--teal-deep)', rotate: 'rotate(-.6deg)' },
   val: { shadow: 'var(--acc2)', rotate: 'rotate(-.8deg) translateY(5px)' },
   fifa: { shadow: 'var(--ink)', rotate: 'rotate(1.1deg) translateY(-3px)' },
-  chess: { shadow: 'var(--r4)', rotate: 'rotate(-.5deg) translateY(2px)' },
+  chess: { shadow: 'var(--teal)', rotate: 'rotate(-.5deg) translateY(2px)' },
 };
 
 const technicalEvents = ['tri', 'brc', 'dq', 'mm'].map(byKey);
 // Big Bull sits in this row but renders through its own bespoke card treatment.
-const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey);
+const nonTechnicalEvents = ['qz', 'svc', 'bb'].map(byKey);
+// The Game Over events fill the next row, folded into one deck until dealt out.
+const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
 ---
 
 <section id="events" class="cv-auto" style="position:relative;z-index:2;max-width:1440px;margin:0 auto;padding:52px clamp(16px,2vw,24px)">
@@ -46,7 +50,7 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
     </div>
 
     <!-- Festival Poster Typography & Hover Previews -->
-    <span style="position:relative;display:inline-block">
+    <span class="qfactor-wall" style="position:relative;display:inline-block">
       <a
         href="#e-qz"
         data-open="qz"
@@ -99,7 +103,7 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
           data-open="dq"
           data-court-trigger="dq"
           style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s;font-size:clamp(34px,6.5vw,76px);color:var(--ink);text-shadow:3px 3px 0 var(--r3);transform:rotate(-.9deg)"
-          onmouseover="this.style.color='var(--r4)'"
+          onmouseover="this.style.color='var(--teal)'"
           onmouseout="this.style.color='var(--ink)'"
         >
           {posterName('dq')}
@@ -128,8 +132,8 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
       >
         {posterName('tri')}
       </a>
-      <span aria-hidden="true" style="position:absolute;left:-26px;top:-14px;font-size:clamp(20px,3.4vw,40px);color:var(--acc2);animation:twk 2.4s ease-in-out infinite;pointer-events:none">✦</span>
-      <span aria-hidden="true" style="position:absolute;right:-20px;top:6px;font-size:clamp(16px,2.6vw,30px);color:var(--r1);animation:twk 2.4s ease-in-out .8s infinite;pointer-events:none">✦</span>
+      <span aria-hidden="true" class="tri-spark-l" style="position:absolute;left:-26px;top:-14px;font-size:clamp(20px,3.4vw,40px);color:var(--acc2);animation:twk 2.4s ease-in-out infinite;pointer-events:none">✦</span>
+      <span aria-hidden="true" class="tri-spark-r" style="position:absolute;right:-20px;top:6px;font-size:clamp(16px,2.6vw,30px);color:var(--r1);animation:twk 2.4s ease-in-out .8s infinite;pointer-events:none">✦</span>
       <img src="/assets/triathlon-runner.webp" alt="" width="150" height="100" data-court="tri" loading="lazy" decoding="async" class="triathlon-preview" style="opacity:0;transform:translateY(-46%) rotate(-4deg) translateY(6px)" />
     </span>
 
@@ -179,7 +183,7 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
       <span style="position:relative;font-family:'Shrikhand',serif;font-size:clamp(16px,2.6vw,26px);color:var(--r2);transform:rotate(-5deg);z-index:2">
         {lineup.gamingLeadIn}
       </span>
-      <span style="position:relative;display:inline-block">
+      <span class="gameover-wall" style="position:relative;display:inline-block">
         <span data-court-trigger="go" style="font-family:'Anton',sans-serif;font-size:clamp(44px,8.5vw,104px);line-height:.85;color:var(--r7);display:inline-block;transform:rotate(.8deg) skewX(-4deg);text-shadow:5px 5px 0 var(--ink)">{lineup.gamingHeading}</span>
         <img
           src="/assets/jett-crop.webp"
@@ -195,13 +199,13 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
       <span style="display:flex;flex-direction:column;gap:10px">
         <a href="#e-val" data-open="val" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--ink);background:var(--card);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(-3deg);transition:transform .15s">▸ {posterName('val')}</a>
         <a href="#e-fifa" data-open="fifa" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--ink);background:var(--acc2);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(2.5deg);transition:transform .15s">▸ {posterName('fifa')}</a>
-        <a href="#e-chess" data-open="chess" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--paper);background:var(--r4);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(-1.5deg);transition:transform .15s">▸ {posterName('chess')}</a>
+        <a href="#e-chess" data-open="chess" style="font-family:inherit;font-size:clamp(13px,1.8vw,17px);font-weight:700;letter-spacing:.08em;color:var(--paper);background:var(--teal);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:7px 14px;transform:rotate(-1.5deg);transition:transform .15s">▸ {posterName('chess')}</a>
       </span>
     </div>
   </div>
 
   <div style="text-align:center;margin-top:18px">
-    <span style="font-family:'Shrikhand',serif;font-size:clamp(14px,2vw,19px);color:var(--r5);display:inline-block;text-transform:none">{lineup.hint}</span>
+    <span style="font-family:'Shrikhand',serif;font-size:clamp(14px,2vw,19px);color:var(--teal);display:inline-block;text-transform:none">{lineup.hint}</span>
   </div>
 
   <!-- Event Cards Grid -->
@@ -226,6 +230,7 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
       {nonTechnicalEvents.map((ev) => (
         <EventCard event={ev} cardStyle={cardStyles[ev.key]} prizeLabel={lineup.prizeLabel} />
       ))}
+      <GameOverDeck events={gamingEvents} cardStyles={cardStyles} prizeLabel={lineup.prizeLabel} />
     </div>
   </div>
 </section>
@@ -359,7 +364,7 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
 
   .event-section-heading-nontechnical {
     margin-top: 44px;
-    color: var(--r5);
+    color: var(--teal);
   }
 
   .event-section-heading-nontechnical h3 {
@@ -377,7 +382,6 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
     height: 100%;
     max-width: none;
     max-height: none;
-    transition: none !important;
   }
 
   .event-cards-grid-technical {
@@ -390,11 +394,59 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  /* The court previews are hover-only; on a touch screen a tap would leave one
+     stuck open and the larger ones hang past a phone's edge, so they sit out. */
+  @media (hover: none) and (max-width: 1023px) {
+    [data-court] {
+      display: none;
+    }
+  }
+
   @media (max-width: 980px) {
     .event-cards-grid-technical,
     .event-cards-grid-nontechnical {
       max-width: none;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Room for the tilted corners, so no card pokes outside its grid. The
+       deck is pulled back out and re-insets itself (see GameOverDeck). */
+    .event-cards-grid {
+      padding-inline: 6px;
+    }
+
+    .event-cards-grid-nontechnical > :global(.go-deck) {
+      margin-inline: -6px;
+    }
+
+    /* The sparkles sit in padding rather than hanging off the name. */
+    .triathlon-wall {
+      padding-inline: 20px;
+    }
+
+    .tri-spark-l {
+      left: -6px !important;
+    }
+
+    /* Inset far enough that the twinkle's scale stays inside the padding. */
+    .tri-spark-r {
+      right: 8px !important;
+    }
+
+    /* Room for the skew on the QFactor and Game Over headings. */
+    .qfactor-wall,
+    .gameover-wall {
+      padding-inline: 6px;
+    }
+  }
+
+  /* Two columns leave the last non-technical card alone on its row; it is
+     centred under the pair above rather than left hanging in one column. */
+  @media (min-width: 561px) and (max-width: 980px) {
+    .event-cards-grid-nontechnical > :global(.ecard:nth-last-child(2):nth-child(odd)) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: calc((100% - 26px) / 2);
     }
   }
 
@@ -418,6 +470,12 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
 
     .event-section-heading-nontechnical {
       margin-top: 36px;
+    }
+
+    /* Keeps the widest name, with its sparkle padding, inside a 320px screen;
+       from about 352px up this is the 44px it already was. */
+    .triathlon-wall > a {
+      font-size: min(44px, 12.5vw) !important;
     }
   }
 </style>
@@ -459,8 +517,74 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
     });
   }
 
+  // Cards deal in one tick of the clock hand apart; the motion itself lives in
+  // EventCard. Each card is watched on its own, so a phone's single column
+  // deals as it scrolls rather than all at once below the fold.
+  const DEAL_TICK = 90; // ms between cards landing in the same batch
+  const PRIZE_TICKS = 8;
+  const PRIZE_TICK_MS = 55;
+
+  // The prize counts up from ₹0 like a score. Its width is pinned first so the
+  // shorter interim figures do not shift the row, and the configured string is
+  // restored verbatim at the end.
+  function tickPrize(el: HTMLElement, startAfter: number) {
+    const final = el.textContent ?? '';
+    const target = Number(final.replace(/[^\d]/g, ''));
+    if (!final.trim().startsWith('₹') || !target) return;
+    el.style.minWidth = `${el.offsetWidth}px`;
+    el.textContent = '₹0';
+    let step = 0;
+    const next = () => {
+      step += 1;
+      if (step >= PRIZE_TICKS) {
+        el.textContent = final;
+        return;
+      }
+      const value = Math.round((target * step) / PRIZE_TICKS / 100) * 100;
+      el.textContent = `₹${value.toLocaleString('en-IN')}`;
+      setTimeout(next, PRIZE_TICK_MS);
+    };
+    setTimeout(next, startAfter);
+  }
+
+  function initCardDeal() {
+    if (!('IntersectionObserver' in window)) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // The Game Over cover deals in like a card; the cards folded beneath it
+    // deal too, landing in the deck.
+    const cards = document.querySelectorAll<HTMLElement>('.event-cards-grid .ecard, .event-cards-grid .go-cover');
+    cards.forEach((card) => { card.dataset.deal = 'pending'; });
+
+    const deal = (card: HTMLElement, order: number) => {
+      const delay = order * DEAL_TICK;
+      card.style.setProperty('--deal-delay', `${delay}ms`);
+      card.dataset.deal = 'play';
+      const settle = (e: AnimationEvent) => {
+        if (e.target !== card) return;
+        card.removeEventListener('animationend', settle);
+        delete card.dataset.deal;
+        card.style.removeProperty('--deal-delay');
+      };
+      card.addEventListener('animationend', settle);
+      const prize = card.querySelector<HTMLElement>('[data-prize]');
+      // Starts on the card's last tick, as its echoes collapse.
+      if (prize) tickPrize(prize, delay + 340);
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries
+        .filter((entry) => entry.isIntersecting)
+        .forEach((entry, order) => {
+          observer.unobserve(entry.target);
+          deal(entry.target as HTMLElement, order);
+        });
+    }, { threshold: 0.2, rootMargin: '0px 0px -6% 0px' });
+    cards.forEach((card) => observer.observe(card));
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initEventWallDrop();
     initCourtTriggers();
+    initCardDeal();
   });
 </script>
