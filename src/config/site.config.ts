@@ -708,10 +708,10 @@ const team: TeamGroup[] = [
     title: "Office Bearers",
     members: [
       { name: "Dinesh", role: "Secretary", photo: "/assets/court-statue.webp" },
-      { name: "Thithiksha", role: "Joint Secretary", photo: "/assets/eye-crop.webp" },
-      { name: "Ashvanth", role: "Treasurer", photo: "/assets/lens-cut.webp" },
-      { name: "Bhuvanesh", role: "Executive Coordinator", photo: "/assets/thinker-halftone.webp" },
-      { name: "Ravi Varma", role: "Convenor", photo: "/assets/heart-hands.webp" },
+      { name: "Thithiksha", role: "Joint Secretary", photo: "/assets/joint-secretary.webp" },
+      { name: "Ashvanth", role: "Treasurer", photo: "/assets/treasurer.webp" },
+      { name: "Bhuvanesh", role: "Executive Coordinator", photo: "/assets/executive-coordinator.webp" },
+      { name: "Ravi Varma", role: "Convenor", photo: "/assets/convenor.webp" },
     ],
   },
   {
