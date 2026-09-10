@@ -292,7 +292,7 @@ const event: EventInfo = {
   tagline: "where excellence awaits the worthy",
   presentedByLine: "PSG College of Technology x CSA Presents",
   symposiumType: "Technical Symposium",
-  registrationUrl: "https://proleap.ewhizard.tech/join/EvB_iLQ2bm",
+  registrationUrl: "https://proleap.ewhizard.tech/join/cohort/axios-26-2",
   date: {
     label: "25-26 SEP '26",
     startISO: "2026-09-25T09:00:00+05:30",
