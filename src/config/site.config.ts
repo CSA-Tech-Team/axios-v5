@@ -290,7 +290,7 @@ const event: EventInfo = {
   volumeLabel: "Vol. III · MMXXVI",
   yearRoman: "MMXXVI",
   tagline: "where excellence awaits the worthy",
-  presentedByLine: "Computational Sciences Association presents",
+  presentedByLine: "PSG College of Technology x CSA Presents",
   symposiumType: "Technical Symposium",
   registrationUrl: "https://proleap.ewhizard.tech/join/EvB_iLQ2bm",
   date: {
@@ -542,7 +542,7 @@ const events: EventDetail[] = [
     key: "svc",
     name: "Survivors' Court",
     category: "Non Technical",
-    teamSize: "Solo Entry",
+    teamSize: "3 Members",
     prize: "₹15,000",
     logo: "/assets/logo-svc.webp",
     tag: "STRATEGY · ELIMINATION",
