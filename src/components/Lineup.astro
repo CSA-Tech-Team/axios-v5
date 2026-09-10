@@ -34,9 +34,9 @@ const technicalEvents = ['tri', 'brc', 'dq', 'mm'].map(byKey);
 const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey);
 ---
 
-<section id="events" class="cv-auto" style="max-width:1440px;margin:0 auto;padding:52px clamp(16px,2vw,24px)">
+<section id="events" class="cv-auto" style="position:relative;z-index:2;max-width:1440px;margin:0 auto;padding:52px clamp(16px,2vw,24px)">
   <!-- Festival Poster Lineup: Gig-bill Paste-up -->
-  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;max-width:1132px;margin:0 auto 8px">
+  <div class="event-name-wall" style="display:flex;flex-direction:column;align-items:center;gap:10px;max-width:1132px;margin:0 auto 8px">
     <div class="lineup-eyebrow" style="display:flex;align-items:center;justify-content:center;gap:14px;width:100%;max-width:760px;margin-bottom:10px">
       <span class="lineup-rule" style="height:2px;flex:1;background:var(--ink)"></span>
       <h2 style="margin:0;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);white-space:nowrap">{lineup.eyebrow}</h2>
@@ -231,6 +231,47 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
 </section>
 
 <style>
+  @keyframes eventWallDrop {
+    0% {
+      opacity: 0;
+      translate: 0 -28px;
+      filter: saturate(.6);
+    }
+    72% {
+      opacity: 1;
+      translate: 0 3px;
+      filter: saturate(1);
+    }
+    100% {
+      opacity: 1;
+      translate: 0 0;
+      filter: none;
+    }
+  }
+
+  .event-name-wall.is-entering > * {
+    opacity: 0;
+    animation: eventWallDrop .62s cubic-bezier(.2,.85,.28,1.08) forwards;
+    will-change: opacity, translate, filter;
+  }
+
+  .event-name-wall.is-entering > :nth-child(1) { animation-delay: .02s; }
+  .event-name-wall.is-entering > :nth-child(2) { animation-delay: .09s; }
+  .event-name-wall.is-entering > :nth-child(3) { animation-delay: .16s; }
+  .event-name-wall.is-entering > :nth-child(4) { animation-delay: .23s; }
+  .event-name-wall.is-entering > :nth-child(5) { animation-delay: .30s; }
+  .event-name-wall.is-entering > :nth-child(6) { animation-delay: .37s; }
+  .event-name-wall.is-entering > :nth-child(7) { animation-delay: .44s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .event-name-wall.is-entering > * {
+      opacity: 1;
+      animation: none;
+      translate: none;
+      filter: none;
+    }
+  }
+
   .triathlon-wall > a {
     position: relative;
     z-index: 2;
@@ -382,6 +423,19 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
 </style>
 
 <script>
+  function initEventWallDrop() {
+    const wall = document.querySelector('.event-name-wall');
+    if (!wall || !('IntersectionObserver' in window)) return;
+    const reveal = () => wall.classList.add('is-entering');
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        reveal();
+        observer.disconnect();
+      }
+    }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+    observer.observe(wall);
+  }
+
   function initCourtTriggers() {
     document.querySelectorAll('[data-court-trigger]').forEach((trigger) => {
       const targetId = trigger.getAttribute('data-court-trigger');
@@ -405,5 +459,8 @@ const nonTechnicalEvents = ['qz', 'svc', 'bb', 'val', 'fifa', 'chess'].map(byKey
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initCourtTriggers);
+  document.addEventListener('DOMContentLoaded', () => {
+    initEventWallDrop();
+    initCourtTriggers();
+  });
 </script>

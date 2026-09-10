@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import WarpIntro from '../components/WarpIntro.astro';
+import AchronosIntro from '../components/AchronosIntro.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import PastEditions from '../components/PastEditions.astro';
@@ -13,15 +13,12 @@ import Faq from '../components/Faq.astro';
 import Footer from '../components/Footer.astro';
 import EventModal from '../components/EventModal.astro';
 
-// Landing animation toggle, read at build time from .env.
-// PUBLIC_WARP_INTRO=true plays the hyperspace intro; anything else — including
-// the variable being absent — skips it. Skipping also keeps three.js out of the
-// client bundle entirely, since the component's script never ships.
-const showWarpIntro = import.meta.env.PUBLIC_WARP_INTRO === 'true';
+// Enabled by default. Honour the old deployment flag during migration.
+const showIntro = (import.meta.env.PUBLIC_ACHRONOS_INTRO ?? import.meta.env.PUBLIC_WARP_INTRO ?? 'true') === 'true';
 ---
 
 <Layout>
-  {showWarpIntro && <WarpIntro />}
+  {showIntro && <AchronosIntro />}
   <Header />
   <main>
     <Hero />
