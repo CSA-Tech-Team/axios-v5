@@ -41,12 +41,12 @@ const eventsDataJson = JSON.stringify(
       </button>
       <button id="tab-timeline-btn" style="background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:.05em;color:var(--ink2);padding:10px 14px 13px;position:relative">
         TIMELINE
-        <span id="indicator-timeline" style="display:none;position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--r4)"></span>
+        <span id="indicator-timeline" style="display:none;position:absolute;left:6px;right:6px;bottom:-2px;height:4px;background:var(--teal)"></span>
       </button>
     </div>
 
     <!-- Tab Contents Container -->
-    <div style="padding:24px 26px 6px">
+    <div class="modal-body" style="padding:24px 26px 6px">
       <!-- Tab 1: Overview -->
       <div id="content-overview">
         <div class="modal-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
@@ -70,7 +70,7 @@ const eventsDataJson = JSON.stringify(
 
       <!-- Tab 3: Prizes & Team -->
       <div id="content-prizes" style="display:none">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
+        <div class="modal-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
           <div style="background:var(--wcard);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:16px 18px">
             <div style="font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--ink2);text-transform:uppercase">Total Prize</div>
             <div id="modal-prize-dup" style="font-family:'Anton',sans-serif;font-size:34px;color:var(--acc);margin-top:2px">₹60,000</div>
@@ -89,7 +89,7 @@ const eventsDataJson = JSON.stringify(
     </div>
 
     <!-- Actions -->
-    <div style="padding:8px 26px 26px;display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap">
+    <div class="modal-actions" style="padding:8px 26px 26px;display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap">
       <button id="modal-close-footer" style="background:var(--card);color:var(--ink);border:2px solid var(--ink);font-family:inherit;font-size:15px;font-weight:700;padding:12px 20px;cursor:pointer">Close</button>
       <a id="modal-register-btn" href={event.registrationUrl} target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;background:var(--acc);color:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);font-family:inherit;font-size:15px;font-weight:700;padding:12px 24px;cursor:pointer">{hero.registerCta}</a>
     </div>
@@ -137,11 +137,86 @@ const eventsDataJson = JSON.stringify(
       padding: 13px 14px !important;
     }
 
+    .modal-stats {
+      gap: 10px !important;
+    }
+
     #modal-prize,
-    #modal-team {
+    #modal-team,
+    #modal-prize-dup,
+    #modal-team-dup {
       font-size: clamp(20px, 6.2vw, 30px) !important;
       line-height: 1.05;
       overflow-wrap: anywhere;
+    }
+
+    /* Give the card a little more of the screen, keeping the hard shadow
+       clear of the right edge. */
+    #event-modal {
+      padding: 28px 14px 28px 10px !important;
+    }
+
+    #modal-container {
+      box-shadow: 6px 6px 0 var(--ink) !important;
+    }
+
+    #modal-close-btn {
+      width: 42px !important;
+      height: 42px !important;
+      top: 12px !important;
+      right: 12px !important;
+    }
+
+    .modal-tabs button {
+      padding: 12px 10px 14px !important;
+    }
+
+    .modal-body {
+      padding: 20px 18px 6px !important;
+    }
+
+    /* Close + Register share one row instead of stacking right-aligned. */
+    .modal-actions {
+      padding: 10px 18px 22px !important;
+      gap: 10px !important;
+    }
+
+    .modal-actions > * {
+      flex: 1 1 auto;
+      justify-content: center;
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+    }
+
+    /* Injected rows: the 96px place column left the split bar a sliver. */
+    #modal-prize-splits > :global(div) {
+      grid-template-columns: 80px 1fr auto !important;
+      gap: 10px !important;
+    }
+
+    /* Timeline rows: the 88px round column squeezed the time and venue. */
+    #content-timeline > :global(div) {
+      grid-template-columns: 72px 1fr !important;
+      gap: 12px !important;
+      padding: 13px 14px !important;
+    }
+  }
+
+  /* Narrow phones: stack round/day above the time so neither wraps. */
+  @media (max-width: 380px) {
+    #content-timeline > :global(div) {
+      grid-template-columns: 1fr !important;
+      gap: 6px !important;
+    }
+
+    #content-timeline > :global(div > div:first-child) {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    #content-timeline > :global(div > div:first-child > div:last-child) {
+      margin-top: 0 !important;
     }
   }
 </style>
@@ -245,7 +320,11 @@ const eventsDataJson = JSON.stringify(
         logoEl.style.filter = ev.logoFilter || '';
         logoEl.style.mixBlendMode = ev.logoBlendMode || 'multiply';
       }
-      if (catEl) catEl.textContent = ev.category;
+      if (catEl) {
+        catEl.textContent = ev.category;
+        // Technical keeps the red chip; everything else takes the teal, as the lineup headings do.
+        catEl.style.background = ev.category === 'Technical' ? 'var(--acc)' : 'var(--teal)';
+      }
       if (titleEl) titleEl.textContent = ev.name;
       if (prizeEl) prizeEl.textContent = ev.prize;
       if (prizeDupEl) prizeDupEl.textContent = ev.prize;
@@ -285,7 +364,7 @@ const eventsDataJson = JSON.stringify(
 
       if (timelineEl) {
         timelineEl.innerHTML = ev.timeline.map(t => `
-          <div style="display:grid;grid-template-columns:88px 1fr auto;gap:14px;align-items:center;background:var(--wcard);border:2px solid var(--ink);border-left:6px solid var(--r4);box-shadow:4px 4px 0 var(--ink);padding:14px 18px">
+          <div style="display:grid;grid-template-columns:88px 1fr auto;gap:14px;align-items:center;background:var(--wcard);border:2px solid var(--ink);border-left:6px solid var(--teal);box-shadow:4px 4px 0 var(--ink);padding:14px 18px">
             <div>
               <div style="font-weight:800;font-size:13px;color:var(--acc)">${t.round}</div>
               <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-top:2px">${t.day}</div>

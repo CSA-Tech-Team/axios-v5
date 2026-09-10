@@ -85,6 +85,12 @@ export interface LineupContent {
   nonTechnicalHeading: string;
   gamingLeadIn: string;
   gamingHeading: string;
+  /** Cover card that stands in for the gaming events until it is split open */
+  gameOver: {
+    tag: string;
+    description: string;
+    poolLabel: string;
+  };
   signatureBadge: string;
   prizeLabel: string;
 }
@@ -290,7 +296,7 @@ const event: EventInfo = {
   volumeLabel: "Vol. III · MMXXVI",
   yearRoman: "MMXXVI",
   tagline: "where excellence awaits the worthy",
-  presentedByLine: "Computational Sciences Association presents",
+  presentedByLine: "PSG College of Technology x CSA Presents",
   symposiumType: "Technical Symposium",
   registrationUrl: "https://proleap.ewhizard.tech/join/cohort/axios-26-2",
   date: {
@@ -351,6 +357,11 @@ const lineup: LineupContent = {
   nonTechnicalHeading: "non-technical events",
   gamingLeadIn: "plus",
   gamingHeading: "GAME OVER",
+  gameOver: {
+    tag: "GAMING · 3 ARENAS",
+    description: "Three arenas for players who never press pause: a 5v5 shooter, a 1v1 pitch and a board of pure strategy. Pick your game.",
+    poolLabel: "PRIZE POOL",
+  },
   signatureBadge: "SIGNATURE",
   prizeLabel: "PRIZE",
 };
@@ -542,7 +553,7 @@ const events: EventDetail[] = [
     key: "svc",
     name: "Survivors' Court",
     category: "Non Technical",
-    teamSize: "Solo Entry",
+    teamSize: "3 Members",
     prize: "₹15,000",
     logo: "/assets/logo-svc.webp",
     tag: "STRATEGY · ELIMINATION",

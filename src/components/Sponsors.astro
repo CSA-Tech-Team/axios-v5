@@ -25,7 +25,7 @@ const tileSizing: Record<string, { minWidth: string; height: string; maxHeight: 
           <div style="display:flex;align-items:center;gap:12px;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--acc);margin-bottom:16px">
             ◆ {tier.title}<span style="height:2px;flex:1;background:var(--line)"></span>
           </div>
-          <div style={`display:grid;grid-template-columns:repeat(auto-fit,minmax(${sizing.minWidth},1fr));gap:14px`}>
+          <div class="sp-tier-grid" style={`display:grid;grid-template-columns:repeat(auto-fit,minmax(${sizing.minWidth},1fr));gap:14px`}>
             {tier.logos.map((sponsor) =>
               showLabels ? (
                 <div>
@@ -61,18 +61,18 @@ const tileSizing: Record<string, { minWidth: string; height: string; maxHeight: 
       <div style="display:flex;align-items:center;gap:12px;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--acc);margin-bottom:16px">
         ◆ {sponsors.previousSponsorsHeading}<span style="height:2px;flex:1;background:var(--line)"></span>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:26px 24px">
+      <div class="sp-prev-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:26px 24px">
         {sponsors.previousSponsors.map((sponsor) => (
           <div
-            class="ecard"
+            class="ecard sp-prev-card"
             style="position:relative;background:var(--card);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:22px 20px;min-height:144px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px"
           >
             {sponsor.logo ? (
-              <img src={sponsor.logo} alt={sponsor.name} loading="lazy" decoding="async" style="max-width:100%;max-height:90px;width:auto;height:auto;object-fit:contain" />
+              <img class="sp-prev-logo" src={sponsor.logo} alt={sponsor.name} loading="lazy" decoding="async" style="max-width:100%;max-height:90px;width:auto;height:auto;object-fit:contain" />
             ) : (
               <span style="font-family:inherit;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)">◆ Sponsor</span>
             )}
-            <h4 style="margin:0;font-family:inherit;font-size:16px;font-weight:700;text-align:center">{sponsor.name}</h4>
+            <h4 class="sp-prev-name" style="margin:0;font-family:inherit;font-size:16px;font-weight:700;text-align:center">{sponsor.name}</h4>
           </div>
         ))}
       </div>
@@ -94,3 +94,21 @@ const tileSizing: Record<string, { minWidth: string; height: string; maxHeight: 
     -->
   </div>
 </section>
+
+<style>
+  /* Tablet: 4-up so the 8 previous-sponsor cards fill two even rows (no 3/3/2 hole). */
+  @media (max-width: 1023px) and (min-width: 600px) {
+    #sponsors .sp-prev-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 22px 18px !important; }
+    #sponsors .sp-prev-card { padding: 18px 12px !important; }
+    #sponsors .sp-prev-logo { max-height: 78px !important; }
+    #sponsors .sp-prev-name { font-size: 14px !important; }
+  }
+  /* Phone: title tiles stack without a fixed 240px minimum; previous sponsors go 2-up. */
+  @media (max-width: 599px) {
+    #sponsors .sp-tier-grid { grid-template-columns: minmax(0, 1fr) !important; }
+    #sponsors .sp-prev-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 18px 14px !important; }
+    #sponsors .sp-prev-card { min-height: 128px !important; padding: 14px 8px !important; gap: 10px !important; box-shadow: 4px 4px 0 var(--ink) !important; }
+    #sponsors .sp-prev-logo { height: 64px !important; max-height: 64px !important; }
+    #sponsors .sp-prev-name { font-size: 13px !important; line-height: 1.2; overflow-wrap: anywhere; }
+  }
+</style>

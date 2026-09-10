@@ -17,7 +17,7 @@ const cardStyle = [
   <span style="position:absolute;top:22px;right:20px;color:var(--acc);opacity:.45;pointer-events:none">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="0" x2="12" y2="24"></line><line x1="0" y1="12" x2="24" y2="12"></line></svg>
   </span>
-  <span style="position:absolute;bottom:22px;left:20px;color:var(--r5);opacity:.45;pointer-events:none">
+  <span style="position:absolute;bottom:22px;left:20px;color:var(--teal);opacity:.45;pointer-events:none">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="0" x2="12" y2="24"></line><line x1="0" y1="12" x2="24" y2="12"></line></svg>
   </span>
   <img 
@@ -27,10 +27,11 @@ const cardStyle = [
     height="164" 
     loading="lazy" 
     decoding="async"
+    class="team-cam"
     style="position:absolute;top:14px;right:34px;z-index:1;width:clamp(100px,13vw,164px);height:auto;pointer-events:none;transform:rotate(7deg);mix-blend-mode:multiply" 
   />
 
-  <h2 style="margin:0 0 30px;font-family:'Futura','Jost','Century Gothic',sans-serif;font-size:clamp(48px,9vw,112px);line-height:.82;letter-spacing:-.03em;text-shadow:2px 0 0 rgba(226,59,46,.42),-2px 1px 0 rgba(47,143,208,.34)">MEET THE TEAM</h2>
+  <h2 class="team-title" style="margin:0 0 30px;font-family:'Futura','Jost','Century Gothic',sans-serif;font-size:clamp(48px,9vw,112px);line-height:.82;letter-spacing:-.03em;text-shadow:2px 0 0 rgba(226,59,46,.42),-2px 1px 0 rgba(47,143,208,.34)">MEET THE TEAM</h2>
   
   <div class="team-groups">
     {team.map((group, gi) => (
@@ -40,7 +41,7 @@ const cardStyle = [
           <i></i>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px">
+        <div class="team-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px">
           {group.members.map((member, i) => {
             // Offset by group so the second wall does not repeat the first's tilts.
             const s = cardStyle[(i + gi) % cardStyle.length];
@@ -109,7 +110,7 @@ const cardStyle = [
   }
 
   .team-section-heading-b {
-    color: var(--r5);
+    color: var(--teal);
   }
 
   .team-section-heading-b h3 {
@@ -118,5 +119,39 @@ const cardStyle = [
 
   @media (max-width: 720px) {
     .team-groups { gap: 36px; }
+  }
+
+  /* Tablet / phone: keep tilted card corners inside the column. */
+  @media (max-width: 1023px) {
+    .team-grid { padding-inline: 4px; }
+  }
+
+  /* Tablet: fixed 3-up so a 5-card wall never leaves a lone card (4+1). */
+  @media (min-width: 721px) and (max-width: 1023px) {
+    .team-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  }
+
+  @media (max-width: 720px) {
+    .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    /* Centre an odd last card instead of leaving it hanging left. */
+    .team-grid > :last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: calc((100% - 22px) / 2);
+    }
+    /* Smaller camera tucked in the corner; heading wraps clear of it. */
+    .team-cam { width: 84px !important; top: 16px !important; right: 14px !important; }
+    .team-title { padding-right: 88px; }
+  }
+
+  @media (max-width: 560px) {
+    .team-grid { grid-template-columns: minmax(0, 1fr) !important; }
+    .team-grid > :last-child:nth-child(odd) {
+      grid-column: auto;
+      justify-self: stretch;
+      width: auto;
+    }
+    .team-title { font-size: clamp(40px, 12vw, 56px) !important; padding-right: 72px; }
+    .team-cam { width: 72px !important; right: 12px !important; }
   }
 </style>

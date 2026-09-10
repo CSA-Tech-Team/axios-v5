@@ -3,15 +3,15 @@
    both use the same typography as every other event. */
 .big-bull-title {
   --event-title-font: 'Bebas Neue';
-  --event-title-color: #183c2b;
-  --event-title-shadow: 1.5px 0 0 #4ea36a, -1px 0 0 #b66d4b;
+  --event-title-color: var(--teal-deep);
+  --event-title-shadow: 1.5px 0 0 var(--r4), -1px 0 0 #b66d4b;
   font-family: 'Bebas Neue', 'Anton', sans-serif;
   font-weight: 400;
   letter-spacing: .015em;
   line-height: .95;
   text-transform: uppercase;
-  color: #183c2b;
-  text-shadow: 1.5px 0 0 #4ea36a, -1px 0 0 #b66d4b;
+  color: var(--teal-deep);
+  text-shadow: 1.5px 0 0 var(--r4), -1px 0 0 #b66d4b;
 }
 
 .big-bull-wall {
@@ -42,7 +42,7 @@
   -webkit-background-clip: text;
   color: transparent;
   text-shadow: none;
-  filter: drop-shadow(1px 0 0 #4ea36a) drop-shadow(-1px 0 0 #b66d4b);
+  filter: drop-shadow(1px 0 0 var(--r4)) drop-shadow(-1px 0 0 #b66d4b);
 }
 
 .big-bull-preview {
@@ -52,7 +52,7 @@
   width: 100px;
   height: auto;
   border: 2px solid var(--ink);
-  box-shadow: 4px 4px 0 rgb(24 60 43 / 50%);
+  box-shadow: 4px 4px 0 rgb(13 59 54 / 50%);
   transition: opacity .12s steps(2), transform .18s steps(3);
   pointer-events: none;
   z-index: 2;
@@ -63,7 +63,7 @@
 }
 
 .big-bull-wall-link:focus-visible {
-  outline: 3px solid #183c2b;
+  outline: 3px solid var(--teal-deep);
   outline-offset: 6px;
 }
 

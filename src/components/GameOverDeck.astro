@@ -1,0 +1,355 @@
+---
+import { siteConfig } from '../config/site.config';
+import type { EventDetail } from '../config/site.config';
+import type { CardStyle } from './EventCard.astro';
+import EventCard from './EventCard.astro';
+
+interface Props {
+  events: EventDetail[];
+  cardStyles: Record<string, CardStyle>;
+  prizeLabel: string;
+}
+
+const { events, cardStyles, prizeLabel } = Astro.props;
+const { gamingHeading, gameOver } = siteConfig.lineup;
+
+// The pool is the sum of the card prizes. If any of them is still a phrase
+// rather than a rupee figure, the total is unknown, so it is not guessed at.
+const amounts = events.map((ev) =>
+  ev.prize.trim().startsWith('₹') ? Number(ev.prize.replace(/[^\d]/g, '')) : NaN
+);
+const poolKnown = amounts.every((n) => Number.isFinite(n) && n > 0);
+const pool = poolKnown
+  ? `₹${amounts.reduce((sum, n) => sum + n, 0).toLocaleString('en-IN')}`
+  : 'To be announced';
+---
+
+<!-- The gaming events start folded into one cover card, stacked in the centre
+     slot. The first hover (or tap, or Enter) deals them out to the positions
+     they hold in the grid; it does not fold back. -->
+<div class="go-deck" data-go-deck>
+  <div class="go-slots" id="go-slots" tabindex="-1">
+    <div class="go-cover" role="button" tabindex="0" aria-expanded="false" aria-controls="go-slots">
+      <div class="go-tag">{gameOver.tag}</div>
+      <h4 class="go-title">{gamingHeading}</h4>
+      <div class="go-names">{events.map((ev) => ev.posterLabel ?? ev.name).join(' · ')}</div>
+      <div class="go-desc">{gameOver.description}</div>
+      <div class="go-prize-row">
+        <span class="go-prize-label">{gameOver.poolLabel}</span>
+        <span data-prize class="go-prize" style={`font-size:${poolKnown ? '20px' : '16px'}`}>{pool}</span>
+      </div>
+    </div>
+
+    {events.map((ev) => (
+      <div class="go-slot">
+        <EventCard event={ev} cardStyle={cardStyles[ev.key]} prizeLabel={prizeLabel} />
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .go-deck {
+    /* Must track the lineup grid: 3 columns, 2 below 980px, 1 below 560px. */
+    --cols: 3;
+    --gap-x: 26px;
+    position: relative;
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  .go-slots {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: 30px var(--gap-x);
+    align-items: stretch;
+    outline: none;
+  }
+
+  .go-slot {
+    display: flex;
+    min-width: 0;
+  }
+
+  .go-slot > :global(.ecard) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Folded: one column-wide cell in the centre, every card stacked in it and
+     fanned just enough that the deck reads as three cards under the cover.
+     The cover is the first child, so the cards are children 2 to 4. */
+  .go-deck:not([data-state]) .go-slots {
+    grid-template-columns: minmax(0, 1fr);
+    width: calc((100% - (var(--cols) - 1) * var(--gap-x)) / var(--cols));
+    margin: 0 auto;
+  }
+
+  .go-deck:not([data-state]) :is(.go-slot, .go-cover) { grid-area: 1 / 1; }
+  .go-deck:not([data-state]) .go-slot { pointer-events: none; }
+  .go-deck:not([data-state]) .go-slot:nth-child(2) { rotate: -5deg; translate: -14px 6px; }
+  .go-deck:not([data-state]) .go-slot:nth-child(3) { rotate: 4deg; translate: 12px 8px; }
+  .go-deck:not([data-state]) .go-slot:nth-child(4) { rotate: -1.5deg; translate: 2px 12px; }
+
+  .go-cover {
+    --shade: var(--r7);
+    --tilt: rotate(-.6deg);
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    padding: 22px 20px;
+    transform: var(--tilt);
+    box-shadow: 5px 5px 0 var(--shade);
+    cursor: pointer;
+  }
+
+  .go-cover:focus-visible {
+    outline: 3px solid var(--teal);
+    outline-offset: 5px;
+  }
+
+  .go-tag {
+    font-size: 11px;
+    letter-spacing: .08em;
+    color: var(--acc);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .go-title {
+    margin: 0 0 6px;
+    font-family: 'Anton', sans-serif;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: .95;
+    color: var(--ink);
+  }
+
+  .go-names {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .go-desc {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink2);
+  }
+
+  .go-prize-row {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1.5px dashed var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .go-prize-label {
+    font-size: 11px;
+    color: var(--ink2);
+  }
+
+  .go-prize {
+    font-weight: 800;
+    color: var(--acc);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  /* The cover deals in with the cards. ecardEchoArrive is defined by
+     EventCard; it reads --shade, which the cover sets for itself above. */
+  .go-cover[data-deal='pending'] { opacity: 0; }
+
+  .go-cover[data-deal='play'] {
+    animation: ecardEchoArrive .48s var(--deal-delay, 0s) backwards;
+  }
+
+  /* Splitting: the cover lifts off the deck in three ticks while the cards
+     slide out beneath it. The script pins it in place first. */
+  .go-deck[data-state='splitting'] .go-cover {
+    animation: goCoverLift .36s forwards;
+    pointer-events: none;
+  }
+
+  .go-deck[data-state='done'] .go-cover { display: none; }
+
+  @keyframes goCoverLift {
+    0% {
+      opacity: 1;
+      translate: 0 0;
+      animation-timing-function: steps(1, end);
+    }
+    30% {
+      opacity: 1;
+      translate: -3px -10px;
+      box-shadow: 9px 9px 0 var(--shade);
+      animation-timing-function: steps(1, end);
+    }
+    60% {
+      opacity: .55;
+      translate: -5px -22px;
+      box-shadow: 12px 12px 0 var(--shade);
+      animation-timing-function: steps(1, end);
+    }
+    100% {
+      opacity: 0;
+      translate: -6px -30px;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .go-deck { --cols: 2; }
+
+    /* The lineup grid pads 6px either side on tablet/phone so tilted corners
+       stay inside it, and pulls the deck back out by the same 6px; the slots
+       re-inset so the dealt cards line up with the grid's columns. */
+    .go-slots { padding-inline: 6px; }
+
+    /* Same for each slot's own tilted card, without changing the card width. */
+    .go-slot { padding-inline: 4px; margin-inline: -4px; }
+
+    /* Folded: the fan needs room either side of the column-wide stack. */
+    .go-deck:not([data-state]) .go-slots {
+      padding-inline: 28px;
+      width: calc((100% - 12px - (var(--cols) - 1) * var(--gap-x)) / var(--cols) + 56px);
+    }
+  }
+
+  /* Two columns deal the three cards as a pair plus one; the odd one out is
+     centred under the pair rather than left hanging in the first column. */
+  @media (min-width: 561px) and (max-width: 980px) {
+    .go-deck[data-state] .go-slot:last-child:nth-child(even) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: calc((100% - var(--gap-x)) / 2);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .go-deck { --cols: 1; }
+
+    /* One full-width column leaves no room beside the deck, so the stack is
+       inset and fanned a touch tighter to keep every card on screen. */
+    .go-deck:not([data-state]) .go-slots {
+      padding-inline: 16px;
+      width: 100%;
+    }
+
+    .go-deck:not([data-state]) .go-slot:nth-child(2) { rotate: -3deg; translate: -6px 6px; }
+    .go-deck:not([data-state]) .go-slot:nth-child(3) { rotate: 2.5deg; translate: 6px 8px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .go-cover[data-deal] { opacity: 1; animation: none; }
+  }
+</style>
+
+<script>
+  const SPLIT_MS = 400;      // each card's slide out to its slot
+  const SPLIT_TICK = 60;     // stagger between cards, one tick apart
+  const HOVER_INTENT = 120;  // ms, so a cursor passing on its way down the page does not split it
+  const PINNED = ['position', 'left', 'top', 'width', 'height'];
+
+  // Computed `translate` is "none", "Xpx" or "Xpx Ypx".
+  function parseTranslate(value: string): [number, number] {
+    if (!value || value === 'none') return [0, 0];
+    const [x = '0', y = '0'] = value.split(' ');
+    return [parseFloat(x) || 0, parseFloat(y) || 0];
+  }
+
+  function split(deck: HTMLElement) {
+    if (deck.dataset.state) return;
+    const cover = deck.querySelector<HTMLElement>('.go-cover');
+    const slotsBox = deck.querySelector<HTMLElement>('.go-slots');
+    const slots = [...deck.querySelectorAll<HTMLElement>('.go-slot')];
+    if (!cover || !slotsBox) return;
+
+    const hadFocus = document.activeElement === cover;
+    cover.setAttribute('aria-expanded', 'true');
+
+    const finish = () => {
+      deck.dataset.state = 'done';
+      PINNED.forEach((prop) => cover.style.removeProperty(prop));
+      slots.forEach((slot) => {
+        slot.style.removeProperty('transition');
+        slot.style.removeProperty('translate');
+        slot.style.removeProperty('rotate');
+      });
+      if (hadFocus) slotsBox.focus();
+    };
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      finish();
+      return;
+    }
+
+    // First: where each card sits in the folded deck, fan included. Offsets are
+    // layout positions, so the fan's rotation does not skew the measurement.
+    const before = slots.map((slot) => {
+      const style = getComputedStyle(slot);
+      const [tx, ty] = parseTranslate(style.translate);
+      return { x: slot.offsetLeft + tx, y: slot.offsetTop + ty, rotate: style.rotate };
+    });
+
+    // The cover is pinned where it stands so the grid can re-flow beneath it.
+    Object.assign(cover.style, {
+      position: 'absolute',
+      left: `${cover.offsetLeft}px`,
+      top: `${cover.offsetTop}px`,
+      width: `${cover.offsetWidth}px`,
+      height: `${cover.offsetHeight}px`,
+    });
+    deck.dataset.state = 'splitting';
+
+    // Last and invert: each card is drawn back onto the deck from its new slot...
+    slots.forEach((slot, i) => {
+      const from = before[i];
+      slot.style.transition = 'none';
+      slot.style.translate = `${from.x - slot.offsetLeft}px ${from.y - slot.offsetTop}px`;
+      slot.style.rotate = from.rotate;
+    });
+    void deck.offsetWidth;
+
+    // ...and play: then released to slide home in steps.
+    slots.forEach((slot, i) => {
+      const timing = `${SPLIT_MS}ms steps(5, end) ${i * SPLIT_TICK}ms`;
+      slot.style.transition = `translate ${timing}, rotate ${timing}`;
+      slot.style.translate = '0px 0px';
+      slot.style.rotate = '0deg';
+    });
+
+    setTimeout(finish, SPLIT_MS + SPLIT_TICK * (slots.length - 1) + 40);
+  }
+
+  function initGameOverDeck() {
+    document.querySelectorAll<HTMLElement>('[data-go-deck]').forEach((deck) => {
+      const cover = deck.querySelector<HTMLElement>('.go-cover');
+      if (!cover) return;
+      let intent = 0;
+      cover.addEventListener('pointerenter', (e) => {
+        if (e.pointerType === 'touch') return;
+        intent = window.setTimeout(() => split(deck), HOVER_INTENT);
+      });
+      cover.addEventListener('pointerleave', () => clearTimeout(intent));
+      cover.addEventListener('click', () => split(deck));
+      cover.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          split(deck);
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initGameOverDeck);
+</script>

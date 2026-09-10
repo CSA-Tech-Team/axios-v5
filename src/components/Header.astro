@@ -2,10 +2,10 @@
 import { siteConfig } from '../config/site.config';
 ---
 
-<header style="position:sticky;top:0;z-index:1000;display:flex;align-items:center;gap:14px;height:72px;padding:0 18px;background:var(--term);color:var(--termfg);border-bottom:2px solid var(--ink);font-family:inherit">
+<header style="position:sticky;top:0;z-index:1000;display:flex;align-items:center;gap:14px;height:56px;padding:0 18px;background:var(--term);color:var(--termfg);border-bottom:2px solid var(--ink);font-family:inherit">
   <!-- Institution Marks -->
   <span class="hdr-logos" style="display:inline-flex;align-items:center;gap:12px;flex-shrink:0">
-    <a class="hdr-psg" href={siteConfig.event.organizer.collegeUrl} target="_blank" rel="noopener" aria-label="PSG College of Technology" style="display:inline-flex;align-items:center;gap:10px;line-height:0">
+    <a class="hdr-psg" href={siteConfig.event.organizer.collegeUrl} target="_blank" rel="noopener" aria-label="PSG College of Technology" style="display:inline-flex;align-items:center;line-height:0">
       <img
         src="/assets/psg-logo.webp"
         alt="PSG College of Technology"
@@ -13,9 +13,8 @@ import { siteConfig } from '../config/site.config';
         height="62"
         fetchpriority="high"
         decoding="async"
-        style="height:52px;width:auto;filter:brightness(0) invert(1)"
+        style="height:42px;width:auto;filter:brightness(0) invert(1)"
       />
-      <span class="hdr-wordmark" aria-hidden="true">PSGCT</span>
     </a>
     <span style="width:1.5px;height:32px;background:#fff;opacity:.3"></span>
     <a href={siteConfig.event.organizer.departmentUrl} target="_blank" rel="noopener" aria-label="Computational Sciences Association" style="display:inline-flex;line-height:0">
@@ -53,18 +52,7 @@ import { siteConfig } from '../config/site.config';
 </header>
 
 <style>
-  /* Institution wordmark — display face in the paper off-white, so it reads as
-     part of the logo lockup rather than as a nav link. */
-  .hdr-wordmark {
-    font-family: 'Anton', sans-serif;
-    font-size: 26px;
-    line-height: 1;
-    letter-spacing: .06em;
-    color: var(--paper);
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
+  :global(.neo) { --nav-height: 56px; }
   .topnav {
     display: flex;
     align-items: center;
@@ -131,7 +119,17 @@ import { siteConfig } from '../config/site.config';
   /* Below this width the five links plus the CTA cannot sit on one row without
      being clipped, so they collapse into a drop panel. */
   @media (max-width: 860px) {
-    .nav-toggle { display: flex; }
+    .nav-toggle { display: flex; height: 40px; }
+
+    /* With the nav collapsed, the logos take the free space so the CTA and
+       hamburger sit flush right instead of bunching up on the left. */
+    .hdr-logos { margin-right: auto; }
+
+    .hdr-register {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+    }
 
     .topnav {
       position: absolute;
@@ -153,7 +151,7 @@ import { siteConfig } from '../config/site.config';
     .topnav[data-open='true'] { display: flex; }
 
     .topnav a {
-      padding: 13px 20px;
+      padding: 13px 18px;
       font-size: 14px;
       border-bottom: 1px solid #ffffff14;
     }
@@ -162,18 +160,17 @@ import { siteConfig } from '../config/site.config';
   }
 
   @media (max-width: 560px) {
-    header { height: 60px !important; }
-    .hdr-logos img:first-of-type { height: 40px !important; }
+    :global(.neo) { --nav-height: 52px; }
+    header { height: 52px !important; }
+    .hdr-logos img:first-of-type { height: 34px !important; }
     .hdr-logos img:last-of-type { height: 32px !important; }
     .hdr-register { padding: 7px 10px; font-size: 11px; }
-    .hdr-wordmark { font-size: 20px; }
   }
 
   @media (max-width: 380px) {
     header { gap: 8px !important; padding: 0 12px !important; }
     .hdr-logos { gap: 8px !important; }
-    .hdr-psg { gap: 7px !important; }
-    .hdr-wordmark { font-size: 17px; letter-spacing: .04em; }
+    .topnav a { padding-left: 12px; padding-right: 12px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
