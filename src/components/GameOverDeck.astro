@@ -181,6 +181,11 @@ const pool = poolKnown
     pointer-events: none;
   }
 
+  .go-deck[data-state='splitting'] .go-slot,
+  .go-deck[data-state='splitting'] .go-slot > :global(.ecard) {
+    opacity: 1 !important;
+  }
+
   .go-deck[data-state='done'] .go-cover { display: none; }
 
   @keyframes goCoverLift {
@@ -196,8 +201,14 @@ const pool = poolKnown
       animation-timing-function: steps(1, end);
     }
     60% {
-      opacity: .55;
+      opacity: 1;
       translate: -5px -22px;
+      box-shadow: 12px 12px 0 var(--shade);
+      animation-timing-function: steps(1, end);
+    }
+    99% {
+      opacity: 1;
+      translate: -6px -30px;
       box-shadow: 12px 12px 0 var(--shade);
       animation-timing-function: steps(1, end);
     }
@@ -335,6 +346,11 @@ const pool = poolKnown
     document.querySelectorAll<HTMLElement>('[data-go-deck]').forEach((deck) => {
       const cover = deck.querySelector<HTMLElement>('.go-cover');
       if (!cover) return;
+      if (matchMedia('(max-width: 560px)').matches) {
+        deck.dataset.state = 'done';
+        cover.setAttribute('aria-expanded', 'true');
+        return;
+      }
       let intent = 0;
       cover.addEventListener('pointerenter', (e) => {
         if (e.pointerType === 'touch') return;
