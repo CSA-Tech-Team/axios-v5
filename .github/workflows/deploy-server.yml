@@ -11,9 +11,17 @@ concurrency:
   group: deploy-vps
   cancel-in-progress: true
 
+env:
+  # Where nginx serves the site from on the runner's own host.
+  DEPLOY_PATH: /var/www/axios
+
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    # Runs on the self-hosted runner registered on nucleus-server itself.
+    # The build and the deploy target are the same machine, on a private
+    # network address a GitHub-hosted runner could never reach — so this
+    # avoids SSH entirely and just copies files locally.
+    runs-on: self-hosted
     permissions:
       contents: read
 
@@ -36,36 +44,15 @@ jobs:
         env:
           PUBLIC_ACHRONOS_INTRO: ${{ vars.PUBLIC_ACHRONOS_INTRO || 'true' }}
 
-      - name: Configure SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+      - name: Deploy build locally
         run: |
-          mkdir -p ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts
+          # Sync into a staging dir first, then atomically swap it in so
+          # nginx never serves a half-updated tree.
+          rsync -a --delete dist/ "$DEPLOY_PATH.new/"
 
-      - name: Upload build to server
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-        run: |
-          # Sync into a staging dir first, then atomically swap it in so the
-          # site is never half-updated while rsync runs.
-          rsync -az --delete \
-            -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT" \
-            dist/ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH.new/"
-
-          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
-            "rm -rf '$DEPLOY_PATH.old' \
-             && { [ -d '$DEPLOY_PATH' ] && mv '$DEPLOY_PATH' '$DEPLOY_PATH.old' || true; } \
-             && mv '$DEPLOY_PATH.new' '$DEPLOY_PATH' \
-             && rm -rf '$DEPLOY_PATH.old'"
-
-      - name: Cleanup SSH key
-        if: always()
-        run: rm -f ~/.ssh/deploy_key
+          rm -rf "$DEPLOY_PATH.old"
+          if [ -d "$DEPLOY_PATH" ]; then
+            mv "$DEPLOY_PATH" "$DEPLOY_PATH.old"
+          fi
+          mv "$DEPLOY_PATH.new" "$DEPLOY_PATH"
+          rm -rf "$DEPLOY_PATH.old"
