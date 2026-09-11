@@ -672,7 +672,7 @@ const events: EventDetail[] = [
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "F-Block Assembly Hall" },
-      { round: "Round 2", day: "Day 2", startTime: "14:00", endTime: "17:00", duration: "3:00", location: "F-Block Assembly Hall" },
+      { round: "Round 2", day: "Day 1", startTime: "14:00", endTime: "17:00", duration: "3:00", location: "F-Block Assembly Hall" },
       { round: "Round 3", day: "Day 2", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "F201" },
     ],
   },
