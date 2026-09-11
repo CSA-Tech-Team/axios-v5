@@ -506,8 +506,8 @@ const events: EventDetail[] = [
       { title: "Trail to Triumph", description: "The final challenge is a race through an interconnected trail of mathematical and logical puzzles. Choose your path wisely, overcome every challenge, and make your way to triumph." },
     ],
     convenors: [
-      { name: "Keerthi Menon", phone: "+91 93632 58127" },
-      { name: "Niveda", phone: "+971 54 744 0352" },
+      { name: "Niveda", phone: "+91 93632 58127" },
+      { name: "Keerthi Menon", phone: "+971 54 744 0352" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹28,000", widthPercent: "100%" },
@@ -569,7 +569,7 @@ const events: EventDetail[] = [
     ],
     convenors: [
       { name: "Mithun Senthil", phone: "+91 74182 50339" },
-      { name: "Ranjana", phone: "94957 71225" },
+      { name: "Ranjana", phone: "+91 94957 71225" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹20,000", widthPercent: "100%" },
@@ -798,7 +798,7 @@ const faq: FaqContent = {
     {
       question: "Is accommodation available?",
       answer:
-        "Yes. Limited hostel accommodation is available on a first come, first serve basis. Place a request for accommodation at the time of registration.",
+        "Yes. Limited hostel accommodation is available on a first come, first serve basis with a nominal cost. Place a request for accommodation at the time of registration.",
     },
   ],
 };
@@ -814,7 +814,7 @@ const footer: FooterContent = {
   contacts: [
     { name: "Dinesh", role: "Secretary", phone: "+91 98420 52589" },
     { name: "Ashvanth Kumar", role: "Treasurer", phone: "+91 93441 95468" },
-    { name: "Prem Dharshan", role: "Tech Team Director", phone: "+91 94457 669716" },
+    { name: "Prem Dharshan", role: "Tech Team Director", phone: "+91 94457 69716" },
     { name: "Ravi Varma", role: "Accommodation Co-ordinator", phone: "+91 89460 72123" },
   ],
   email: "axios@psgtech.ac.in",

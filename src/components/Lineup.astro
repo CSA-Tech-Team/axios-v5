@@ -22,7 +22,7 @@ const cardStyles: Record<string, { shadow: string; rotate: string; border?: stri
   dq: { shadow: 'var(--r3)', rotate: 'rotate(-.6deg)' },
   mm: { shadow: 'var(--r6)', rotate: 'rotate(-.9deg) translateY(4px)' },
   qz: { shadow: 'var(--r5)', rotate: 'rotate(1deg) translateY(-5px)' },
-  svc: { shadow: 'var(--ink)', rotate: 'rotate(.7deg)', border: 'border:2px dashed var(--ink);' },
+  svc: { shadow: 'var(--ink)', rotate: 'rotate(.7deg)', border: 'border:2px solid var(--ink);' },
   // Big Bull's deep plate is shaded from the teal so it sits with it rather
   // than against it; otherwise it is a standard card.
   bb: { shadow: 'var(--teal-deep)', rotate: 'rotate(-.6deg)' },
@@ -62,7 +62,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
         {posterName('qz')}
       </a>
       <img
-        src="/assets/thinker-halftone.webp"
+        src="/assets/qfactor.webp"
         alt=""
         width="132"
         height="132"
@@ -138,14 +138,28 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
     </span>
 
     <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:6px 26px">
-      <a
-        href="#e-mm"
-        data-open="mm"
-        class="lineup-name-size"
-        style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s;color:var(--r6);background:repeating-linear-gradient(-16deg,var(--r6) 0 5px,var(--r7) 5px 10px);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transform:rotate(1.2deg)"
-      >
-        {posterName('mm')}
-      </a>
+      <span class="math-mania-wall">
+        <a
+          href="#e-mm"
+          data-open="mm"
+          data-court-trigger="mm"
+          class="lineup-name-size math-mania-title"
+          style="font-family:'Anton',sans-serif;line-height:.85;display:inline-block;transition:color .15s,background-position .5s linear;color:var(--r6);background:repeating-linear-gradient(-16deg,var(--r6) 0 5px,var(--r7) 5px 10px);background-size:22px 22px;background-position:0 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transform:rotate(1.2deg)"
+        >
+          {posterName('mm')}
+        </a>
+        <img
+          src="/assets/monalisa.webp"
+          alt=""
+          width="86"
+          height="86"
+          data-court="mm"
+          loading="lazy"
+          decoding="async"
+          class="math-mania-mark"
+          style="opacity:0;transform:rotate(-4deg) translateY(6px)"
+        />
+      </span>
       <span style="color:var(--acc);font-size:clamp(18px,3vw,30px);transform:rotate(-8deg)">✶</span>
       <span class="big-bull-wall">
         <a href="#e-bb" data-open="bb" data-court-trigger="bb" class="big-bull-wall-link" aria-label={`${byKey('bb').name} — stock market event details`}>
@@ -282,6 +296,74 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
     z-index: 2;
   }
 
+  /* Tall, closely spaced title lettering and offset ink inspired by the
+     supplied title card. Used by the lineup wall only. */
+  .big-bull-title {
+    --event-title-font: 'Bebas Neue';
+    --event-title-color: var(--teal-deep);
+    --event-title-shadow: 1.5px 0 0 var(--r4), -1px 0 0 #b66d4b;
+    font-family: 'Bebas Neue', 'Anton', sans-serif;
+    font-weight: 400;
+    letter-spacing: .015em;
+    line-height: .95;
+    text-transform: uppercase;
+    color: var(--teal-deep);
+    text-shadow: 1.5px 0 0 var(--r4), -1px 0 0 #b66d4b;
+  }
+
+  .big-bull-wall {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    transform: rotate(-.8deg);
+  }
+
+  .big-bull-wall-link {
+    display: inline-block;
+    transition: transform .15s;
+  }
+
+  .lineup-name-size {
+    font-size: clamp(32px, 6vw, 70px);
+  }
+
+  .big-bull-wall .big-bull-title {
+    /* Match the surrounding event names in both cap height and stroke weight. */
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    line-height: .85;
+    letter-spacing: normal;
+    background: radial-gradient(circle, var(--paper) .6px, transparent .9px), var(--ink);
+    background-size: 4px 5px;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(1px 0 0 var(--r4)) drop-shadow(-1px 0 0 #b66d4b);
+  }
+
+  .big-bull-preview {
+    position: absolute;
+    right: -72px;
+    top: -18px;
+    width: 100px;
+    height: auto;
+    border: 2px solid var(--ink);
+    box-shadow: 4px 4px 0 rgb(13 59 54 / 50%);
+    transition: opacity .12s steps(2), transform .18s steps(3);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .big-bull-wall-link:hover {
+    transform: translateY(-3px);
+  }
+
+  .big-bull-wall-link:focus-visible {
+    outline: 3px solid var(--teal-deep);
+    outline-offset: 6px;
+  }
+
   .triathlon-preview {
     position: absolute;
     left: calc(100% - 18px);
@@ -298,6 +380,28 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
   .survivors-wall > a {
     position: relative;
     z-index: 2;
+  }
+
+  .math-mania-wall {
+    position: relative;
+    display: inline-block;
+  }
+
+  .math-mania-title:hover {
+    background-position: 22px 12px !important;
+  }
+
+  .math-mania-mark {
+    position: absolute;
+    right: calc(100% - 18px);
+    bottom: -18px;
+    z-index: 7;
+    width: clamp(54px, 7vw, 86px);
+    height: auto;
+    border: 1.5px solid var(--ink);
+    box-shadow: 4px 4px 0 rgba(36, 26, 18, .3);
+    transition: opacity .12s steps(2), transform .18s steps(3);
+    pointer-events: none;
   }
 
   .survivors-preview {
@@ -481,6 +585,21 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
        from about 352px up this is the 44px it already was. */
     .triathlon-wall > a {
       font-size: min(44px, 12.5vw) !important;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .big-bull-preview {
+      right: -16px;
+      top: -34px;
+      width: 68px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .big-bull-wall-link,
+    .big-bull-preview {
+      transition: none;
     }
   }
 </style>

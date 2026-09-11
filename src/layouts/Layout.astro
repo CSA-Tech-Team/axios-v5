@@ -1,6 +1,5 @@
 ---
 import { siteConfig } from '../config/site.config';
-import '../styles/big-bull.css';
 
 interface Props {
   title?: string;
@@ -107,10 +106,13 @@ const eventJsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(eventJsonLd)}></script>
 
   <style is:global>
+    html {
+      scroll-behavior: smooth;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
-      scroll-behavior: smooth;
     }
     * {
       box-sizing: border-box;
