@@ -707,7 +707,7 @@ const team: TeamGroup[] = [
   {
     title: "Office Bearers",
     members: [
-      { name: "Dinesh", role: "Secretary", photo: "/assets/court-statue.webp" },
+      { name: "Dinesh", role: "Secretary", photo: "/assets/dinesh.webp" },
       { name: "Thithiksha", role: "Joint Secretary", photo: "/assets/joint-secretary.webp" },
       { name: "Ashvanth", role: "Treasurer", photo: "/assets/treasurer.webp" },
       { name: "Bhuvanesh", role: "Executive Coordinator", photo: "/assets/executive-coordinator.webp" },
@@ -754,14 +754,14 @@ const sponsors: SponsorsContent = {
   ],
   previousSponsorsHeading: "Previous Sponsors",
   previousSponsors: [
-    { name: "Wavicle Data Solutions", logo: "/assets/wavicle.jpg" },
-    { name: "Foxsense Innovations", logo: "/assets/foxsense.jpeg" },
-    { name: "The Cloud Company", logo: "/assets/thecloudcompany.jpg" },
-    { name: "Shankar IAS Academy", logo: "/assets/shankariasacademy.jpg" },
-    { name: "Zee Taurus", logo: "/assets/zeetaurus.png" },
-    { name: "Triumph Hub", logo: "/assets/triumphhub.jpg" },
-    { name: "Frozen Stick", logo: "/assets/frozenstick.jpg" },
-    { name: "Speed Step", logo: "/assets/speedstep.png" },
+    { name: "Wavicle Data Solutions", logo: "/assets/wavicle.webp" },
+    { name: "Foxsense Innovations", logo: "/assets/foxsense.webp" },
+    { name: "The Cloud Company", logo: "/assets/thecloudcompany.webp" },
+    { name: "Shankar IAS Academy", logo: "/assets/shankariasacademy.webp" },
+    { name: "Zee Taurus", logo: "/assets/zeetaurus.webp" },
+    { name: "Triumph Hub", logo: "/assets/triumphhub.webp" },
+    { name: "Frozen Stick", logo: "/assets/frozenstick.webp" },
+    { name: "Speed Step", logo: "/assets/speedstep.webp" },
   ],
   alumniIntro: "With gratitude to the graduates who keep the lights on.",
   alumni: [
