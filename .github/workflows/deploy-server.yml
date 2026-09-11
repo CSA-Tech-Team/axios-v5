@@ -46,13 +46,11 @@ jobs:
 
       - name: Deploy build locally
         run: |
-          # Sync into a staging dir first, then atomically swap it in so
-          # nginx never serves a half-updated tree.
-          rsync -a --delete dist/ "$DEPLOY_PATH.new/"
+          # The runner user owns $DEPLOY_PATH but not its root-owned parent
+          # (/var/www), so sync in place rather than swapping directories.
+          # --delay-updates stages every changed file and renames them all at
+          # the end, so nginx never serves a half-updated tree.
+          rsync -a --delete --delay-updates dist/ "$DEPLOY_PATH/"
 
-          rm -rf "$DEPLOY_PATH.old"
-          if [ -d "$DEPLOY_PATH" ]; then
-            mv "$DEPLOY_PATH" "$DEPLOY_PATH.old"
-          fi
-          mv "$DEPLOY_PATH.new" "$DEPLOY_PATH"
-          rm -rf "$DEPLOY_PATH.old"
+          # nginx runs as www-data: make sure it can read everything.
+          chmod -R a+rX "$DEPLOY_PATH"
