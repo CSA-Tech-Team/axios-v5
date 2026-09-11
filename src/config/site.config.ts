@@ -434,7 +434,7 @@ const events: EventDetail[] = [
     name: "Breach Point",
     category: "Technical",
     teamSize: "4 Members",
-    prize: "₹22,500",
+    prize: "₹17,500",
     logo: "/assets/logo-brc.webp",
     tag: "CTF · 5 TRACKS",
     shortDescription: "Every system has a weakness. Every story has a hidden layer.",
@@ -463,7 +463,7 @@ const events: EventDetail[] = [
     name: "DataQuest",
     category: "Technical",
     teamSize: "3 Members",
-    prize: "₹15,000",
+    prize: "₹17,500",
     logo: "/assets/logo-dq.webp",
     tag: "DATA · 3 ROUNDS",
     shortDescription: "Time does not wait, and neither does data. Turn chaos into insight.",
@@ -525,7 +525,7 @@ const events: EventDetail[] = [
     name: "QFactor",
     category: "Non Technical",
     teamSize: "2 Members",
-    prize: "₹15,000",
+    prize: "₹17,500",
     logo: "/assets/logo-qz.webp",
     tag: "QUIZ · PRELIM+FINAL",
     shortDescription: "Mind-boggling questions from almost every topic, with no expertise required.",
@@ -714,14 +714,14 @@ const team: TeamGroup[] = [
       { name: "Ravi Varma", role: "Convenor", photo: "/assets/convenor.webp" },
     ],
   },
-  {
-    title: "Tech Team",
-    members: [
-      { name: "Prem Dharshan", role: "Tech Team Director", photo: "/assets/robot-hand5.webp" },
-      { name: "Mithun", role: "Tech Team Coordinator", photo: "/assets/floppy-cut.webp" },
-      { name: "Ajay", role: "Tech Team Member", photo: "/assets/brain.webp" },
-    ],
-  },
+  // {
+  //   title: "Tech Team",
+  //   members: [
+  //     { name: "Prem Dharshan", role: "Tech Team Director", photo: "/assets/robot-hand5.webp" },
+  //     { name: "Mithun", role: "Tech Team Coordinator", photo: "/assets/floppy-cut.webp" },
+  //     { name: "Ajay", role: "Tech Team Member", photo: "/assets/brain.webp" },
+  //   ],
+  // },
 ];
 
 const sponsors: SponsorsContent = {
@@ -732,7 +732,8 @@ const sponsors: SponsorsContent = {
       title: "Title Sponsors",
       logos: [
         { label: "Title Sponsor", alt: "Arcesium", logo: "/assets/arcesium-logo.webp", background: "#000" },
-        { label: "Title Co-Sponsor", alt: "KLA", logo: "/assets/kla-logo.webp" },
+        // Title Co-Sponsor: none for now. KLA moved to previous sponsors.
+        // { label: "Title Co-Sponsor", alt: "KLA", logo: "/assets/kla-logo.webp" },
       ],
     },
     {
@@ -762,6 +763,7 @@ const sponsors: SponsorsContent = {
     { name: "Triumph Hub", logo: "/assets/triumphhub.webp" },
     { name: "Frozen Stick", logo: "/assets/frozenstick.webp" },
     { name: "Speed Step", logo: "/assets/speedstep.webp" },
+    { name: "KLA", logo: "/assets/kla-logo.webp" },
   ],
   alumniIntro: "With gratitude to the graduates who keep the lights on.",
   alumni: [
