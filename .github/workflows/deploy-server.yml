@@ -1,0 +1,56 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Only one deploy at a time; a newer push cancels an in-flight one.
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: true
+
+env:
+  # Where nginx serves the site from on the runner's own host.
+  DEPLOY_PATH: /var/www/axios
+
+jobs:
+  deploy:
+    # Runs on the self-hosted runner registered on nucleus-server itself.
+    # The build and the deploy target are the same machine, on a private
+    # network address a GitHub-hosted runner could never reach — so this
+    # avoids SSH entirely and just copies files locally.
+    runs-on: self-hosted
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          PUBLIC_ACHRONOS_INTRO: ${{ vars.PUBLIC_ACHRONOS_INTRO || 'true' }}
+
+      - name: Deploy build locally
+        run: |
+          # The runner user owns $DEPLOY_PATH but not its root-owned parent
+          # (/var/www), so sync in place rather than swapping directories.
+          # --delay-updates stages every changed file and renames them all at
+          # the end, so nginx never serves a half-updated tree.
+          rsync -a --delete --delay-updates dist/ "$DEPLOY_PATH/"
+
+          # nginx runs as www-data: make sure it can read everything.
+          chmod -R a+rX "$DEPLOY_PATH"
