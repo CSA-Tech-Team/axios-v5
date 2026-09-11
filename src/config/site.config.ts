@@ -819,7 +819,7 @@ const footer: FooterContent = {
   ],
   email: "axios@psgtech.ac.in",
   links: [
-    { label: "▸ Axios Web App", href: "#about" },
+    { label: "▸ Axios managed by Proleap", href: "https://proleap.ewhizard.tech/", external: true },
     { label: "▸ PSG College of Technology", href: "https://www.psgtech.edu", external: true },
   ],
   socials: [
