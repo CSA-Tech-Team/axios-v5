@@ -507,7 +507,7 @@ const events: EventDetail[] = [
     ],
     convenors: [
       { name: "Niveda", phone: "+91 93632 58127" },
-      { name: "Keerthi Menon", phone: "+971 54 744 0352" },
+      { name: "Keerthi Menon", phone: "+91 90030 61998" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹7,500", widthPercent: "100%" },
