@@ -418,9 +418,9 @@ const events: EventDetail[] = [
       { name: "Anirudhan", phone: "+91 80885 72371" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹35,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹15,000", widthPercent: "58%" },
-      { place: "Third", amount: "₹10,000", widthPercent: "38%" },
+      { place: "Champion", amount: "₹12,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹7,500", widthPercent: "58%" },
+      { place: "Third", amount: "₹5,000", widthPercent: "38%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:00", endTime: "13:00", duration: "4:00", location: "4 rooms · G Block Classroom" },
@@ -434,7 +434,7 @@ const events: EventDetail[] = [
     name: "Breach Point",
     category: "Technical",
     teamSize: "4 Members",
-    prize: "₹22,500",
+    prize: "₹17,500",
     logo: "/assets/logo-brc.webp",
     tag: "CTF · 5 TRACKS",
     shortDescription: "Every system has a weakness. Every story has a hidden layer.",
@@ -449,9 +449,9 @@ const events: EventDetail[] = [
       { name: "Saivenketraj", phone: "+91 80569 92112" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹40,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹20,000", widthPercent: "56%" },
-      { place: "Third", amount: "₹15,000", widthPercent: "42%" },
+      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
+      { place: "Third", amount: "₹3,000", widthPercent: "42%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "D Block Assembly Hall" },
@@ -463,7 +463,7 @@ const events: EventDetail[] = [
     name: "DataQuest",
     category: "Technical",
     teamSize: "3 Members",
-    prize: "₹15,000",
+    prize: "₹17,500",
     logo: "/assets/logo-dq.webp",
     tag: "DATA · 3 ROUNDS",
     shortDescription: "Time does not wait, and neither does data. Turn chaos into insight.",
@@ -479,9 +479,9 @@ const events: EventDetail[] = [
       { name: "Livin Joseph", phone: "+91 99943 92653" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹40,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹20,000", widthPercent: "56%" },
-      { place: "Third", amount: "₹10,000", widthPercent: "34%" },
+      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
+      { place: "Third", amount: "₹3,000", widthPercent: "34%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "11:30", duration: "1:30", location: "SIL, OSL, NSL, IIL" },
@@ -506,13 +506,13 @@ const events: EventDetail[] = [
       { title: "Trail to Triumph", description: "The final challenge is a race through an interconnected trail of mathematical and logical puzzles. Choose your path wisely, overcome every challenge, and make your way to triumph." },
     ],
     convenors: [
-      { name: "Keerthi Menon", phone: "+91 93632 58127" },
-      { name: "Niveda", phone: "+971 54 744 0352" },
+      { name: "Niveda", phone: "+91 93632 58127" },
+      { name: "Keerthi Menon", phone: "+971 54 744 0352" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹28,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹14,000", widthPercent: "58%" },
-      { place: "Third", amount: "₹8,000", widthPercent: "40%" },
+      { place: "Champion", amount: "₹7,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "58%" },
+      { place: "Third", amount: "₹2,500", widthPercent: "40%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "12:30", duration: "3:00", location: "J515, J514, J516" },
@@ -525,7 +525,7 @@ const events: EventDetail[] = [
     name: "QFactor",
     category: "Non Technical",
     teamSize: "2 Members",
-    prize: "₹15,000",
+    prize: "₹17,500",
     logo: "/assets/logo-qz.webp",
     tag: "QUIZ · PRELIM+FINAL",
     shortDescription: "Mind-boggling questions from almost every topic, with no expertise required.",
@@ -540,9 +540,9 @@ const events: EventDetail[] = [
       { name: "Shambhavi", phone: "+91 80959 43626" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹25,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹12,000", widthPercent: "50%" },
-      { place: "Third", amount: "₹8,000", widthPercent: "32%" },
+      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "50%" },
+      { place: "Third", amount: "₹3,000", widthPercent: "32%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "F-Block Assembly Hall" },
@@ -569,12 +569,12 @@ const events: EventDetail[] = [
     ],
     convenors: [
       { name: "Mithun Senthil", phone: "+91 74182 50339" },
-      { name: "Ranjana", phone: "94957 71225" },
+      { name: "Ranjana", phone: "+91 94957 71225" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹20,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹12,000", widthPercent: "60%" },
-      { place: "Third", amount: "₹8,000", widthPercent: "40%" },
+      { place: "Champion", amount: "₹7,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "60%" },
+      { place: "Third", amount: "₹2,500", widthPercent: "40%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "12:00", duration: "2:00", location: "M503, M504" },
@@ -604,9 +604,9 @@ const events: EventDetail[] = [
       { name: "Dharaneesh", phone: "+91 86678 57284" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹30,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹16,000", widthPercent: "54%" },
-      { place: "Third", amount: "₹9,000", widthPercent: "32%" },
+      { place: "Champion", amount: "₹7,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹2,500", widthPercent: "54%" },
+      //{ place: "Third", amount: "₹9,000", widthPercent: "32%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "F203" },
@@ -634,9 +634,9 @@ const events: EventDetail[] = [
       { name: "Dharaneesh", phone: "+91 86678 57284" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹16,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹9,000", widthPercent: "56%" },
-      { place: "Third", amount: "₹5,000", widthPercent: "32%" },
+      { place: "Champion", amount: "₹2,000", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹1,500", widthPercent: "75%" },
+      { place: "Third", amount: "₹500", widthPercent: "32%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "F202" },
@@ -666,9 +666,9 @@ const events: EventDetail[] = [
       { name: "Shansita", phone: "+91 83348 12473" },
     ],
     prizeSplits: [
-      { place: "Winner", amount: "₹15,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹7,000", widthPercent: "47%" },
-      { place: "Third", amount: "₹3,000", widthPercent: "20%" },
+      { place: "Winner", amount: "₹10,000", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹7,500", widthPercent: "77%" },
+      { place: "Third", amount: "₹5,000", widthPercent: "47%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "F-Block Assembly Hall" },
@@ -696,7 +696,13 @@ const events: EventDetail[] = [
       { name: "Harshavardhan", phone: "+91 63697 21991" },
       { name: "Dharaneesh", phone: "+91 86678 57284" },
     ],
-    prizeSplits: [],
+    prizeSplits: [
+      { place: "Champion", amount: "₹2,000", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹1,750", widthPercent: "88%" },
+      { place: "Third", amount: "₹1,000", widthPercent: "54%" },
+      { place: "Fourth", amount: "₹750", widthPercent: "38%" },
+      { place: "Fifth", amount: "₹500", widthPercent: "27%" },
+    ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "CSL 1, 2, 3" },
     ],
