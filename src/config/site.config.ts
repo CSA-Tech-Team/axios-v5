@@ -761,7 +761,7 @@ const sponsors: SponsorsContent = {
   ],
   previousSponsorsHeading: "Previous Sponsors",
   previousSponsors: [
-    { name: "Wavicle Data Solutions", logo: "/assets/wavicle.webp" },
+    { name: "KLA", logo: "/assets/kla-logo.webp" },
     { name: "Foxsense Innovations", logo: "/assets/foxsense.webp" },
     { name: "The Cloud Company", logo: "/assets/thecloudcompany.webp" },
     { name: "Shankar IAS Academy", logo: "/assets/shankariasacademy.webp" },
@@ -769,7 +769,6 @@ const sponsors: SponsorsContent = {
     { name: "Triumph Hub", logo: "/assets/triumphhub.webp" },
     { name: "Frozen Stick", logo: "/assets/frozenstick.webp" },
     { name: "Speed Step", logo: "/assets/speedstep.webp" },
-    { name: "KLA", logo: "/assets/kla-logo.webp" },
   ],
   alumniIntro: "With gratitude to the graduates who keep the lights on.",
   alumni: [
