@@ -777,6 +777,166 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
     sync();
   }
 
+  function initTouchLineupAcceleration() {
+    const mobileViewport = matchMedia('(hover: none) and (pointer: coarse) and (max-width: 1023px) and (prefers-reduced-motion: no-preference)');
+    const lineup = document.getElementById('events');
+    const nextSection = document.getElementById('register');
+    const modal = document.getElementById('event-modal');
+    if (!lineup || !nextSection) return;
+
+    const MULTIPLIER = 2;
+    const MOMENTUM_DECAY = 5.5;
+    const MIN_MOMENTUM = 36;
+    let zoneActive = false;
+    let running = false;
+    let touchId: number | null = null;
+    let lastY = 0;
+    let lastX = 0;
+    let lastTime = 0;
+    let gestureAxis: 'pending' | 'vertical' | 'horizontal' = 'pending';
+    let pendingDelta = 0;
+    let scrollFrame = 0;
+    let momentumFrame = 0;
+    let momentumVelocity = 0;
+    let momentumTime = 0;
+
+    const modalOpen = () => modal?.style.display && modal.style.display !== 'none';
+    const triggerLine = () => window.innerHeight * (2 / 3);
+
+    const stopMomentum = () => {
+      if (momentumFrame) cancelAnimationFrame(momentumFrame);
+      momentumFrame = 0;
+      momentumVelocity = 0;
+      momentumTime = 0;
+    };
+
+    const updateZone = () => {
+      const line = triggerLine();
+      zoneActive = !modalOpen()
+        && lineup.getBoundingClientRect().top <= line
+        && nextSection.getBoundingClientRect().top > line;
+      if (!zoneActive) stopMomentum();
+    };
+
+    const applyDelta = (delta: number) => {
+      updateZone();
+      if (!zoneActive || !delta) return 0;
+
+      const line = triggerLine();
+      const maxUp = Math.max(0, line - lineup.getBoundingClientRect().top);
+      const maxDown = Math.max(0, nextSection.getBoundingClientRect().top - line);
+      const bounded = Math.max(-maxUp, Math.min(maxDown, delta));
+      if (bounded) window.scrollBy({ top: bounded, behavior: 'auto' });
+      if (bounded !== delta) stopMomentum();
+      return bounded;
+    };
+
+    const flushScroll = () => {
+      scrollFrame = 0;
+      const delta = pendingDelta;
+      pendingDelta = 0;
+      applyDelta(delta);
+    };
+
+    const queueDelta = (delta: number) => {
+      pendingDelta += delta;
+      if (!scrollFrame) scrollFrame = requestAnimationFrame(flushScroll);
+    };
+
+    const runMomentum = (now: number) => {
+      if (!momentumTime) momentumTime = now;
+      const elapsed = Math.min((now - momentumTime) / 1000, .05);
+      momentumTime = now;
+      const moved = applyDelta(momentumVelocity * elapsed);
+      momentumVelocity *= Math.exp(-MOMENTUM_DECAY * elapsed);
+      if (Math.abs(momentumVelocity) >= MIN_MOMENTUM && moved) {
+        momentumFrame = requestAnimationFrame(runMomentum);
+      } else {
+        stopMomentum();
+      }
+    };
+
+    const onTouchStart = (event: TouchEvent) => {
+      if (!zoneActive || event.touches.length !== 1) return;
+      stopMomentum();
+      const touch = event.touches[0];
+      touchId = touch.identifier;
+      lastY = touch.clientY;
+      lastX = touch.clientX;
+      lastTime = event.timeStamp;
+      gestureAxis = 'pending';
+    };
+
+    const onTouchMove = (event: TouchEvent) => {
+      if (!zoneActive || event.touches.length !== 1 || !event.cancelable) return;
+      const touch = event.touches[0];
+      if (touch.identifier !== touchId) return;
+
+      const elapsed = Math.max(8, event.timeStamp - lastTime);
+      const rawDelta = lastY - touch.clientY;
+      const rawDeltaX = lastX - touch.clientX;
+      lastY = touch.clientY;
+      lastX = touch.clientX;
+      lastTime = event.timeStamp;
+      if (gestureAxis === 'pending' && Math.abs(rawDelta) + Math.abs(rawDeltaX) > 4) {
+        gestureAxis = Math.abs(rawDelta) >= Math.abs(rawDeltaX) ? 'vertical' : 'horizontal';
+      }
+      if (gestureAxis !== 'vertical') return;
+      if (!rawDelta) return;
+
+      event.preventDefault();
+      const accelerated = rawDelta * MULTIPLIER;
+      momentumVelocity = accelerated / elapsed * 1000;
+      queueDelta(accelerated);
+    };
+
+    const onTouchEnd = (event: TouchEvent) => {
+      if (!Array.from(event.touches).some((touch) => touch.identifier === touchId)) {
+        touchId = null;
+        gestureAxis = 'pending';
+        if (zoneActive && Math.abs(momentumVelocity) >= MIN_MOMENTUM) {
+          momentumTime = 0;
+          momentumFrame = requestAnimationFrame(runMomentum);
+        }
+      }
+    };
+
+    const onScroll = () => updateZone();
+
+    const start = () => {
+      if (running) return;
+      running = true;
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', updateZone);
+      window.addEventListener('touchstart', onTouchStart, { passive: true });
+      window.addEventListener('touchmove', onTouchMove, { passive: false });
+      window.addEventListener('touchend', onTouchEnd, { passive: true });
+      window.addEventListener('touchcancel', onTouchEnd, { passive: true });
+      updateZone();
+    };
+
+    const stop = () => {
+      if (!running) return;
+      running = false;
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', updateZone);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('touchcancel', onTouchEnd);
+      if (scrollFrame) cancelAnimationFrame(scrollFrame);
+      scrollFrame = 0;
+      pendingDelta = 0;
+      touchId = null;
+      gestureAxis = 'pending';
+      stopMomentum();
+    };
+
+    const sync = () => mobileViewport.matches ? start() : stop();
+    mobileViewport.addEventListener('change', sync);
+    sync();
+  }
+
   // Cards deal in one tick of the clock hand apart; the motion itself lives in
   // EventCard. Each card is watched on its own, so a phone's single column
   // deals as it scrolls rather than all at once below the fold.
@@ -846,6 +1006,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
     initEventWallDrop();
     initCourtTriggers();
     initMobileCourtPreviews();
+    initTouchLineupAcceleration();
     initCardDeal();
   });
 </script>
