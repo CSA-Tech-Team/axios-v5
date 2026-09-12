@@ -50,7 +50,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
     </div>
 
     <!-- Festival Poster Typography & Hover Previews -->
-    <span class="qfactor-wall" style="position:relative;display:inline-block">
+    <span class="qfactor-wall" data-court-row="qf" style="position:relative;display:inline-block">
       <a
         href="#e-qz"
         data-open="qz"
@@ -73,7 +73,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
       />
     </span>
 
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:6px 26px">
+    <div data-court-row="brc dq" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:6px 26px">
       <span style="position:relative;display:inline-block">
         <a
           href="#e-brc"
@@ -114,6 +114,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
           width="126"
           height="126"
           data-court="dq"
+          data-court-flip-on-scroll
           loading="lazy"
           decoding="async"
           style="position:absolute;right:-30px;top:-84px;width:126px;height:auto;opacity:0;transform:rotate(9deg) translateY(6px);transition:opacity .12s steps(2),transform .18s steps(3);filter:drop-shadow(4px 5px 0 rgba(36,26,18,.24));pointer-events:none"
@@ -121,7 +122,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
       </span>
     </div>
 
-    <span class="triathlon-wall" style="position:relative;display:inline-block;transform:rotate(-1.4deg)">
+    <span class="triathlon-wall" data-court-row="tri" style="position:relative;display:inline-block;transform:rotate(-1.4deg)">
       <a
         href="#e-tri"
         data-open="tri"
@@ -137,7 +138,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
       <img src="/assets/triathlon-runner.webp" alt="" width="150" height="100" data-court="tri" loading="lazy" decoding="async" class="triathlon-preview" style="opacity:0;transform:translateY(-46%) rotate(-4deg) translateY(6px)" />
     </span>
 
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:6px 26px">
+    <div data-court-row="mm bb" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:6px 26px">
       <span class="math-mania-wall">
         <a
           href="#e-mm"
@@ -169,7 +170,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
       </span>
     </div>
 
-    <span class="survivors-wall" style="position:relative;display:inline-block">
+    <span class="survivors-wall" data-court-row="svc" style="position:relative;display:inline-block">
       <a
         href="#e-svc"
         data-open="svc"
@@ -193,7 +194,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
       />
     </span>
 
-    <div class="gameover-row" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 22px;margin-top:2px">
+    <div class="gameover-row" data-court-row="go" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 22px;margin-top:2px">
       <span style="position:relative;font-family:'Shrikhand',serif;font-size:clamp(16px,2.6vw,26px);color:var(--r2);transform:rotate(-5deg);z-index:2">
         {lineup.gamingLeadIn}
       </span>
@@ -225,7 +226,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
   <!-- Event Cards Grid -->
   <div class="event-card-container">
     <div class="event-section-heading event-section-heading-technical">
-      <h3>{lineup.technicalHeading}</h3>
+      <h3 data-court-clear>{lineup.technicalHeading}</h3>
       <i></i>
     </div>
 
@@ -498,11 +499,11 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  /* The court previews are hover-only; on a touch screen a tap would leave one
-     stuck open and the larger ones hang past a phone's edge, so they sit out. */
+  /* Touch devices reveal the poster previews as each name row scrolls into
+     view. Desktop keeps the same previews behind its hover interaction. */
   @media (hover: none) and (max-width: 1023px) {
-    [data-court] {
-      display: none;
+    .event-name-wall [data-court] {
+      display: block;
     }
   }
 
@@ -596,6 +597,79 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
     }
   }
 
+  /* On touch screens the previews are supporting marks beside the titles, not
+     the larger desktop hover art. Paired names use opposite outer edges so
+     both images stay readable without crowding the row. */
+  @media (hover: none) and (max-width: 1023px) {
+    [data-court-row] [data-court-trigger],
+    [data-court-row] .big-bull-wall-link {
+      position: relative;
+      z-index: 2;
+    }
+
+    .event-name-wall [data-court] {
+      z-index: 1 !important;
+    }
+
+    .qfactor-wall [data-court="qf"] {
+      width: clamp(64px, 11vw, 84px) !important;
+      right: -42px !important;
+      top: -22px !important;
+    }
+
+    [data-court="brc"] {
+      width: clamp(72px, 12vw, 96px) !important;
+      left: -48px !important;
+      top: -42px !important;
+    }
+
+    [data-court="dq"] {
+      width: clamp(64px, 10vw, 82px) !important;
+      right: -24px !important;
+      top: -46px !important;
+    }
+
+    .triathlon-preview {
+      width: clamp(82px, 13vw, 108px) !important;
+      left: calc(100% - 8px) !important;
+      top: 34% !important;
+    }
+
+    .math-mania-mark {
+      width: clamp(50px, 8vw, 66px) !important;
+      right: calc(100% - 8px) !important;
+      bottom: -12px !important;
+    }
+
+    .big-bull-preview {
+      width: clamp(62px, 10vw, 82px) !important;
+      right: -42px !important;
+      top: -12px !important;
+    }
+
+    .survivors-preview {
+      width: clamp(82px, 13vw, 106px) !important;
+      right: calc(100% - 20px) !important;
+      top: -28px !important;
+    }
+
+    .gameover-wall [data-court="go"] {
+      width: clamp(72px, 11vw, 92px) !important;
+      left: calc(100% - 10px) !important;
+      top: -24px !important;
+    }
+  }
+
+  /* On phones, the DataQuest lens becomes a compact side badge. Its height
+     stays within this row's gap, clear of Q Factor and Tech Triathlon. */
+  @media (hover: none) and (max-width: 560px) {
+    [data-court="dq"] {
+      width: clamp(40px, 12vw, 44px) !important;
+      right: -30px !important;
+      top: -4px !important;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .big-bull-wall-link,
     .big-bull-preview {
@@ -639,6 +713,68 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
       trigger.addEventListener('focus', show);
       trigger.addEventListener('blur', hide);
     });
+  }
+
+  function initMobileCourtPreviews() {
+    const touchViewport = matchMedia('(hover: none) and (max-width: 1023px)');
+    const rows = Array.from(document.querySelectorAll<HTMLElement>('[data-court-row]'));
+    const clearPoint = document.querySelector<HTMLElement>('[data-court-clear]');
+    const previews = Array.from(document.querySelectorAll<HTMLElement>('.event-name-wall [data-court]'));
+    if (!rows.length || !clearPoint || !previews.length) return;
+
+    let activeCourts = '';
+    let frame = 0;
+
+    const setPreview = (preview: HTMLElement, visible: boolean) => {
+      const baseTransform = preview.dataset.courtBaseTransform ?? preview.style.transform;
+      preview.dataset.courtBaseTransform = baseTransform;
+      preview.style.opacity = visible ? '1' : '0';
+      preview.style.transform = visible
+        ? `${baseTransform.replace('translateY(6px)', 'translateY(0)')}${preview.hasAttribute('data-court-flip-on-scroll') ? ' scaleX(-1)' : ''}`
+        : baseTransform;
+    };
+
+    const update = () => {
+      frame = 0;
+      const markers = [...rows, clearPoint];
+      // A row takes over once its bottom reaches the lower third of the
+      // viewport, keeping the preview in step with the reader's focus.
+      const triggerLine = window.innerHeight * (2 / 3);
+      const lastPassed = markers.reduce<HTMLElement | undefined>((latest, marker) => (
+        marker.getBoundingClientRect().bottom <= triggerLine ? marker : latest
+      ), undefined);
+      const nextCourts = lastPassed?.hasAttribute('data-court-clear')
+        ? ''
+        : lastPassed?.dataset.courtRow ?? '';
+      if (nextCourts === activeCourts) return;
+
+      activeCourts = nextCourts;
+      const visibleCourts = new Set(nextCourts.split(' ').filter(Boolean));
+      previews.forEach((preview) => setPreview(preview, visibleCourts.has(preview.dataset.court ?? '')));
+    };
+
+    const scheduleUpdate = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    const start = () => {
+      window.addEventListener('scroll', scheduleUpdate, { passive: true });
+      window.addEventListener('resize', scheduleUpdate);
+      scheduleUpdate();
+    };
+
+    const stop = () => {
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      activeCourts = '';
+      previews.forEach((preview) => setPreview(preview, false));
+    };
+
+    const sync = () => touchViewport.matches ? start() : stop();
+    touchViewport.addEventListener('change', sync);
+    sync();
   }
 
   // Cards deal in one tick of the clock hand apart; the motion itself lives in
@@ -709,6 +845,7 @@ const gamingEvents = ['val', 'fifa', 'chess'].map(byKey);
   document.addEventListener('DOMContentLoaded', () => {
     initEventWallDrop();
     initCourtTriggers();
+    initMobileCourtPreviews();
     initCardDeal();
   });
 </script>
