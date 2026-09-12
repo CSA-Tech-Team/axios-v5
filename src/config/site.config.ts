@@ -414,7 +414,7 @@ const events: EventDetail[] = [
       { title: "Turf Wars", description: "Teams program Python bots to capture territory, manage resources, and outsmart opponents on a hidden battlefield. Using strategy, pathfinding, and multi-agent decision-making, they compete to become the ultimate TRIATHLON champion." },
     ],
     convenors: [
-      { name: "Arul Kevin", phone: "+91 80569 90243" },
+      { name: "ArulKevin", phone: "+91 80569 90243" },
       { name: "Anirudhan", phone: "+91 80885 72371" },
     ],
     prizeSplits: [
