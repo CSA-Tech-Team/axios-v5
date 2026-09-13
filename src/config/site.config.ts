@@ -720,14 +720,14 @@ const team: TeamGroup[] = [
       { name: "Ravi Varma", role: "Convenor", photo: "/assets/convenor.webp" },
     ],
   },
-  // {
-  //   title: "Tech Team",
-  //   members: [
-  //     { name: "Prem Dharshan", role: "Tech Team Director", photo: "/assets/robot-hand5.webp" },
-  //     { name: "Mithun", role: "Tech Team Coordinator", photo: "/assets/floppy-cut.webp" },
-  //     { name: "Ajay", role: "Tech Team Member", photo: "/assets/brain.webp" },
-  //   ],
-  // },
+  {
+    title: "Tech Team",
+    members: [
+      { name: "Prem Dharshan", role: "Tech Team Director", photo: "/assets/robot-hand5.webp" },
+      { name: "Mithun", role: "Tech Team Coordinator", photo: "/assets/floppy-cut.webp" },
+      { name: "Ajay", role: "Tech Team Member", photo: "/assets/brain.webp" },
+    ],
+  },
 ];
 
 const sponsors: SponsorsContent = {
