@@ -67,7 +67,10 @@ export interface EventInfo {
 
 export interface NavLink {
   label: string;
-  target: string;
+  target?: string;
+  href?: string;
+  external?: boolean;
+  desktopLabel?: string;
 }
 
 export interface HeroContent {
@@ -339,6 +342,7 @@ const nav: NavLink[] = [
   { label: "Lineup", target: "events" },
   { label: "Prizes", target: "prizes" },
   { label: "Sponsors", target: "sponsors" },
+  { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: "https://proleap.ewhizard.tech/guest-invites/y78v5_vW3Le97KYX91gXGI_7SJv1ArQQ12tT4RmBfBU", external: true },
   { label: "Help", target: "faq" },
 ];
 
@@ -400,7 +404,7 @@ const events: EventDetail[] = [
     key: "tri",
     name: "Technical Triathlon",
     category: "Technical",
-    teamSize: "3 Members",
+    teamSize: "2-3 Members",
     prize: "₹25,000",
     logo: "/assets/logo-tri.webp",
     posterLabel: "Tech Triathlon",
@@ -414,7 +418,7 @@ const events: EventDetail[] = [
       { title: "Turf Wars", description: "Teams program Python bots to capture territory, manage resources, and outsmart opponents on a hidden battlefield. Using strategy, pathfinding, and multi-agent decision-making, they compete to become the ultimate TRIATHLON champion." },
     ],
     convenors: [
-      { name: "Arul Kevin", phone: "+91 80569 90243" },
+      { name: "ArulKevin", phone: "+91 80569 90243" },
       { name: "Anirudhan", phone: "+91 80885 72371" },
     ],
     prizeSplits: [
@@ -462,7 +466,7 @@ const events: EventDetail[] = [
     key: "dq",
     name: "DataQuest",
     category: "Technical",
-    teamSize: "3 Members",
+    teamSize: "2-3 Members",
     prize: "₹17,500",
     logo: "/assets/logo-dq.webp",
     tag: "DATA · 3 ROUNDS",
@@ -475,13 +479,13 @@ const events: EventDetail[] = [
       { title: "Forge", description: "The final trial. Armed with a real-world dataset, teams forge insight into impact — analyzing, storytelling, and presenting a solution that can stand before the judges." },
     ],
     convenors: [
-      { name: "Tanaz", phone: "+91 63800 22981" },
+      { name: "Tanaz I", phone: "+91 63800 22981" },
       { name: "Livin Joseph", phone: "+91 99943 92653" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
+      { place: "Champion", amount: "₹10,000", widthPercent: "100%" },
       { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
-      { place: "Third", amount: "₹3,000", widthPercent: "34%" },
+      { place: "Third", amount: "₹2,500", widthPercent: "34%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "11:30", duration: "1:30", location: "SIL, OSL, NSL, IIL" },
@@ -506,7 +510,7 @@ const events: EventDetail[] = [
       { title: "Trail to Triumph", description: "The final challenge is a race through an interconnected trail of mathematical and logical puzzles. Choose your path wisely, overcome every challenge, and make your way to triumph." },
     ],
     convenors: [
-      { name: "Niveda", phone: "+91 93632 58127" },
+      { name: "Niveda R", phone: "+91 93632 58127" },
       { name: "Keerthi Menon", phone: "+91 90030 61998" },
     ],
     prizeSplits: [
@@ -524,7 +528,7 @@ const events: EventDetail[] = [
     key: "qz",
     name: "QFactor",
     category: "Non Technical",
-    teamSize: "2 Members",
+    teamSize: "1-2 Members",
     prize: "₹17,500",
     logo: "/assets/logo-qz.webp",
     tag: "QUIZ · PRELIM+FINAL",
@@ -532,12 +536,12 @@ const events: EventDetail[] = [
     about:
       "Prelims to knockout finals. Mind-boggling questions from (almost) every topic, no expertise or previous experience required. Test your knowledge against the brightest minds!",
     rounds: [
-      { title: "Written Prelims", description: "Written round with questions displayed on screens, top 6 teams advance to the finals." },
+      { title: "The Filter", description: "Written round with questions displayed on screens, top 6 teams advance to the finals." },
       { title: "On-Stage Finals", description: "Dry rounds, pounce and bounce, and special rounds await those who can challenge questions from across time." },
     ],
     convenors: [
-      { name: "Kaaviya", phone: "+91 63825 80231" },
-      { name: "Shambhavi", phone: "+91 80959 43626" },
+      { name: "Kaaviya S S", phone: "+91 63825 80231" },
+      { name: "L Shambhavi", phone: "+91 80959 43626" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
@@ -553,7 +557,7 @@ const events: EventDetail[] = [
     key: "svc",
     name: "Survivors' Court",
     category: "Non Technical",
-    teamSize: "3 Members",
+    teamSize: "2-3 Members",
     prize: "₹15,000",
     logo: "/assets/logo-svc.webp",
     tag: "STRATEGY · ELIMINATION",
@@ -568,8 +572,8 @@ const events: EventDetail[] = [
       { title: "Round 4 · Verdict", description: "The final verdict is delivered after teams present their evidence and defend the choices made throughout the crisis." },
     ],
     convenors: [
-      { name: "Mithun Senthil", phone: "+91 74182 50339" },
-      { name: "Ranjana", phone: "+91 94957 71225" },
+      { name: "Mithun Senthil V", phone: "+91 74182 50339" },
+      { name: "Ranjana G", phone: "+91 94957 71225" },
     ],
     prizeSplits: [
       { place: "Champion", amount: "₹7,500", widthPercent: "100%" },
@@ -655,11 +659,11 @@ const events: EventDetail[] = [
     shortDescription:
       "Read the market. Back your instincts. Put your stock market strategy to the test and make your move as the next Big Bull.",
     about:
-      "Read the market. Back your instincts. Big Bull is a stock market strategy challenge where teams build a simulated portfolio, react to breaking market news, and defend the choices behind every trade.",
+      "Step into BIG BULL, a strategic investment game where teams build an empire across 1970, 2026 and 2070. Acquire lands, develop assets, invest in companies, trade strategically, and adapt to a changing city. The winning team is the one that makes the smartest decisions and builds the most valuable empire.",
     rounds: [
-      { title: "Round 1 · Market Open", description: "Build a balanced portfolio from the stocks and market data provided within the opening window." },
-      { title: "Round 2 · The Bull Run", description: "Respond to price swings, news alerts, and changing market conditions while protecting your returns." },
-      { title: "Final · Closing Bell", description: "Present your final portfolio and explain the strategy, risks, and decisions that shaped your performance." },
+      { title: "Round 1 · Land Rush", description: "Acquire & Develop – Teams start in 1970 with BB Coins and compete in secret tenders to acquire lands from the city map. They solve challenges to unlock development opportunities and invest in buildings, businesses, infrastructure and more. Top 40 teams advance." },
+      { title: "Round 2 · City Boom", description: "Trade & Invest – In 2026, the same lands continue with their owners, but the city evolves. Teams adapt their land strategy, trade assets, invest in 50 company stocks, and react to market news to maximize their portfolio value. Top 10 teams advance." },
+      { title: "Final · Corporate Future", description: "Build Your Empire – In 2070, teams explore new development opportunities, acquire companies, and create profitable Land + Development + Company combinations. Top teams present their complete strategy in the Big Bull Boardroom, where the winners are selected." },
     ],
     convenors: [
       { name: "Durga", phone: "+91 96989 20880" },
@@ -720,14 +724,14 @@ const team: TeamGroup[] = [
       { name: "Ravi Varma", role: "Convenor", photo: "/assets/convenor.webp" },
     ],
   },
-  // {
-  //   title: "Tech Team",
-  //   members: [
-  //     { name: "Prem Dharshan", role: "Tech Team Director", photo: "/assets/robot-hand5.webp" },
-  //     { name: "Mithun", role: "Tech Team Coordinator", photo: "/assets/floppy-cut.webp" },
-  //     { name: "Ajay", role: "Tech Team Member", photo: "/assets/brain.webp" },
-  //   ],
-  // },
+  {
+    title: "Tech Team",
+    members: [
+      { name: "Prem Dharshan", role: "Tech Team Director", photo: "/assets/prem-cropped.jpeg" },
+      { name: "Mithun Karthik", role: "Tech Team Coordinator", photo: "/assets/mithun-cropped.jpeg" },
+      { name: "Ajay", role: "Tech Team Member", photo: "/assets/ajay-cropped.jpeg" },
+    ],
+  },
 ];
 
 const sponsors: SponsorsContent = {
@@ -761,7 +765,7 @@ const sponsors: SponsorsContent = {
   ],
   previousSponsorsHeading: "Previous Sponsors",
   previousSponsors: [
-    { name: "Wavicle Data Solutions", logo: "/assets/wavicle.webp" },
+    { name: "KLA", logo: "/assets/kla-logo.webp" },
     { name: "Foxsense Innovations", logo: "/assets/foxsense.webp" },
     { name: "The Cloud Company", logo: "/assets/thecloudcompany.webp" },
     { name: "Shankar IAS Academy", logo: "/assets/shankariasacademy.webp" },
@@ -769,7 +773,6 @@ const sponsors: SponsorsContent = {
     { name: "Triumph Hub", logo: "/assets/triumphhub.webp" },
     { name: "Frozen Stick", logo: "/assets/frozenstick.webp" },
     { name: "Speed Step", logo: "/assets/speedstep.webp" },
-    { name: "KLA", logo: "/assets/kla-logo.webp" },
   ],
   alumniIntro: "With gratitude to the graduates who keep the lights on.",
   alumni: [
@@ -828,6 +831,7 @@ const footer: FooterContent = {
   email: "axios@psgtech.ac.in",
   links: [
     { label: "▸ Axios managed by Proleap", href: "https://proleap.ewhizard.tech/", external: true },
+    { label: "▸ Alumni Registration", href: "https://proleap.ewhizard.tech/guest-invites/y78v5_vW3Le97KYX91gXGI_7SJv1ArQQ12tT4RmBfBU", external: true },
     { label: "▸ PSG College of Technology", href: "https://www.psgtech.edu", external: true },
   ],
   socials: [

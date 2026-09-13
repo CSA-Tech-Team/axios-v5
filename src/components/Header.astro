@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from '../config/site.config';
+const alumniLink = siteConfig.nav.find((link) => link.desktopLabel);
 ---
 
 <header style="position:sticky;top:0;z-index:1000;display:flex;align-items:center;gap:14px;height:56px;padding:0 18px;background:var(--term);color:var(--termfg);border-bottom:2px solid var(--ink);font-family:inherit">
@@ -32,11 +33,52 @@ import { siteConfig } from '../config/site.config';
 
   <nav class="topnav" id="topnav">
     {siteConfig.nav.map((link) => (
-      <a href={`#${link.target}`} data-go={link.target}>{link.label}</a>
+      link.desktopLabel ? (
+        <a
+          class="nav-alumni nav-alumni-mobile"
+          href={link.href}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
+          aria-label={link.label}
+        >
+          <span>{link.label}</span>
+          <svg class="nav-alumni-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 17 17 7"></path>
+            <path d="M7 7h10v10"></path>
+          </svg>
+        </a>
+      ) : link.href ? (
+        <a
+          href={link.href}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
+          aria-label={link.label}
+        >
+          {link.label}
+        </a>
+      ) : (
+        <a href={`#${link.target}`} data-go={link.target}>{link.label}</a>
+      )
     ))}
   </nav>
 
   <span class="hdr-sep" style="width:1.5px;height:24px;background:#fff;opacity:.18;flex-shrink:0"></span>
+  {alumniLink && (
+    <a
+      class="nav-alumni nav-alumni-desktop"
+      href={alumniLink.href}
+      target={alumniLink.external ? '_blank' : undefined}
+      rel={alumniLink.external ? 'noopener noreferrer' : undefined}
+      aria-label={alumniLink.label}
+    >
+      <span>{alumniLink.desktopLabel}</span>
+      <span class="nav-alumni-suffix"><span>&nbsp;REGISTRATION</span></span>
+      <svg class="nav-alumni-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7 17 17 7"></path>
+        <path d="M7 7h10v10"></path>
+      </svg>
+    </a>
+  )}
   <a
     class="hdr-register"
     href={siteConfig.event.registrationUrl}
@@ -63,13 +105,48 @@ import { siteConfig } from '../config/site.config';
     margin-left: auto;
   }
 
-  .topnav a {
+  .topnav a,
+  .nav-alumni-desktop {
     color: #c9b48c;
     font-size: 12px;
     letter-spacing: .05em;
     text-transform: uppercase;
     padding: 6px 9px;
     white-space: nowrap;
+  }
+
+  .nav-alumni {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .nav-alumni-arrow {
+    width: 1.05em;
+    height: 1.05em;
+    flex-shrink: 0;
+    color: inherit;
+  }
+
+  .nav-alumni-desktop { flex-shrink: 0; margin-right: 6px; }
+  .nav-alumni-mobile { display: none; }
+
+  .nav-alumni-suffix {
+    display: inline-block;
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 380ms cubic-bezier(.22, .61, .36, 1);
+    will-change: max-width;
+    white-space: nowrap;
+  }
+
+  .nav-alumni-suffix > span {
+    display: inline-block;
+  }
+
+  .nav-alumni:hover .nav-alumni-suffix,
+  .nav-alumni:focus-visible .nav-alumni-suffix {
+    max-width: 9em;
   }
 
   .hdr-register {
@@ -162,6 +239,13 @@ import { siteConfig } from '../config/site.config';
       border-bottom: 1px solid #ffffff14;
     }
 
+    .nav-alumni-suffix {
+      display: contents;
+    }
+
+    .nav-alumni-desktop { display: none; }
+    .nav-alumni-mobile { display: flex; }
+
     .topnav a:last-child { border-bottom: 0; }
   }
 
@@ -181,6 +265,7 @@ import { siteConfig } from '../config/site.config';
 
   @media (prefers-reduced-motion: reduce) {
     .nav-toggle span { transition: none; }
+    .nav-alumni-suffix { transition: none; }
   }
 </style>
 
