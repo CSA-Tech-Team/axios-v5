@@ -32,7 +32,24 @@ import { siteConfig } from '../config/site.config';
 
   <nav class="topnav" id="topnav">
     {siteConfig.nav.map((link) => (
-      <a href={`#${link.target}`} data-go={link.target}>{link.label}</a>
+      link.href ? (
+        <a
+          class:list={{ 'nav-alumni': Boolean(link.desktopLabel) }}
+          href={link.href}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
+          aria-label={link.label}
+        >
+          {link.desktopLabel ? (
+            <>
+              <span>{link.desktopLabel}</span>
+              <span class="nav-alumni-suffix"><span>&nbsp;REGISTRATION</span></span>
+            </>
+          ) : link.label}
+        </a>
+      ) : (
+        <a href={`#${link.target}`} data-go={link.target}>{link.label}</a>
+      )
     ))}
   </nav>
 
@@ -70,6 +87,28 @@ import { siteConfig } from '../config/site.config';
     text-transform: uppercase;
     padding: 6px 9px;
     white-space: nowrap;
+  }
+
+  .nav-alumni {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .nav-alumni-suffix {
+    display: grid;
+    grid-template-columns: 0fr;
+    transition: grid-template-columns 380ms cubic-bezier(.22, .61, .36, 1);
+    will-change: grid-template-columns;
+  }
+
+  .nav-alumni-suffix > span {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .nav-alumni:hover .nav-alumni-suffix,
+  .nav-alumni:focus-visible .nav-alumni-suffix {
+    grid-template-columns: 1fr;
   }
 
   .hdr-register {
@@ -162,6 +201,10 @@ import { siteConfig } from '../config/site.config';
       border-bottom: 1px solid #ffffff14;
     }
 
+    .nav-alumni-suffix {
+      display: contents;
+    }
+
     .topnav a:last-child { border-bottom: 0; }
   }
 
@@ -181,6 +224,7 @@ import { siteConfig } from '../config/site.config';
 
   @media (prefers-reduced-motion: reduce) {
     .nav-toggle span { transition: none; }
+    .nav-alumni-suffix { transition: none; }
   }
 </style>
 

@@ -67,7 +67,10 @@ export interface EventInfo {
 
 export interface NavLink {
   label: string;
-  target: string;
+  target?: string;
+  href?: string;
+  external?: boolean;
+  desktopLabel?: string;
 }
 
 export interface HeroContent {
@@ -339,6 +342,7 @@ const nav: NavLink[] = [
   { label: "Lineup", target: "events" },
   { label: "Prizes", target: "prizes" },
   { label: "Sponsors", target: "sponsors" },
+  { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: "#", external: true },
   { label: "Help", target: "faq" },
 ];
 
@@ -827,6 +831,7 @@ const footer: FooterContent = {
   email: "axios@psgtech.ac.in",
   links: [
     { label: "▸ Axios managed by Proleap", href: "https://proleap.ewhizard.tech/", external: true },
+    { label: "▸ Alumni Registration", href: "#" },
     { label: "▸ PSG College of Technology", href: "https://www.psgtech.edu", external: true },
   ],
   socials: [
