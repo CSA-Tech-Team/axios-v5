@@ -40,7 +40,13 @@ const alumniLink = siteConfig.nav.find((link) => link.desktopLabel);
           target={link.external ? '_blank' : undefined}
           rel={link.external ? 'noopener noreferrer' : undefined}
           aria-label={link.label}
-        >{link.label}</a>
+        >
+          <span>{link.label}</span>
+          <svg class="nav-alumni-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 17 17 7"></path>
+            <path d="M7 7h10v10"></path>
+          </svg>
+        </a>
       ) : link.href ? (
         <a
           href={link.href}
@@ -67,6 +73,10 @@ const alumniLink = siteConfig.nav.find((link) => link.desktopLabel);
     >
       <span>{alumniLink.desktopLabel}</span>
       <span class="nav-alumni-suffix"><span>&nbsp;REGISTRATION</span></span>
+      <svg class="nav-alumni-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7 17 17 7"></path>
+        <path d="M7 7h10v10"></path>
+      </svg>
     </a>
   )}
   <a
@@ -108,9 +118,17 @@ const alumniLink = siteConfig.nav.find((link) => link.desktopLabel);
   .nav-alumni {
     display: inline-flex;
     align-items: center;
+    gap: 2px;
   }
 
-  .nav-alumni-desktop { flex-shrink: 0; }
+  .nav-alumni-arrow {
+    width: 1.05em;
+    height: 1.05em;
+    flex-shrink: 0;
+    color: inherit;
+  }
+
+  .nav-alumni-desktop { flex-shrink: 0; margin-right: 6px; }
   .nav-alumni-mobile { display: none; }
 
   .nav-alumni-suffix {

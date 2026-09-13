@@ -342,7 +342,7 @@ const nav: NavLink[] = [
   { label: "Lineup", target: "events" },
   { label: "Prizes", target: "prizes" },
   { label: "Sponsors", target: "sponsors" },
-  { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: "#", external: true },
+  { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: "https://proleap.ewhizard.tech/guest-invites/y78v5_vW3Le97KYX91gXGI_7SJv1ArQQ12tT4RmBfBU", external: true },
   { label: "Help", target: "faq" },
 ];
 
@@ -831,7 +831,7 @@ const footer: FooterContent = {
   email: "axios@psgtech.ac.in",
   links: [
     { label: "▸ Axios managed by Proleap", href: "https://proleap.ewhizard.tech/", external: true },
-    { label: "▸ Alumni Registration", href: "#" },
+    { label: "▸ Alumni Registration", href: "https://proleap.ewhizard.tech/guest-invites/y78v5_vW3Le97KYX91gXGI_7SJv1ArQQ12tT4RmBfBU", external: true },
     { label: "▸ PSG College of Technology", href: "https://www.psgtech.edu", external: true },
   ],
   socials: [
