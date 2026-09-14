@@ -340,8 +340,8 @@ const meta: SiteMeta = {
 
 const nav: NavLink[] = [
   { label: "Legacy", target: "board" },
-  { label: "Lineup", target: "events" },
   { label: "Prizes", target: "prizes" },
+  { label: "Lineup", target: "events" },
   { label: "Sponsors", target: "sponsors" },
   { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: "https://proleap.ewhizard.tech/guest-invites/y78v5_vW3Le97KYX91gXGI_7SJv1ArQQ12tT4RmBfBU", external: true },
   { label: "Help", target: "faq" },
@@ -403,7 +403,7 @@ const prizePool: PrizePoolContent = {
 const events: EventDetail[] = [
   {
     key: "tri",
-    name: "Technical Triathlon",
+    name: "Tech Triathlon",
     category: "Technical",
     teamSize: "2-3 Members",
     prize: "₹25,000",
@@ -416,16 +416,18 @@ const events: EventDetail[] = [
     rounds: [
       { title: "Chrono Casino", description: "Navigate a carnival of fast-paced technical face-offs where your knowledge is currency. Wager wisely, outsmart rivals, and rise through the ranks to survive." },
       { title: "Card Conquest", description: "A high-stakes battle of aptitude and strategy where teams challenge rivals to capture opponents’ question cards. Sharp problem-solving, timing, and calculated risks decide who rises to the final round." },
-      { title: "Turf Wars", description: "Teams program Python bots to capture territory, manage resources, and outsmart opponents on a hidden battlefield. Using strategy, pathfinding, and multi-agent decision-making, they compete to become the ultimate TRIATHLON champion." },
+      { title: "Code Colosseum", description: "Teams program Python bots to capture territory, manage resources, and outsmart opponents on a hidden battlefield. Using strategy, pathfinding, and multi-agent decision-making, they compete to become the ultimate TRIATHLON champion." },
     ],
     convenors: [
-      { name: "ArulKevin", phone: "+91 80569 90243" },
-      { name: "Anirudhan", phone: "+91 80885 72371" },
+      { name: "Arulkevin J", phone: "+91 80569 90243" },
+      { name: "Anirudhan S", phone: "+91 80885 72371" },
+      { name: "Nivithasri A", phone: "+91 80566 23614" },
+      { name: "Deepadharshan S", phone: "+91 86109 99867" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹12,500", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹7,500", widthPercent: "58%" },
-      { place: "Third", amount: "₹5,000", widthPercent: "38%" },
+      { place: "Winner", amount: "₹12,500", widthPercent: "100%" },
+      { place: "Runner up", amount: "₹7,500", widthPercent: "60%" },
+      { place: "2nd Runner up", amount: "₹5,000", widthPercent: "40%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:00", endTime: "13:00", duration: "4:00", location: "4 rooms · G Block Classroom" },
@@ -438,8 +440,8 @@ const events: EventDetail[] = [
     key: "brc",
     name: "Breach Point",
     category: "Technical",
-    teamSize: "4 Members",
-    prize: "₹17,500",
+    teamSize: "2-4 Members",
+    prize: "₹35,000",
     logo: "/assets/logo-brc.webp",
     tag: "CTF · 5 TRACKS",
     shortDescription: "Every system has a weakness. Every story has a hidden layer.",
@@ -450,13 +452,13 @@ const events: EventDetail[] = [
       { title: "Red vs Blue", description: "An intense Attack-Defence CTF where teams must patch and defend their own vulnerable systems while simultaneously breaching opponents’ infrastructure to plant flags. Offense and defense in equal measure — falter on either side, and you’re exposed." },
     ],
     convenors: [
-      { name: "Aditya", phone: "+91 77955 88955" },
-      { name: "Saivenketraj", phone: "+91 80569 92112" },
+      { name: "Saivenketraj K.S", phone: "+91 80569 92112" },
+      { name: "Aditya Hariharan M", phone: "+91 77955 88955" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
-      { place: "Third", amount: "₹3,000", widthPercent: "42%" },
+      { place: "Winner", amount: "₹17,500", widthPercent: "100%" },
+      { place: "Runner up", amount: "₹10,500", widthPercent: "60%" },
+      { place: "2nd Runner up", amount: "₹7,000", widthPercent: "40%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "D Block Assembly Hall" },
@@ -465,7 +467,7 @@ const events: EventDetail[] = [
   },
   {
     key: "dq",
-    name: "DataQuest",
+    name: "Data Quest",
     category: "Technical",
     teamSize: "2-3 Members",
     prize: "₹17,500",
@@ -484,9 +486,9 @@ const events: EventDetail[] = [
       { name: "Livin Joseph", phone: "+91 99943 92653" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹10,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
-      { place: "Third", amount: "₹2,500", widthPercent: "34%" },
+      { place: "Winner", amount: "₹10,000", widthPercent: "100%" },
+      { place: "Runner up", amount: "₹5,000", widthPercent: "56%" },
+      { place: "2nd Runner up", amount: "₹2,500", widthPercent: "34%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "11:30", duration: "1:30", location: "SIL, OSL, NSL, IIL" },
@@ -541,13 +543,13 @@ const events: EventDetail[] = [
       { title: "On-Stage Finals", description: "Dry rounds, pounce and bounce, and special rounds await those who can challenge questions from across time." },
     ],
     convenors: [
-      { name: "Kaaviya S S", phone: "+91 63825 80231" },
       { name: "L Shambhavi", phone: "+91 80959 43626" },
+      { name: "Kaaviya S S", phone: "+91 63825 80231" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹5,000", widthPercent: "50%" },
-      { place: "Third", amount: "₹3,000", widthPercent: "32%" },
+      { place: "Champion", amount: "₹8,000", widthPercent: "100%" },
+      { place: "Runner up", amount: "₹6,000", widthPercent: "75%" },
+      { place: "Third", amount: "₹3,500", widthPercent: "44%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "F-Block Assembly Hall" },
@@ -559,7 +561,7 @@ const events: EventDetail[] = [
     name: "Survivors' Court",
     category: "Non Technical",
     teamSize: "2-3 Members",
-    prize: "₹15,000",
+    prize: "₹20,000",
     logo: "/assets/logo-svc.webp",
     tag: "STRATEGY · ELIMINATION",
     shortDescription:
@@ -567,19 +569,17 @@ const events: EventDetail[] = [
     about:
       "Survivors Court puts teams at the centre of high-stakes crises where every decision has consequences. Navigate chaos, make strategic choices, and gather evidence — because when the dust settles, you’ll have to defend your actions in court.",
     rounds: [
-      { title: "Round 1 — Survival / Scenario Phase", description: "Teams are placed in an unfolding crisis and must navigate challenges, make critical decisions, and work with limited resources. Every choice can create consequences that affect their journey and future conflicts." },
-      { title: "Round 2 — Conflict / Bridging Phase", description: "Teams face the consequences of their decisions as their actions intersect with another team. Conflicts arise from competing choices, forcing teams to analyse events, build their case, and prepare to justify their actions. The provided scenario includes conflicts where one team’s decisions directly create setbacks for another." },
-      { title: "Round 3 — Court / Trial Phase", description: "Teams enter the courtroom to defend their actions and challenge their opponents. Using the evidence and decisions from earlier rounds, they must present their case, respond to opposing arguments, and convince the court that their choices were justified." },
-      { title: "Round 4 · Verdict", description: "The final verdict is delivered after teams present their evidence and defend the choices made throughout the crisis." },
+      { title: "Prelims", description: "Survival Phase: Teams face a crisis, make strategic decisions, manage limited resources, and gather evidence. Court Phase: Teams face the consequences of their decisions, build their case, defend their actions, and challenge their opponents using the evidence gathered." },
+      { title: "Grand Finals", description: "The Grand Finals follow the same Survival Phase to Court Phase format. Teams once again navigate a high-stakes crisis during the Survival Phase and then enter the Court Phase to defend their decisions and challenge their opponents." },
     ],
     convenors: [
       { name: "Mithun Senthil V", phone: "+91 74182 50339" },
       { name: "Ranjana G", phone: "+91 94957 71225" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹7,500", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹5,000", widthPercent: "60%" },
-      { place: "Third", amount: "₹2,500", widthPercent: "40%" },
+      { place: "Champion", amount: "₹10,000", widthPercent: "100%" },
+      { place: "Runner up", amount: "₹6,000", widthPercent: "60%" },
+      { place: "Third", amount: "₹4,000", widthPercent: "40%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "12:00", duration: "2:00", location: "M503, M504" },
@@ -590,7 +590,7 @@ const events: EventDetail[] = [
   },
   {
     key: "val",
-    name: "Game Over — Valorant",
+    name: "Game Over - Valorant",
     category: "Gaming",
     teamSize: "5 Members",
     prize: "₹10,000",
@@ -599,18 +599,18 @@ const events: EventDetail[] = [
     tag: "5v5 · KNOCKOUT",
     shortDescription: "Step onto the virtual battleground and lock in your agent.",
     about:
-      "Step onto the virtual battleground and lock in your agent. Valorant is the ultimate test of precise gunplay, tactical synergy, and high-stakes strategy. Only the sharpest aim and smartest utility usage will withstand the crossfire.",
+      "Step onto the virtual battleground and lock in your agent. Valorant is the ultimate test of precise gunplay, tactical synergy, and high-stakes strategy. Only the sharpest aim and smartest utility usage will withstand the crossfire. Each team consist of 5 players.",
     rounds: [
       { title: "Knockout Phase", description: "Teams go head-to-head in single-elimination knockout matches where every round counts. Top 4 teams advance to Round 2." },
       { title: "Semi-Finals & Grand Finals", description: "The surviving teams step into a best-of-series showdown where adapting to opponents and economy management are critical. Out-aim, out-smart, and plant your flag at the top of the leaderboard to claim ultimate victory." },
     ],
     convenors: [
-      { name: "Harshavardhan", phone: "+91 63697 21991" },
-      { name: "Dharaneesh", phone: "+91 86678 57284" },
+      { name: "Harshavardhan E", phone: "+91 63697 21991" },
+      { name: "Dharaneesh N J", phone: "+91 86678 57284" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹7,500", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹2,500", widthPercent: "54%" },
+      { place: "1st place", amount: "₹7,500", widthPercent: "100%" },
+      { place: "2nd place", amount: "₹2,500", widthPercent: "54%" },
       //{ place: "Third", amount: "₹9,000", widthPercent: "32%" },
     ],
     timeline: [
@@ -620,10 +620,10 @@ const events: EventDetail[] = [
   },
   {
     key: "fifa",
-    name: "Game Over — FIFA",
+    name: "Game Over - FIFA",
     category: "Gaming",
     teamSize: "Solo Entry",
-    prize: "₹4,000",
+    prize: "₹5,000",
     logo: "/assets/logo-fifa.webp",
     posterLabel: "FIFA",
     tag: "1v1 · KNOCKOUT",
@@ -635,13 +635,13 @@ const events: EventDetail[] = [
       { title: "Semi-Finals & Grand Finals", description: "The top 4 players step into a high-stakes showdown where tactical adaptability and composure under pressure are critical. Out-play, out-smart, and dominate the pitch to lift the ultimate trophy." },
     ],
     convenors: [
-      { name: "Harshavardhan", phone: "+91 63697 21991" },
-      { name: "Dharaneesh", phone: "+91 86678 57284" },
+      { name: "Harshavardhan E", phone: "+91 63697 21991" },
+      { name: "Dharaneesh N J", phone: "+91 86678 57284" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹2,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹1,500", widthPercent: "75%" },
-      { place: "Third", amount: "₹500", widthPercent: "32%" },
+      { place: "1st place", amount: "₹2,500", widthPercent: "100%" },
+      { place: "2nd place", amount: "₹1,750", widthPercent: "70%" },
+      { place: "3rd place", amount: "₹750", widthPercent: "30%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "F202" },
@@ -652,8 +652,8 @@ const events: EventDetail[] = [
     key: "bb",
     name: "Big Bull",
     category: "Non Technical",
-    teamSize: "2–4 Members",
-    prize: "₹22,500",
+    teamSize: "3 Members",
+    prize: "₹25,000",
     logo: "/assets/logo-bb-badge.webp",
     logoBlendMode: "normal",
     tag: "STOCK MARKET · STRATEGY",
@@ -667,13 +667,13 @@ const events: EventDetail[] = [
       { title: "Final · Corporate Future", description: "Build Your Empire – In 2070, teams explore new development opportunities, acquire companies, and create profitable Land + Development + Company combinations. Top teams present their complete strategy in the Big Bull Boardroom, where the winners are selected." },
     ],
     convenors: [
-      { name: "Durga", phone: "+91 96989 20880" },
-      { name: "Shansita", phone: "+91 83348 12473" },
+      { name: "N B Shansita Shri", phone: "+91 83348 12473" },
+      { name: "Durga Nandhini S", phone: "+91 96989 20880" },
     ],
     prizeSplits: [
-      { place: "Winner", amount: "₹10,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹7,500", widthPercent: "77%" },
-      { place: "Third", amount: "₹5,000", widthPercent: "47%" },
+      { place: "Winner", amount: "₹13,000", widthPercent: "100%" },
+      { place: "Runner up", amount: "₹8,500", widthPercent: "65%" },
+      { place: "2nd Runner up", amount: "₹4,500", widthPercent: "35%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "F-Block Assembly Hall" },
@@ -683,10 +683,10 @@ const events: EventDetail[] = [
   },
   {
     key: "chess",
-    name: "Game Over — Chess",
+    name: "Game Over - Chess",
     category: "Gaming",
     teamSize: "Solo Entry",
-    prize: "₹6,000",
+    prize: "₹10,000",
     logo: "/assets/ev-go.webp",
     logoFilter: "invert(45%) sepia(65%) saturate(620%) hue-rotate(92deg) brightness(82%) contrast(88%)",
     posterLabel: "Chess",
@@ -695,18 +695,18 @@ const events: EventDetail[] = [
     about:
       "Sit across the board and outsmart your opponent in the ultimate test of intellectual warfare. Chess demands absolute concentration, deep calculation, and flawless long-term strategy. Only the sharpest minds and most precise positional play will survive the grueling battle of wits.",
     rounds: [
-      { title: "League Stage", description: "This is a custom matching system, the system pairs leaders against leaders, matching you exclusively with opponents on your exact point level. To stay at the top, you must continuously beat the very best. Only the top 10 players will secure a spot on the prize leaderboard." },
+      { title: "League Stage", description: "This is a custom matching system, the system pairs leaders against leaders, matching you exclusively with opponents on your exact point level. To stay at the top, you must continuously beat the very best. Only the top 5 players will secure a spot on the prize leaderboard." },
     ],
     convenors: [
-      { name: "Harshavardhan", phone: "+91 63697 21991" },
-      { name: "Dharaneesh", phone: "+91 86678 57284" },
+      { name: "Harshavardhan E", phone: "+91 63697 21991" },
+      { name: "Dharaneesh N J", phone: "+91 86678 57284" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹2,000", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹1,750", widthPercent: "88%" },
-      { place: "Third", amount: "₹1,000", widthPercent: "54%" },
-      { place: "Fourth", amount: "₹750", widthPercent: "38%" },
-      { place: "Fifth", amount: "₹500", widthPercent: "27%" },
+      { place: "1st place", amount: "₹4,000", widthPercent: "100%" },
+      { place: "2nd place", amount: "₹2,500", widthPercent: "63%" },
+      { place: "3rd place", amount: "₹1,500", widthPercent: "38%" },
+      { place: "4th place", amount: "₹1,200", widthPercent: "30%" },
+      { place: "5th place", amount: "₹800", widthPercent: "20%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "CSL 1, 2, 3" },
