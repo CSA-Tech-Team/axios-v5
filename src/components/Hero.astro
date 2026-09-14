@@ -9,7 +9,6 @@ const { hero, event } = siteConfig;
     src="/assets/human-hand2.webp" 
     alt="Human hand illustration" 
     class="hero-hand hero-hand-human"
-    data-hero-depth="3"
     width="440"
     height="440"
     loading="eager"
@@ -20,7 +19,6 @@ const { hero, event } = siteConfig;
     src="/assets/robot-hand5.webp" 
     alt="Robot hand illustration" 
     class="hero-hand hero-hand-robot"
-    data-hero-depth="4"
     width="440"
     height="440"
     loading="eager"
@@ -28,7 +26,7 @@ const { hero, event } = siteConfig;
     style="position:absolute;right:-16px;top:49%;width:clamp(240px,27vw,440px);height:auto;transform:rotate(-4deg);mix-blend-mode:multiply;pointer-events:none;z-index:1" 
   />
 
-  <span data-hero-depth="12" style="position:absolute;top:18px;right:20px;color:var(--teal);opacity:.55;pointer-events:none">
+  <span style="position:absolute;top:18px;right:20px;color:var(--teal);opacity:.55;pointer-events:none">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="0" x2="12" y2="24"></line>
@@ -43,14 +41,14 @@ const { hero, event } = siteConfig;
     </h1>
 
     <!-- Subtitle Header -->
-    <div class="hero-credit" data-hero-depth="3" style="display:flex;align-items:center;gap:16px;justify-content:center">
+    <div class="hero-credit" style="display:flex;align-items:center;gap:16px;justify-content:center">
       <span style="height:2px;flex:1;max-width:200px;background:var(--ink)"></span>
       <p style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);margin:0">{hero.eyebrow}</p>
       <span style="height:2px;flex:1;max-width:200px;background:var(--ink)"></span>
     </div>
 
     <!-- Volume Tag -->
-    <div class="hero-tag" data-hero-depth="5" style="display:inline-flex;align-self:center;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">
+    <div class="hero-tag" style="display:inline-flex;align-self:center;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">
       <span style="background:var(--ink);color:var(--acc2);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:7px 15px">{event.symposiumType}</span>
       <span style="background:var(--card);color:var(--ink);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:7px 15px;border-left:3px solid var(--ink)">{event.volumeLabel}</span>
     </div>
@@ -70,7 +68,7 @@ const { hero, event } = siteConfig;
     </div>
 
     <!-- Tagline -->
-    <span class="hero-tagline" data-hero-depth="4" style="align-self:center;margin-top:-4px;display:inline-flex;align-items:center;gap:14px;white-space:nowrap;max-width:100%;background:var(--paper);padding:6px 18px;font-family:'Jost','Futura',sans-serif;font-size:clamp(12px,1.5vw,19px);font-weight:600;line-height:1;letter-spacing:.32em;text-transform:uppercase;color:var(--ink);animation:passIn .01s steps(1) 1.35s both;pointer-events:none">
+    <span class="hero-tagline" style="align-self:center;margin-top:-4px;display:inline-flex;align-items:center;gap:14px;white-space:nowrap;max-width:100%;background:var(--paper);padding:6px 18px;font-family:'Jost','Futura',sans-serif;font-size:clamp(12px,1.5vw,19px);font-weight:600;line-height:1;letter-spacing:.32em;text-transform:uppercase;color:var(--ink);animation:passIn .01s steps(1) 1.35s both;pointer-events:none">
       <span style="color:var(--acc);font-size:.8em;letter-spacing:0">✦</span>
       {hero.taglineQuote}
       <span style="color:var(--acc);font-size:.8em;letter-spacing:0">✦</span>
@@ -84,7 +82,6 @@ const { hero, event } = siteConfig;
         rel="noopener" 
         title="Save the date, add to Google Calendar"
         class="hero-floppy"
-        data-hero-depth="10"
         style="display:inline-block;margin-right:2px;cursor:pointer;transition:transform .15s"
         onmouseover="this.style.transform='translate(-2px,-2px) rotate(2deg)'"
         onmouseout="this.style.transform='none'"
@@ -99,16 +96,15 @@ const { hero, event } = siteConfig;
           style="display:block;width:clamp(56px,6.8vw,90px);height:auto;transform:rotate(-9deg);filter:drop-shadow(4px 5px 0 rgba(36,26,18,.26))" 
         />
       </a>
-      <span data-hero-depth="6" style="font-size:clamp(22px,3.8vw,44px);transform:rotate(-1deg)">{event.date.label}</span>
-      <span data-hero-depth="8" style="color:var(--acc);font-size:clamp(14px,2.3vw,22px);transform:rotate(12deg)">✶</span>
-      <span data-hero-depth="5" style="font-size:clamp(22px,3.8vw,44px);transform:rotate(.8deg)">{event.date.venueShort}</span>
+      <span style="font-size:clamp(22px,3.8vw,44px);transform:rotate(-1deg)">{event.date.label}</span>
+      <span style="color:var(--acc);font-size:clamp(14px,2.3vw,22px);transform:rotate(12deg)">✶</span>
+      <span style="font-size:clamp(22px,3.8vw,44px);transform:rotate(.8deg)">{event.date.venueShort}</span>
     </div>
 
     <!-- CTA Buttons -->
     <div class="hero-ctas" style="margin:0;display:flex;flex-wrap:wrap;gap:16px;justify-content:center">
       <a
         href={event.registrationUrl}
-        data-hero-depth="2"
         target="_blank"
         rel="noopener noreferrer"
         style="display:inline-flex;align-items:center;gap:9px;background:var(--acc);color:#fff;font-size:16px;font-weight:700;padding:14px 26px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transition:transform .15s"
@@ -120,7 +116,6 @@ const { hero, event } = siteConfig;
       <a
         href="#events"
         data-go="events"
-        data-hero-depth="2.5"
         style="display:inline-flex;align-items:center;gap:9px;background:var(--card);color:var(--ink);font-size:16px;font-weight:700;padding:14px 26px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transition:transform .15s"
         onmouseover="this.style.transform='translate(-2px,-2px)'"
         onmouseout="this.style.transform='none'"
