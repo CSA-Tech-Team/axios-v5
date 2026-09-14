@@ -425,9 +425,9 @@ const events: EventDetail[] = [
       { name: "Deepadharshan S", phone: "+91 86109 99867" },
     ],
     prizeSplits: [
-      { place: "Winner", amount: "₹12,500", widthPercent: "100%" },
-      { place: "Runner up", amount: "₹7,500", widthPercent: "60%" },
-      { place: "2nd Runner up", amount: "₹5,000", widthPercent: "40%" },
+      { place: "Champion", amount: "₹12,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹7,500", widthPercent: "58%" },
+      { place: "Third", amount: "₹5,000", widthPercent: "38%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:00", endTime: "13:00", duration: "4:00", location: "4 rooms · G Block Classroom" },
@@ -441,7 +441,7 @@ const events: EventDetail[] = [
     name: "Breach Point",
     category: "Technical",
     teamSize: "2-4 Members",
-    prize: "₹35,000",
+    prize: "₹17,500",
     logo: "/assets/logo-brc.webp",
     tag: "CTF · 5 TRACKS",
     shortDescription: "Every system has a weakness. Every story has a hidden layer.",
@@ -456,9 +456,9 @@ const events: EventDetail[] = [
       { name: "Aditya Hariharan M", phone: "+91 77955 88955" },
     ],
     prizeSplits: [
-      { place: "Winner", amount: "₹17,500", widthPercent: "100%" },
-      { place: "Runner up", amount: "₹10,500", widthPercent: "60%" },
-      { place: "2nd Runner up", amount: "₹7,000", widthPercent: "40%" },
+      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
+      { place: "Third", amount: "₹3,000", widthPercent: "42%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "D Block Assembly Hall" },
@@ -486,9 +486,9 @@ const events: EventDetail[] = [
       { name: "Livin Joseph", phone: "+91 99943 92653" },
     ],
     prizeSplits: [
-      { place: "Winner", amount: "₹10,000", widthPercent: "100%" },
-      { place: "Runner up", amount: "₹5,000", widthPercent: "56%" },
-      { place: "2nd Runner up", amount: "₹2,500", widthPercent: "34%" },
+      { place: "Champion", amount: "₹10,000", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
+      { place: "Third", amount: "₹2,500", widthPercent: "34%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "11:30", duration: "1:30", location: "SIL, OSL, NSL, IIL" },
@@ -547,9 +547,9 @@ const events: EventDetail[] = [
       { name: "Kaaviya S S", phone: "+91 63825 80231" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹8,000", widthPercent: "100%" },
-      { place: "Runner up", amount: "₹6,000", widthPercent: "75%" },
-      { place: "Third", amount: "₹3,500", widthPercent: "44%" },
+      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "50%" },
+      { place: "Third", amount: "₹3,000", widthPercent: "32%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "F-Block Assembly Hall" },
@@ -561,7 +561,7 @@ const events: EventDetail[] = [
     name: "Survivors' Court",
     category: "Non Technical",
     teamSize: "2-3 Members",
-    prize: "₹20,000",
+    prize: "₹15,000",
     logo: "/assets/logo-svc.webp",
     tag: "STRATEGY · ELIMINATION",
     shortDescription:
@@ -577,9 +577,9 @@ const events: EventDetail[] = [
       { name: "Ranjana G", phone: "+91 94957 71225" },
     ],
     prizeSplits: [
-      { place: "Champion", amount: "₹10,000", widthPercent: "100%" },
-      { place: "Runner up", amount: "₹6,000", widthPercent: "60%" },
-      { place: "Third", amount: "₹4,000", widthPercent: "40%" },
+      { place: "Champion", amount: "₹7,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "60%" },
+      { place: "Third", amount: "₹2,500", widthPercent: "40%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "12:00", duration: "2:00", location: "M503, M504" },
@@ -609,8 +609,8 @@ const events: EventDetail[] = [
       { name: "Dharaneesh N J", phone: "+91 86678 57284" },
     ],
     prizeSplits: [
-      { place: "1st place", amount: "₹7,500", widthPercent: "100%" },
-      { place: "2nd place", amount: "₹2,500", widthPercent: "54%" },
+      {place: "Champion", amount: "₹7,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹2,500", widthPercent: "54%" },
       //{ place: "Third", amount: "₹9,000", widthPercent: "32%" },
     ],
     timeline: [
@@ -623,7 +623,7 @@ const events: EventDetail[] = [
     name: "Game Over - FIFA",
     category: "Gaming",
     teamSize: "Solo Entry",
-    prize: "₹5,000",
+    prize: "₹4,000",
     logo: "/assets/logo-fifa.webp",
     posterLabel: "FIFA",
     tag: "1v1 · KNOCKOUT",
@@ -639,9 +639,9 @@ const events: EventDetail[] = [
       { name: "Dharaneesh N J", phone: "+91 86678 57284" },
     ],
     prizeSplits: [
-      { place: "1st place", amount: "₹2,500", widthPercent: "100%" },
-      { place: "2nd place", amount: "₹1,750", widthPercent: "70%" },
-      { place: "3rd place", amount: "₹750", widthPercent: "30%" },
+      { place: "Champion", amount: "₹2,000", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹1,500", widthPercent: "75%" },
+      { place: "Third", amount: "₹500", widthPercent: "32%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "F202" },
@@ -653,7 +653,7 @@ const events: EventDetail[] = [
     name: "Big Bull",
     category: "Non Technical",
     teamSize: "3 Members",
-    prize: "₹25,000",
+    prize: "₹22,500",
     logo: "/assets/logo-bb-badge.webp",
     logoBlendMode: "normal",
     tag: "STOCK MARKET · STRATEGY",
@@ -671,9 +671,9 @@ const events: EventDetail[] = [
       { name: "Durga Nandhini S", phone: "+91 96989 20880" },
     ],
     prizeSplits: [
-      { place: "Winner", amount: "₹13,000", widthPercent: "100%" },
-      { place: "Runner up", amount: "₹8,500", widthPercent: "65%" },
-      { place: "2nd Runner up", amount: "₹4,500", widthPercent: "35%" },
+      { place: "Champion", amount: "₹10,000", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹7,500", widthPercent: "77%" },
+      { place: "Third", amount: "₹5,000", widthPercent: "47%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "F-Block Assembly Hall" },
@@ -686,7 +686,7 @@ const events: EventDetail[] = [
     name: "Game Over - Chess",
     category: "Gaming",
     teamSize: "Solo Entry",
-    prize: "₹10,000",
+    prize: "₹6,000",
     logo: "/assets/ev-go.webp",
     logoFilter: "invert(45%) sepia(65%) saturate(620%) hue-rotate(92deg) brightness(82%) contrast(88%)",
     posterLabel: "Chess",
@@ -702,11 +702,11 @@ const events: EventDetail[] = [
       { name: "Dharaneesh N J", phone: "+91 86678 57284" },
     ],
     prizeSplits: [
-      { place: "1st place", amount: "₹4,000", widthPercent: "100%" },
-      { place: "2nd place", amount: "₹2,500", widthPercent: "63%" },
-      { place: "3rd place", amount: "₹1,500", widthPercent: "38%" },
-      { place: "4th place", amount: "₹1,200", widthPercent: "30%" },
-      { place: "5th place", amount: "₹800", widthPercent: "20%" },
+      { place: "Champion", amount: "₹2,000", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹1,750", widthPercent: "88%" },
+      { place: "Third", amount: "₹1,000", widthPercent: "54%" },
+      { place: "Fourth", amount: "₹750", widthPercent: "38%" },
+      { place: "Fifth", amount: "₹500", widthPercent: "27%" },
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "CSL 1, 2, 3" },
