@@ -191,6 +191,7 @@ export interface TeamMember {
   name: string;
   role: string;
   photo: string;
+  photoPosition?: string;
 }
 
 /** A titled sub-section of the "Meet the Team" wall, e.g. "Office Bearers". */
@@ -334,7 +335,7 @@ const meta: SiteMeta = {
   keywords:
     "Axios 2026, Axios '26, Axios PSG Tech, Axios technical symposium, national technical symposium Coimbatore, PSG College of Technology events, PSG Tech fest, Computational Sciences Association, CSA PSG, AMCS PSG Tech, Breach Point CTF, DataQuest, Math Mania, QFactor, Survivors Court, Technical Triathlon, Big Bull stock market event, Valorant tournament, FIFA tournament, chess tournament, college fest Coimbatore, hackathon Coimbatore, coding competition Tamil Nadu",
   author: "Computational Sciences Association (CSA)",
-  ogImagePath: "/assets/axios-logo-text.webp",
+  ogImagePath: "/assets/axios-share-preview.webp",
 };
 
 const nav: NavLink[] = [
@@ -729,7 +730,7 @@ const team: TeamGroup[] = [
     members: [
       { name: "Prem Dharshan", role: "Tech Team Director", photo: "/assets/prem-cropped.jpeg" },
       { name: "Mithun Karthik", role: "Tech Team Coordinator", photo: "/assets/mithun-cropped.jpeg" },
-      { name: "Ajay", role: "Tech Team Member", photo: "/assets/ajay-cropped.jpeg" },
+      { name: "Ajay", role: "Tech Team Member", photo: "/assets/ajay-full.jpeg", photoPosition: '70% center' },
     ],
   },
 ];
@@ -826,7 +827,7 @@ const footer: FooterContent = {
     { name: "Dinesh", role: "Secretary", phone: "+91 98420 52589" },
     { name: "Ashvanth Kumar", role: "Treasurer", phone: "+91 93441 95468" },
     { name: "Prem Dharshan", role: "Tech Team Director", phone: "+91 94457 69716" },
-    { name: "Ravi Varma", role: "Accommodation Co-ordinator", phone: "+91 89460 72123" },
+    { name: "Saravanan", role: "Accommodation Co-ordinator", phone: "+91 89460 72123" },
   ],
   email: "axios@psgtech.ac.in",
   links: [
