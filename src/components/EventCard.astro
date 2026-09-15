@@ -79,6 +79,12 @@ const prizeSize = ev.prize.trim().startsWith('₹') ? '20px' : '16px';
 
   .ecard[data-deal='play'] {
     animation: ecardEchoArrive .48s var(--deal-delay, 0s) backwards;
+    /* box-shadow can't be composited, so it repaints every frame it moves;
+       will-change lets the browser pre-allocate a layer for this element
+       instead of discovering the cost mid-animation. Scoped to the
+       animation only, since the attribute (and this rule) is removed on
+       animationend. */
+    will-change: transform, box-shadow;
   }
 
   @keyframes ecardEchoArrive {
