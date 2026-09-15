@@ -327,10 +327,26 @@ const { hero, event } = siteConfig;
     }
     function wake() { if (!raf && !blocked()) raf = requestAnimationFrame(frame); }
     function updateScroll() {
+      // Skip the forced layout read once the hero has scrolled out of view —
+      // this listener stays attached to `window` for the page's whole life,
+      // so without this guard every scroll anywhere on the page (long after
+      // the hero is gone) was still doing a getBoundingClientRect() here.
+      if (!visible) return;
       const rect = hero.getBoundingClientRect();
       scroll = Math.max(0, Math.min(1, (window.scrollY) / Math.max(1, rect.height)));
       wake();
     }
+    // The 'scroll' and 'resize' listeners can fire many times per frame;
+    // batch them through rAF so updateScroll's layout read runs at most
+    // once per frame instead of once per event.
+    let scrollFrame = 0;
+    const scheduleUpdateScroll = () => {
+      if (scrollFrame) return;
+      scrollFrame = requestAnimationFrame(() => {
+        scrollFrame = 0;
+        updateScroll();
+      });
+    };
     const releasePointer = () => { px = py = 0; wake(); };
     hero.addEventListener('pointermove', (event) => {
       if (!pointer.matches || event.pointerType === 'touch' || blocked()) return;
@@ -343,8 +359,8 @@ const { hero, event } = siteConfig;
     hero.addEventListener('pointercancel', releasePointer, options);
     // Keep keyboard targets still and let touch devices use scroll depth only.
     hero.addEventListener('focusin', releasePointer, options);
-    window.addEventListener('scroll', updateScroll, options);
-    window.addEventListener('resize', updateScroll, options);
+    window.addEventListener('scroll', scheduleUpdateScroll, options);
+    window.addEventListener('resize', scheduleUpdateScroll, options);
     window.addEventListener('blur', releasePointer, options);
     pointer.addEventListener('change', releasePointer, options);
     reduced.addEventListener('change', () => { px = py = 0; reset(); updateScroll(); }, options);
@@ -354,7 +370,13 @@ const { hero, event } = siteConfig;
       if (visible) updateScroll(); else stop();
     });
     observer.observe(hero);
-    const cleanup = () => { reset(); observer.disconnect(); controller.abort(); };
+    const cleanup = () => {
+      reset();
+      observer.disconnect();
+      controller.abort();
+      if (scrollFrame) cancelAnimationFrame(scrollFrame);
+      scrollFrame = 0;
+    };
     window.addEventListener('pagehide', cleanup, options);
     document.addEventListener('astro:before-swap', cleanup, options);
     updateScroll();
