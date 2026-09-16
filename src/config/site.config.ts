@@ -744,7 +744,7 @@ const sponsors: SponsorsContent = {
       logos: [
         { label: "Title Sponsor", alt: "Arcesium", logo: "/assets/arcesium-logo.webp", background: "#000" },
         // Title Co-Sponsor: none for now. KLA moved to previous sponsors.
-        // { label: "Title Co-Sponsor", alt: "KLA", logo: "/assets/kla-logo.webp" },
+        { label: "Title Co-Sponsor", alt: "KLA", logo: "/assets/kla-logo.webp" },
       ],
     },
     {
@@ -766,7 +766,7 @@ const sponsors: SponsorsContent = {
   ],
   previousSponsorsHeading: "Previous Sponsors",
   previousSponsors: [
-    { name: "KLA", logo: "/assets/kla-logo.webp" },
+    // { name: "KLA", logo: "/assets/kla-logo.webp" },
     { name: "Foxsense Innovations", logo: "/assets/foxsense.webp" },
     { name: "The Cloud Company", logo: "/assets/thecloudcompany.webp" },
     { name: "Shankar IAS Academy", logo: "/assets/shankariasacademy.webp" },
