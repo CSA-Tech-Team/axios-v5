@@ -729,7 +729,7 @@ const team: TeamGroup[] = [
     title: "Tech Team",
     members: [
       { name: "Prem Dharshan", role: "Tech Team Director", photo: "/assets/prem-cropped.jpeg" },
-      // { name: "Mithun Karthik", role: "Tech Team Coordinator", photo: "/assets/mithun-cropped.jpeg" },
+      { name: "Mithun Karthik", role: "Tech Team Coordinator", photo: "/assets/mithun-cropped.jpeg" },
       { name: "Ajay", role: "Tech Team Member", photo: "/assets/ajay-full.jpeg", photoPosition: '70% center' },
     ],
   },
