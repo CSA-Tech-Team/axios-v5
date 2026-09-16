@@ -13,7 +13,7 @@ const {
   theme = 'amber'
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://axios.live');
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://axios.psgtech.ac.in');
 const ogImageUrl = new URL(siteConfig.meta.ogImagePath, canonicalURL).href;
 
 const eventJsonLd = {

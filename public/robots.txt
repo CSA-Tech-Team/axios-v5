@@ -1,0 +1,5 @@
+# Axios '26 — https://axios.psgtech.ac.in
+User-agent: *
+Allow: /
+
+Sitemap: https://axios.psgtech.ac.in/sitemap.xml
