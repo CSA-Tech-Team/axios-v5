@@ -743,7 +743,6 @@ const sponsors: SponsorsContent = {
       title: "Title Sponsors",
       logos: [
         { label: "Title Sponsor", alt: "Arcesium", logo: "/assets/arcesium-logo.webp", background: "#000" },
-        // Title Co-Sponsor: none for now. KLA moved to previous sponsors.
         { label: "Title Co-Sponsor", alt: "KLA", logo: "/assets/kla-logo.webp" },
       ],
     },
