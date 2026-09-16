@@ -42,6 +42,13 @@ const eventJsonLd = {
     "name": siteConfig.event.organizer.name,
     "url": siteConfig.event.organizer.collegeUrl
   },
+  // Optional in schema.org, but Google's Event rich result test flags its
+  // absence. The association runs the arenas, so it is the performer here.
+  "performer": {
+    "@type": "Organization",
+    "name": siteConfig.event.organizer.name,
+    "url": siteConfig.event.organizer.departmentUrl
+  },
   "offers": {
     "@type": "Offer",
     "url": canonicalURL.href,
