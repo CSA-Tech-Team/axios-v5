@@ -809,7 +809,7 @@ const faq: FaqContent = {
     {
       question: "Is accommodation available?",
       answer:
-        "Yes. Limited hostel accommodation is available on a first come, first serve basis with a nominal cost. Place a request for accommodation at the time of registration.",
+        "Yes. Limited hostel accommodation is available on a first come, first serve basis, completely free of cost. Place a request for accommodation at the time of registration.",
     },
   ],
 };
