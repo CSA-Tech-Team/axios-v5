@@ -709,7 +709,7 @@ const events: EventDetail[] = [
       { place: "Fifth", amount: "₹500", widthPercent: "27%" },
     ],
     timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "CSL 1, 2, 3" },
+      { round: "Round 1", day: "Day 2", startTime: "10:00", endTime: "13:00", duration: "3:00", location: "CSL 1,CSL 2,CSL 3,DSL" },
     ],
   },
 ];
