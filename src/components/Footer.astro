@@ -83,6 +83,11 @@ const { footer, event } = siteConfig;
 
   <div class="ft-copy" style="border-top:1px solid #1d4943;padding:16px 24px;text-align:center;font-family:inherit;font-size:11.5px;color:#a89878">
     {footer.copyright}
+    <nav class="ft-legal" aria-label="Legal" style="margin-top:8px;display:flex;justify-content:center;flex-wrap:wrap;gap:6px 18px">
+      {footer.legal.map((link) => (
+        <a href={link.href} style="color:#c9b48c;text-decoration:underline;text-underline-offset:3px">{link.label}</a>
+      ))}
+    </nav>
   </div>
 </footer>
 
@@ -128,6 +133,7 @@ const { footer, event } = siteConfig;
     .ft-links > a { display: flex; align-items: center; min-height: 36px; }
     .ft-social { gap: 12px !important; }
     .ft-social > a { width: 44px !important; height: 44px !important; }
+    .ft-legal > a { display: inline-flex; align-items: center; min-height: 36px; }
   }
   @media (max-width: 767px) {
     .ft-grid { padding: 32px 20px 36px !important; gap: 36px !important; }
