@@ -1,0 +1,101 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from './Footer.astro';
+import { siteConfig } from '../config/site.config';
+
+// Shared shell for the privacy policy and terms pages: a slim top bar back to
+// the homepage, a readable single-column article, and the site footer.
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  updated: string;
+}
+
+const { title, description, heading, updated } = Astro.props;
+---
+
+<Layout title={`${title} | ${siteConfig.event.name} '26`} description={description}>
+  <header style="border-bottom:2px solid var(--ink);background:var(--paper)">
+    <div style="max-width:780px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <a href="/" style="font-family:'Anton',sans-serif;font-size:24px;letter-spacing:.02em;color:var(--ink)">{siteConfig.event.name.toUpperCase()} '26</a>
+      <a href="/" class="lg-back">◂ Back to the homepage</a>
+    </div>
+  </header>
+
+  <main>
+    <article class="lg" style="max-width:780px;margin:0 auto;padding:48px 24px 72px">
+      <div style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:5px 10px;transform:rotate(-1.5deg);margin-bottom:16px">Legal</div>
+      <h1>{heading}</h1>
+      <p class="lg-updated">Last updated: {updated}</p>
+      <slot />
+    </article>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .lg-back {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    background: var(--wcard);
+    padding: 8px 12px;
+  }
+  .lg-back:hover { color: var(--acc); }
+
+  .lg {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .lg :global(h1) {
+    margin: 0;
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    font-size: clamp(40px, 8vw, 64px);
+    line-height: .95;
+    letter-spacing: .01em;
+  }
+  .lg-updated {
+    margin: 12px 0 32px;
+    font-size: 14px;
+    color: var(--ink2);
+  }
+  .lg :global(h2) {
+    margin: 40px 0 10px;
+    font-family: 'Futura', 'Jost', 'Century Gothic', sans-serif;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .lg :global(h3) {
+    margin: 22px 0 6px;
+    font-size: 17px;
+  }
+  .lg :global(p),
+  .lg :global(ul) {
+    margin: 0 0 14px;
+  }
+  .lg :global(ul) { padding-left: 22px; }
+  .lg :global(li) { margin-bottom: 6px; }
+  .lg :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+  }
+  .lg :global(.lg-note) {
+    background: var(--wcard);
+    border: 2px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    padding: 16px 18px;
+    margin: 0 0 28px;
+  }
+
+  @media (max-width: 767px) {
+    .lg { padding: 36px 20px 56px !important; font-size: 15.5px; }
+    .lg-back { font-size: 12px; padding: 7px 10px; }
+  }
+</style>
