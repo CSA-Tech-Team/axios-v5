@@ -304,7 +304,7 @@ const event: EventInfo = {
   tagline: "where excellence awaits the worthy",
   presentedByLine: "PSG College of Technology x CSA Presents",
   symposiumType: "Technical Symposium",
-  registrationUrl: "https://axios-web.psgtech.ac.in/join/cohort/axios-26-2",
+  registrationUrl: "https://app-axios.psgtech.ac.in/",
   date: {
     label: "25-26 SEP '26",
     startISO: "2026-09-25T09:00:00+05:30",
@@ -345,7 +345,7 @@ const nav: NavLink[] = [
   { label: "Prizes", target: "prizes" },
   { label: "Lineup", target: "events" },
   { label: "Sponsors", target: "sponsors" },
-  { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: "https://axios-web.psgtech.ac.in/guest-invites/y78v5_vW3Le97KYX91gXGI_7SJv1ArQQ12tT4RmBfBU", external: true },
+  { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: "https://app-axios.psgtech.ac.in/", external: true },
   { label: "Help", target: "faq" },
 ];
 
@@ -832,8 +832,8 @@ const footer: FooterContent = {
   ],
   email: "axios@psgtech.ac.in",
   links: [
-    { label: "▸ Axios managed by Proleap", href: "https://axios-web.psgtech.ac.in/", external: true },
-    { label: "▸ Alumni Registration", href: "https://axios-web.psgtech.ac.in/guest-invites/y78v5_vW3Le97KYX91gXGI_7SJv1ArQQ12tT4RmBfBU", external: true },
+    { label: "▸ Axios Web App", href: "https://app-axios.psgtech.ac.in/", external: true },
+    { label: "▸ Alumni Registration", href: "https://app-axios.psgtech.ac.in/", external: true },
     { label: "▸ PSG College of Technology", href: "https://www.psgtech.edu", external: true },
   ],
   legal: [
