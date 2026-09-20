@@ -445,36 +445,6 @@ const events: EventDetail[] = [
     isSignature: true,
   },
   {
-    key: "brc",
-    eventCode: "TIMEE2600004",
-    name: "Breach Point",
-    category: "Technical",
-    teamSize: "2-4 Members",
-    prize: "₹17,500",
-    logo: "/assets/logo-brc.webp",
-    tag: "CTF · 5 TRACKS",
-    shortDescription: "Every system has a weakness. Every story has a hidden layer.",
-    about:
-      "Every system has a weakness. Every story has a hidden layer. Step into Breach Point, where cybersecurity meets narrative, and every flag you capture unravels the next piece of the puzzle. From cracking jeopardy-style challenges woven into a gripping storyline to defending your own systems while breaching your rivals’, only the sharpest hackers will make it out with the final flag.",
-    rounds: [
-      { title: "Signal Zero", description: "Three dead systems just woke up after a decade of silence, broadcasting the same six words: “We have already tried this once.” Step into a jeopardy-style CTF told through an unfolding investigation — chase down who built ECHO, how it’s moving through the wires, and why its predictions keep coming true. Every flag you capture peels back another layer of a truth the story has been hiding in plain sight." },
-      { title: "Red vs Blue", description: "An intense Attack-Defence CTF where teams must patch and defend their own vulnerable systems while simultaneously breaching opponents’ infrastructure to plant flags. Offense and defense in equal measure — falter on either side, and you’re exposed." },
-    ],
-    convenors: [
-      { name: "Saivenketraj K.S", phone: "+91 80569 92112" },
-      { name: "Aditya Hariharan M", phone: "+91 77955 88955" },
-    ],
-    prizeSplits: [
-      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
-      { place: "Third", amount: "₹3,000", widthPercent: "42%" },
-    ],
-    timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "D Block Assembly Hall" },
-      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "14:00", duration: "4:30", location: "M503" },
-    ],
-  },
-  {
     key: "dq",
     eventCode: "TIMEE2600002",
     name: "Data Quest",
@@ -536,6 +506,36 @@ const events: EventDetail[] = [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "12:30", duration: "3:00", location: "J515, J514, J516" },
       { round: "Round 2", day: "Day 1", startTime: "14:00", endTime: "17:00", duration: "3:00", location: "J515, J516" },
       { round: "Round 3", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "J515" },
+    ],
+  },
+  {
+    key: "brc",
+    eventCode: "TIMEE2600004",
+    name: "Breach Point",
+    category: "Technical",
+    teamSize: "2-4 Members",
+    prize: "₹17,500",
+    logo: "/assets/logo-brc.webp",
+    tag: "CTF · 5 TRACKS",
+    shortDescription: "Every system has a weakness. Every story has a hidden layer.",
+    about:
+      "Every system has a weakness. Every story has a hidden layer. Step into Breach Point, where cybersecurity meets narrative, and every flag you capture unravels the next piece of the puzzle. From cracking jeopardy-style challenges woven into a gripping storyline to defending your own systems while breaching your rivals’, only the sharpest hackers will make it out with the final flag.",
+    rounds: [
+      { title: "Signal Zero", description: "Three dead systems just woke up after a decade of silence, broadcasting the same six words: “We have already tried this once.” Step into a jeopardy-style CTF told through an unfolding investigation — chase down who built ECHO, how it’s moving through the wires, and why its predictions keep coming true. Every flag you capture peels back another layer of a truth the story has been hiding in plain sight." },
+      { title: "Red vs Blue", description: "An intense Attack-Defence CTF where teams must patch and defend their own vulnerable systems while simultaneously breaching opponents’ infrastructure to plant flags. Offense and defense in equal measure — falter on either side, and you’re exposed." },
+    ],
+    convenors: [
+      { name: "Saivenketraj K.S", phone: "+91 80569 92112" },
+      { name: "Aditya Hariharan M", phone: "+91 77955 88955" },
+    ],
+    prizeSplits: [
+      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
+      { place: "Third", amount: "₹3,000", widthPercent: "42%" },
+    ],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "D Block Assembly Hall" },
+      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "14:00", duration: "4:30", location: "M503" },
     ],
   },
   {
