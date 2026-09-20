@@ -1,13 +1,21 @@
 ---
-import { siteConfig } from '../config/site.config';
+import { siteConfig, eventRegistrationUrl } from '../config/site.config';
 
 const { hero, event } = siteConfig;
 
 // Serialized into the page as JSON below and consumed by the client-side
 // script — keeps the modal's data-open lookup driven by the same config
 // used everywhere else on the site.
+//
+// `registerUrl` is resolved here rather than in the browser so the client
+// bundle never has to pull in the whole config just to build a link.
 const eventsDataJson = JSON.stringify(
-  Object.fromEntries(siteConfig.events.map((ev) => [ev.key, ev]))
+  Object.fromEntries(
+    siteConfig.events.map((ev) => [
+      ev.key,
+      { ...ev, registerUrl: eventRegistrationUrl(ev.eventCode) },
+    ])
+  )
 );
 ---
 
@@ -228,9 +236,8 @@ const eventsDataJson = JSON.stringify(
 
   function initEventModal() {
     const dataEl = document.getElementById('events-data');
-    const eventsData: Record<string, EventDetail> = dataEl?.textContent
-      ? JSON.parse(dataEl.textContent)
-      : {};
+    const eventsData: Record<string, EventDetail & { registerUrl: string }> =
+      dataEl?.textContent ? JSON.parse(dataEl.textContent) : {};
 
     const modal = document.getElementById('event-modal');
     const modalContainer = document.getElementById('modal-container');
@@ -326,6 +333,9 @@ const eventsDataJson = JSON.stringify(
         catEl.style.background = ev.category === 'Technical' ? 'var(--acc)' : 'var(--teal)';
       }
       if (titleEl) titleEl.textContent = ev.name;
+      // Point Register at this event's page in the app rather than the portal
+      // root, so the click lands on the event the visitor was just reading.
+      if (regBtn) regBtn.setAttribute('href', ev.registerUrl);
       if (prizeEl) prizeEl.textContent = ev.prize;
       if (prizeDupEl) prizeDupEl.textContent = ev.prize;
       if (teamEl) teamEl.textContent = ev.teamSize;
