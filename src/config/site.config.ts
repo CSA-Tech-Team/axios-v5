@@ -61,6 +61,15 @@ export interface EventInfo {
   symposiumType: string;
   /** External registration portal the header CTA opens */
   registrationUrl: string;
+  /**
+   * Where the "Alumni Registration" links go: the same portal URL as everybody
+   * else, marked `?mode=alumni`. The marker only says which door they came
+   * through - the referral code itself never travels in the URL. The portal
+   * switches to the alumni view immediately, before any sign-in, and applies
+   * alumni access once Google hands a session back. No separate alumni page
+   * is deployed, so nothing new has to be routed.
+   */
+  alumniRegistrationUrl: string;
   date: EventDateInfo;
   organizer: OrganizerInfo;
 }
@@ -305,6 +314,7 @@ const event: EventInfo = {
   presentedByLine: "PSG College of Technology x CSA Presents",
   symposiumType: "Technical Symposium",
   registrationUrl: "https://app-axios.psgtech.ac.in/",
+  alumniRegistrationUrl: "https://app-axios.psgtech.ac.in/?mode=alumni",
   date: {
     label: "25-26 SEP '26",
     startISO: "2026-09-25T09:00:00+05:30",
@@ -345,7 +355,7 @@ const nav: NavLink[] = [
   { label: "Prizes", target: "prizes" },
   { label: "Lineup", target: "events" },
   { label: "Sponsors", target: "sponsors" },
-  { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: "https://app-axios.psgtech.ac.in/", external: true },
+  { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: event.alumniRegistrationUrl, external: true },
   { label: "Help", target: "faq" },
 ];
 
@@ -833,7 +843,7 @@ const footer: FooterContent = {
   email: "axios@psgtech.ac.in",
   links: [
     { label: "▸ Axios Web App", href: "https://app-axios.psgtech.ac.in/", external: true },
-    { label: "▸ Alumni Registration", href: "https://app-axios.psgtech.ac.in/", external: true },
+    { label: "▸ Alumni Registration", href: event.alumniRegistrationUrl, external: true },
     { label: "▸ PSG College of Technology", href: "https://www.psgtech.edu", external: true },
   ],
   legal: [
