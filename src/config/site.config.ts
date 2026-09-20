@@ -162,6 +162,11 @@ export interface EventTimelineEntry {
 export interface EventDetail {
   /** Stable slug used for anchors and the modal's data-open key, e.g. "tri" */
   key: string;
+  /**
+   * The event's id in the registration app, e.g. "TIMEE2600001". Drives the
+   * per-event "Register Now" deep link; see `eventRegistrationUrl`.
+   */
+  eventCode: string;
   name: string;
   category: EventCategory;
   teamSize: string;
@@ -405,6 +410,7 @@ const prizePool: PrizePoolContent = {
 const events: EventDetail[] = [
   {
     key: "tri",
+    eventCode: "TIMEE2600001",
     name: "Tech Triathlon",
     category: "Technical",
     teamSize: "2-3 Members",
@@ -440,6 +446,7 @@ const events: EventDetail[] = [
   },
   {
     key: "brc",
+    eventCode: "TIMEE2600004",
     name: "Breach Point",
     category: "Technical",
     teamSize: "2-4 Members",
@@ -469,6 +476,7 @@ const events: EventDetail[] = [
   },
   {
     key: "dq",
+    eventCode: "TIMEE2600002",
     name: "Data Quest",
     category: "Technical",
     teamSize: "2-3 Members",
@@ -500,6 +508,7 @@ const events: EventDetail[] = [
   },
   {
     key: "mm",
+    eventCode: "TIMEE2600008",
     name: "Math Mania",
     category: "Technical",
     teamSize: "2 Members",
@@ -531,6 +540,7 @@ const events: EventDetail[] = [
   },
   {
     key: "qz",
+    eventCode: "TIMEE2600009",
     name: "QFactor",
     category: "Non Technical",
     teamSize: "1-2 Members",
@@ -560,6 +570,7 @@ const events: EventDetail[] = [
   },
   {
     key: "svc",
+    eventCode: "TIMEE2600010",
     name: "Survivors' Court",
     category: "Non Technical",
     teamSize: "2-3 Members",
@@ -592,6 +603,7 @@ const events: EventDetail[] = [
   },
   {
     key: "val",
+    eventCode: "TIMEE2600007",
     name: "Game Over - Valorant",
     category: "Gaming",
     teamSize: "5 Members",
@@ -622,6 +634,7 @@ const events: EventDetail[] = [
   },
   {
     key: "fifa",
+    eventCode: "TIMEE2600006",
     name: "Game Over - FIFA",
     category: "Gaming",
     teamSize: "Solo Entry",
@@ -652,6 +665,7 @@ const events: EventDetail[] = [
   },
   {
     key: "bb",
+    eventCode: "TIMEE2600003",
     name: "Big Bull",
     category: "Non Technical",
     teamSize: "3 Members",
@@ -685,6 +699,7 @@ const events: EventDetail[] = [
   },
   {
     key: "chess",
+    eventCode: "TIMEE2600005",
     name: "Game Over - Chess",
     category: "Gaming",
     teamSize: "Solo Entry",
@@ -867,5 +882,22 @@ export const siteConfig: SiteConfig = {
   faq,
   footer,
 };
+
+/**
+ * Deep link to an event's page in the registration app, e.g.
+ * "https://app-axios.psgtech.ac.in/events/TIMEE2600001".
+ *
+ * That page is public, so a signed-out visitor still lands on the event they
+ * clicked. Its own Register button is what sends them through sign-in, and the
+ * app carries them back to this same page afterwards - so the deep link does
+ * not need to know whether anyone is signed in.
+ *
+ * Falls back to the portal root when a code is missing, which is what every
+ * CTA pointed at before the codes existed.
+ */
+export function eventRegistrationUrl(eventCode?: string): string {
+  const base = siteConfig.event.registrationUrl.replace(/\/+$/, "");
+  return eventCode ? `${base}/events/${eventCode}` : `${base}/`;
+}
 
 export default siteConfig;
