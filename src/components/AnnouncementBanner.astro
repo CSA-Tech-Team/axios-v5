@@ -39,10 +39,9 @@ if (banner.enabled && !linkedEvent) {
     const bar = document.getElementById('announce-bar');
     if (!bar) return;
     const key = 'axios_announce_' + bar.dataset.dismissKey;
-    const hide = () => {
-      bar.hidden = true;
-      document.documentElement.classList.add('announce-dismissed');
-    };
+    // The strip is a plain block in flow, so hiding it reflows the page on its
+    // own. Nothing else has to be told about the height it gives back.
+    const hide = () => { bar.hidden = true; };
     let dismissed = false;
     try { dismissed = sessionStorage.getItem(key) === '1'; } catch {}
     if (dismissed) { hide(); return; }
@@ -54,13 +53,6 @@ if (banner.enabled && !linkedEvent) {
 </script>
 
 <style>
-  /* The hero sizes itself against the chrome above it, so publish this strip's
-     height as a variable rather than leaving the hero to overflow the fold. */
-  :global(.neo) { --banner-height: 38px; }
-
-  /* Dismissed: hand the height straight back to the hero, no script involved. */
-  :global(html.announce-dismissed .neo) { --banner-height: 0px; }
-
   .announce-bar {
     position: relative;
     /* The Grab Your Pass red, taken 25% toward ink so the header's REGISTER
@@ -139,8 +131,6 @@ if (banner.enabled && !linkedEvent) {
   }
 
   @media (max-width: 560px) {
-    :global(.neo) { --banner-height: 56px; }
-    :global(html.announce-dismissed .neo) { --banner-height: 0px; }
     .announce-bar { padding: 8px 40px; }
     .announce-close { right: 4px; }
   }
