@@ -320,7 +320,7 @@ const event: EventInfo = {
   tagline: "where excellence awaits the worthy",
   presentedByLine: "PSG College of Technology x CSA Presents",
   symposiumType: "Technical Symposium",
-  registrationUrl: "https://app-axios.psgtech.ac.in/",
+  registrationUrl: "https://app-axios.psgtech.ac.in/events",
   alumniRegistrationUrl: "https://app-axios.psgtech.ac.in/?mode=alumni",
   date: {
     label: "25-26 SEP '26",
@@ -905,12 +905,11 @@ export const siteConfig: SiteConfig = {
  * app carries them back to this same page afterwards - so the deep link does
  * not need to know whether anyone is signed in.
  *
- * Falls back to the portal root when a code is missing, which is what every
- * CTA pointed at before the codes existed.
+ * Falls back to the events listing (`registrationUrl`) when a code is missing.
  */
 export function eventRegistrationUrl(eventCode?: string): string {
-  const base = siteConfig.event.registrationUrl.replace(/\/+$/, "");
-  return eventCode ? `${base}/events/${eventCode}` : `${base}/`;
+  const { registrationUrl } = siteConfig.event;
+  return eventCode ? `${new URL(registrationUrl).origin}/events/${eventCode}` : registrationUrl;
 }
 
 export default siteConfig;
