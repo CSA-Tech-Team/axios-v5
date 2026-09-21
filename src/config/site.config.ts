@@ -491,7 +491,7 @@ const events: EventDetail[] = [
       { place: "Third", amount: "₹2,500", widthPercent: "34%" },
     ],
     timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "11:30", duration: "1:30", location: "SIL, OSL, NSL, IIL" },
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "11:00", duration: "1:30", location: "SIL, OSL, NSL, IIL" },
       { round: "Round 2", day: "Day 1", startTime: "13:00", endTime: "15:30", duration: "2:30", location: "SIL, OSL" },
       { round: "Round 3", day: "Day 2", startTime: "08:30", endTime: "13:00", duration: "4:30", location: "SIL, OSL" },
     ],
