@@ -199,6 +199,8 @@ export interface EventDetail {
   /** Schedule shown in the modal's Timeline tab — one entry per round */
   timeline: EventTimelineEntry[];
   isSignature?: boolean;
+  /** Corner sticker with a cash icon on the lineup card: a small lead-in line over a large highlighted figure */
+  cashBadge?: { lead: string; highlight: string };
 }
 
 export interface TeamMember {
@@ -677,6 +679,7 @@ const events: EventDetail[] = [
     key: "bb",
     eventCode: "TIMEE2600003",
     name: "Big Bull",
+    cashBadge: { lead: "Prizes worth", highlight: "3.8 Lakhs" },
     category: "Non Technical",
     teamSize: "3 Members",
     prize: "₹22,500",
