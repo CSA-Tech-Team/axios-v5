@@ -1,0 +1,147 @@
+---
+import { siteConfig } from '../config/site.config';
+
+const { banner, events } = siteConfig;
+
+// Resolve the linked event up front so a stale key fails the build instead of
+// shipping a link that opens nothing.
+const linkedEvent = banner.enabled
+  ? events.find((e) => e.key === banner.eventKey)
+  : undefined;
+if (banner.enabled && !linkedEvent) {
+  throw new Error(`AnnouncementBanner.astro: no event configured with key "${banner.eventKey}"`);
+}
+---
+
+{banner.enabled && linkedEvent && (
+  <div class="announce-bar" id="announce-bar" data-dismiss-key={banner.dismissKey}>
+    <p class="announce-copy">
+      {banner.lead && <span>{banner.lead}{' '}</span>}
+      <a
+        class="announce-link"
+        href={`#e-${banner.eventKey}`}
+        data-open={banner.eventKey}
+        aria-label={`${linkedEvent.name} - ${linkedEvent.category.toLowerCase()} event details`}
+      >{banner.linkLabel}</a><span>{' '}{banner.tail}</span>
+    </p>
+    <button type="button" class="announce-close" aria-label="Dismiss announcement">
+      <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
+        <line x1="4" y1="4" x2="16" y2="16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line>
+        <line x1="16" y1="4" x2="4" y2="16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line>
+      </svg>
+    </button>
+  </div>
+)}
+
+<!-- Decide before the first paint, so a strip dismissed earlier never flashes. -->
+<script is:inline>
+  (() => {
+    const bar = document.getElementById('announce-bar');
+    if (!bar) return;
+    const key = 'axios_announce_' + bar.dataset.dismissKey;
+    const hide = () => {
+      bar.hidden = true;
+      document.documentElement.classList.add('announce-dismissed');
+    };
+    let dismissed = false;
+    try { dismissed = sessionStorage.getItem(key) === '1'; } catch {}
+    if (dismissed) { hide(); return; }
+    bar.querySelector('.announce-close').addEventListener('click', () => {
+      hide();
+      try { sessionStorage.setItem(key, '1'); } catch {}
+    });
+  })();
+</script>
+
+<style>
+  /* The hero sizes itself against the chrome above it, so publish this strip's
+     height as a variable rather than leaving the hero to overflow the fold. */
+  :global(.neo) { --banner-height: 38px; }
+
+  /* Dismissed: hand the height straight back to the hero, no script involved. */
+  :global(html.announce-dismissed .neo) { --banner-height: 0px; }
+
+  .announce-bar {
+    position: relative;
+    /* The Grab Your Pass red, taken 25% toward ink so the header's REGISTER
+       button, which is the undiluted --acc, still stands off the strip. */
+    background: #b23327;
+    background: color-mix(in srgb, var(--acc) 75%, var(--ink));
+    border-bottom: 2px solid var(--ink);
+    padding: 9px 44px;
+    text-align: center;
+  }
+
+  .announce-bar[hidden] { display: none; }
+
+  .announce-copy {
+    margin: 0;
+    color: #f3e7d3;
+    font-size: clamp(12px, 1.7vw, 13.5px);
+    line-height: 1.5;
+    letter-spacing: .01em;
+  }
+
+  .announce-link {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    font-size: 1.18em;
+    letter-spacing: .05em;
+    line-height: 1;
+    text-transform: uppercase;
+    /* Anton sits a touch high against Bricolage at a shared baseline. */
+    vertical-align: -.02em;
+    /* White, not amber: amber type lands at 3.3:1 on this red and fails AA.
+       The amber moves to the underline, where contrast rules do not apply. */
+    color: #fff;
+    text-decoration: underline;
+    text-decoration-color: var(--acc2);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    white-space: nowrap;
+    transition: text-decoration-thickness .15s;
+  }
+
+  /* Hover has to signal without recolouring the text, for the same reason. */
+  .announce-link:hover { text-decoration-thickness: 3px; }
+
+  .announce-link:focus-visible {
+    outline: 2px solid var(--paper);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .announce-close {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: rgb(243 231 211 / 72%);
+    cursor: pointer;
+    transition: color .15s;
+  }
+
+  .announce-close:hover { color: #fff; }
+
+  .announce-close:focus-visible {
+    outline: 2px solid var(--paper);
+    outline-offset: -2px;
+    border-radius: 2px;
+    color: #fff;
+  }
+
+  @media (max-width: 560px) {
+    :global(.neo) { --banner-height: 56px; }
+    :global(html.announce-dismissed .neo) { --banner-height: 0px; }
+    .announce-bar { padding: 8px 40px; }
+    .announce-close { right: 4px; }
+  }
+</style>
