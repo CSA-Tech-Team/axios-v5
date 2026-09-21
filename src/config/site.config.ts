@@ -515,9 +515,9 @@ const events: EventDetail[] = [
       { place: "Third", amount: "₹2,500", widthPercent: "40%" },
     ],
     timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "12:30", duration: "3:00", location: "J515, J514, J516" },
-      { round: "Round 2", day: "Day 1", startTime: "14:00", endTime: "17:00", duration: "3:00", location: "J515, J516" },
-      { round: "Round 3", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "J515" },
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "12:30", duration: "3:00", location: "M201, M202" },
+      { round: "Round 2", day: "Day 1", startTime: "14:00", endTime: "17:00", duration: "3:00", location: "M201, M202" },
+      { round: "Round 3", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "M202 " },
     ],
   },
   {
