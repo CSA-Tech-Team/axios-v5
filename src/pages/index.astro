@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import AchronosIntro from '../components/AchronosIntro.astro';
 import Header from '../components/Header.astro';
+import AnnouncementBanner from '../components/AnnouncementBanner.astro';
 import Hero from '../components/Hero.astro';
 import PastEditions from '../components/PastEditions.astro';
 import PrizePool from '../components/PrizePool.astro';
@@ -20,6 +21,7 @@ const showIntro = (import.meta.env.PUBLIC_ACHRONOS_INTRO ?? import.meta.env.PUBL
 <Layout>
   {showIntro && <AchronosIntro />}
   <Header />
+  <AnnouncementBanner />
   <main>
     <Hero />
     <PastEditions />

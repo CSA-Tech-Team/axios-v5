@@ -292,10 +292,34 @@ export interface FooterContent {
   copyright: string;
 }
 
+/** Top-of-page announcement strip, shown under the header on the home page. */
+export interface AnnouncementBanner {
+  /** Set false to pull the strip without deleting the copy. */
+  enabled: boolean;
+  /** Text before the link. */
+  lead: string;
+  /** The linked words. */
+  linkLabel: string;
+  /** Event key the link opens. Must match an entry in `events`. */
+  eventKey: string;
+  /**
+   * Text after the link. Any punctuation separating it from the link belongs
+   * at the start of this string, e.g. ", a non-tech event ...", since the
+   * component adds only a single space.
+   */
+  tail: string;
+  /**
+   * sessionStorage suffix behind the dismiss X. Bump it when the copy changes,
+   * so a visitor who closed the previous announcement still sees the new one.
+   */
+  dismissKey: string;
+}
+
 export interface SiteConfig {
   meta: SiteMeta;
   event: EventInfo;
   nav: NavLink[];
+  banner: AnnouncementBanner;
   hero: HeroContent;
   lineup: LineupContent;
   pastEditions: PastEditionsContent;
@@ -451,7 +475,7 @@ const events: EventDetail[] = [
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:00", endTime: "13:00", duration: "4:00", location: "4 rooms · G Block Classroom" },
-      { round: "Round 2", day: "Day 1", startTime: "14:30", endTime: "16:00", duration: "1:30", location: "2 rooms · G Block Classroom" },
+      { round: "Round 2", day: "Day 1", startTime: "14:30", endTime: "16:00", duration: "1:30", location: "M503" },
       { round: "Round 3", day: "Day 2", startTime: "16:30", endTime: "17:30", duration: "1:00", location: "F-Block Assembly Hall" },
     ],
     isSignature: true,
@@ -546,7 +570,7 @@ const events: EventDetail[] = [
       { place: "Third", amount: "₹3,000", widthPercent: "42%" },
     ],
     timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "D Block Assembly Hall" },
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "CSL 1, 2, 3, DSL" },
       { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "14:00", duration: "4:30", location: "M503" },
     ],
   },
@@ -681,7 +705,7 @@ const events: EventDetail[] = [
     name: "Big Bull",
     cashBadge: { lead: "Prizes worth", highlight: "3.8 Lakhs" },
     category: "Non Technical",
-    teamSize: "3 Members",
+    teamSize: "2-4 Members",
     prize: "₹22,500",
     logo: "/assets/logo-bb-badge.webp",
     logoBlendMode: "normal",
@@ -881,10 +905,20 @@ const footer: FooterContent = {
     "© MMXXVI Computational Sciences Association ✦ PSG College of Technology",
 };
 
+const banner: AnnouncementBanner = {
+  enabled: true,
+  lead: "",
+  linkLabel: "BIG BULL",
+  eventKey: "bb",
+  tail: "is live!! Out-invest, out-trade, and out-smart the competition",
+  dismissKey: "bb-launch-v1",
+};
+
 export const siteConfig: SiteConfig = {
   meta,
   event,
   nav,
+  banner,
   hero,
   lineup,
   pastEditions,
