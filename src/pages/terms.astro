@@ -1,0 +1,157 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { siteConfig } from '../config/site.config';
+
+const { event, footer } = siteConfig;
+const email = footer.email;
+---
+
+<LegalPage
+  title="Terms of Service"
+  heading="Terms of Service"
+  updated="19 September 2026"
+  description="The terms for using the Axios '26 website and registration portal, and for taking part in the symposium at PSG College of Technology."
+>
+  <div class="lg-note">
+    <b>In short:</b> register honestly, follow each event's rules and the
+    campus code of conduct, and respect other participants. Coordinators'
+    decisions on results are final. We may change the schedule if we have to,
+    and we will tell you when we do.
+  </div>
+
+  <h2>1. About these terms</h2>
+  <p>
+    These terms apply to the Axios '26 website at
+    <a href="https://axios.psgtech.ac.in">axios.psgtech.ac.in</a> and
+    <a href="https://axios.live">axios.live</a>, the registration portal at
+    <a href="https://app-axios.psgtech.ac.in">app-axios.psgtech.ac.in</a>,
+    and the Axios '26 symposium held on 25–26 September 2026 at
+    {event.date.venueName}. Axios is organised by the
+    {event.organizer.name}, {event.organizer.department},
+    {event.organizer.collegeName} ("CSA", "we", "us").
+  </p>
+  <p>
+    By registering or taking part, you agree to these terms and to our
+    <a href="/privacy">Privacy Policy</a>. If you do not agree, please do not
+    register.
+  </p>
+
+  <h2>2. Who can take part</h2>
+  <ul>
+    <li>Axios is open to students of recognised colleges and universities, and to invited alumni and guests.</li>
+    <li>Bring a valid college ID card to the venue.</li>
+    <li>If you are under 18, you need the consent of a parent or guardian to register.</li>
+    <li>Each event sets its own team size and eligibility rules. Those rules apply in addition to these terms.</li>
+  </ul>
+
+  <h2>3. Your account and registration</h2>
+  <ul>
+    <li>Give accurate details when you register, and keep them up to date.</li>
+    <li>Your account is for you alone. Do not share it or register on someone else's behalf without their permission.</li>
+    <li>You are responsible for what happens under your account and for the team members you add.</li>
+    <li>A registration is confirmed only when you receive a confirmation from the portal or by email. Spots in some events are limited and are filled in order.</li>
+    <li>Your registration is personal and cannot be transferred or sold.</li>
+  </ul>
+
+  <h2>4. Fees, payments and refunds</h2>
+  <p>
+    Where an event, pass or service carries a fee, the amount is shown before
+    you pay. Payments are processed by Razorpay. Fees are not refundable,
+    except where we cancel the event or item you paid for; in that case we
+    refund you in full to the original payment method.
+  </p>
+
+  <h2>5. Accommodation</h2>
+  <p>
+    Limited hostel accommodation is offered on a first come, first served
+    basis. Requesting it does not guarantee a place until it is confirmed.
+    Guests must follow the hostel's rules and the instructions of the
+    accommodation coordinators.
+  </p>
+
+  <h2>6. Code of conduct</h2>
+  <p>At the venue and online, you agree not to:</p>
+  <ul>
+    <li>harass, threaten, discriminate against or bully anyone;</li>
+    <li>cheat, plagiarise, share answers or use tools an event's rules forbid;</li>
+    <li>attack, probe or disrupt the website, the portal, event systems or college networks, except inside a Capture-the-Flag event's stated scope;</li>
+    <li>damage college property or bring prohibited items onto campus;</li>
+    <li>be under the influence of alcohol or drugs at the event.</li>
+  </ul>
+  <p>
+    You must also follow the rules of PSG College of Technology while on
+    campus. We may disqualify anyone who breaks these rules, withdraw their
+    prizes and certificates, and ask them to leave the venue, without a
+    refund.
+  </p>
+
+  <h2>7. Results, prizes and certificates</h2>
+  <ul>
+    <li>Judges and event coordinators decide results. Their decisions are final.</li>
+    <li>Prizes are awarded as announced for each event. Prizes may be shared or withheld if an event has too few entries, or if no entry meets the standard.</li>
+    <li>Prize money may be paid by bank transfer after the event, and may require proof of identity and college enrolment.</li>
+    <li>Participation certificates are issued to those who were checked in at the event.</li>
+  </ul>
+
+  <h2>8. Your submissions</h2>
+  <p>
+    You keep ownership of the work you submit. You allow CSA to display, judge
+    and showcase it for Axios and its promotion, with credit to you. You
+    confirm that your submission is your own and does not infringe anyone
+    else's rights.
+  </p>
+
+  <h2>9. Photos and recordings</h2>
+  <p>
+    Axios is photographed and filmed. By attending, you agree that you may
+    appear in photos and videos that we publish to cover the event. To opt
+    out, or to ask us to remove a photo of you, email
+    <a href={`mailto:${email}`}>{email}</a>.
+  </p>
+
+  <h2>10. Changes to the event</h2>
+  <p>
+    We may change the schedule, venue, format, rules or prizes, or cancel an
+    event, if circumstances require it. We will post changes on this website
+    or email registered participants. We are not responsible for travel or
+    other costs you incur because of a change.
+  </p>
+
+  <h2>11. Website content</h2>
+  <p>
+    The Axios name, logos, artwork and website content belong to CSA or to
+    their owners, including sponsors whose logos appear with permission. Do
+    not reuse them without our permission.
+  </p>
+
+  <h2>12. Your safety and liability</h2>
+  <p>
+    You take part at your own risk and are responsible for your own belongings.
+    To the extent the law allows, CSA and PSG College of Technology are not
+    liable for loss, theft, injury or damage arising from your participation,
+    except where caused by our negligence. The website and portal are provided
+    "as is", and we do not promise that they will always be available or free
+    of errors.
+  </p>
+
+  <h2>13. Governing law</h2>
+  <p>
+    These terms are governed by the laws of India. Any dispute is subject to
+    the courts at Coimbatore, Tamil Nadu.
+  </p>
+
+  <h2>14. Changes to these terms</h2>
+  <p>
+    We may update these terms. The date at the top shows the latest version.
+    If you keep using the site or portal after a change, you accept the
+    updated terms.
+  </p>
+
+  <h2>15. Contact</h2>
+  <p>
+    <b>{event.organizer.name}</b><br />
+    {event.organizer.department}<br />
+    {event.organizer.collegeName}<br />
+    Email: <a href={`mailto:${email}`}>{email}</a>
+  </p>
+</LegalPage>

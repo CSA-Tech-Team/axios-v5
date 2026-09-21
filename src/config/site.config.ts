@@ -61,6 +61,15 @@ export interface EventInfo {
   symposiumType: string;
   /** External registration portal the header CTA opens */
   registrationUrl: string;
+  /**
+   * Where the "Alumni Registration" links go: the same portal URL as everybody
+   * else, marked `?mode=alumni`. The marker only says which door they came
+   * through - the referral code itself never travels in the URL. The portal
+   * switches to the alumni view immediately, before any sign-in, and applies
+   * alumni access once Google hands a session back. No separate alumni page
+   * is deployed, so nothing new has to be routed.
+   */
+  alumniRegistrationUrl: string;
   date: EventDateInfo;
   organizer: OrganizerInfo;
 }
@@ -162,6 +171,11 @@ export interface EventTimelineEntry {
 export interface EventDetail {
   /** Stable slug used for anchors and the modal's data-open key, e.g. "tri" */
   key: string;
+  /**
+   * The event's id in the registration app, e.g. "TIMEE2600001". Drives the
+   * per-event "Register Now" deep link; see `eventRegistrationUrl`.
+   */
+  eventCode: string;
   name: string;
   category: EventCategory;
   teamSize: string;
@@ -270,6 +284,8 @@ export interface FooterContent {
   contacts: FooterContact[];
   email: string;
   links: FooterLink[];
+  /** Policy pages, shown beside the copyright line */
+  legal: FooterLink[];
   socials: FooterSocial[];
   copyright: string;
 }
@@ -302,7 +318,8 @@ const event: EventInfo = {
   tagline: "where excellence awaits the worthy",
   presentedByLine: "PSG College of Technology x CSA Presents",
   symposiumType: "Technical Symposium",
-  registrationUrl: "https://proleap.ewhizard.tech/join/cohort/axios-26-2",
+  registrationUrl: "https://app-axios.psgtech.ac.in/",
+  alumniRegistrationUrl: "https://app-axios.psgtech.ac.in/?mode=alumni",
   date: {
     label: "25-26 SEP '26",
     startISO: "2026-09-25T09:00:00+05:30",
@@ -343,7 +360,7 @@ const nav: NavLink[] = [
   { label: "Prizes", target: "prizes" },
   { label: "Lineup", target: "events" },
   { label: "Sponsors", target: "sponsors" },
-  { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: "https://proleap.ewhizard.tech/guest-invites/y78v5_vW3Le97KYX91gXGI_7SJv1ArQQ12tT4RmBfBU", external: true },
+  { label: "ALUMNI REGISTRATION", desktopLabel: "ALUMNI", href: event.alumniRegistrationUrl, external: true },
   { label: "Help", target: "faq" },
 ];
 
@@ -403,6 +420,7 @@ const prizePool: PrizePoolContent = {
 const events: EventDetail[] = [
   {
     key: "tri",
+    eventCode: "TIMEE2600001",
     name: "Tech Triathlon",
     category: "Technical",
     teamSize: "2-3 Members",
@@ -437,36 +455,8 @@ const events: EventDetail[] = [
     isSignature: true,
   },
   {
-    key: "brc",
-    name: "Breach Point",
-    category: "Technical",
-    teamSize: "2-4 Members",
-    prize: "₹17,500",
-    logo: "/assets/logo-brc.webp",
-    tag: "CTF · 5 TRACKS",
-    shortDescription: "Every system has a weakness. Every story has a hidden layer.",
-    about:
-      "Every system has a weakness. Every story has a hidden layer. Step into Breach Point, where cybersecurity meets narrative, and every flag you capture unravels the next piece of the puzzle. From cracking jeopardy-style challenges woven into a gripping storyline to defending your own systems while breaching your rivals’, only the sharpest hackers will make it out with the final flag.",
-    rounds: [
-      { title: "Signal Zero", description: "Three dead systems just woke up after a decade of silence, broadcasting the same six words: “We have already tried this once.” Step into a jeopardy-style CTF told through an unfolding investigation — chase down who built ECHO, how it’s moving through the wires, and why its predictions keep coming true. Every flag you capture peels back another layer of a truth the story has been hiding in plain sight." },
-      { title: "Red vs Blue", description: "An intense Attack-Defence CTF where teams must patch and defend their own vulnerable systems while simultaneously breaching opponents’ infrastructure to plant flags. Offense and defense in equal measure — falter on either side, and you’re exposed." },
-    ],
-    convenors: [
-      { name: "Saivenketraj K.S", phone: "+91 80569 92112" },
-      { name: "Aditya Hariharan M", phone: "+91 77955 88955" },
-    ],
-    prizeSplits: [
-      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
-      { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
-      { place: "Third", amount: "₹3,000", widthPercent: "42%" },
-    ],
-    timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "D Block Assembly Hall" },
-      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "14:00", duration: "4:30", location: "M503" },
-    ],
-  },
-  {
     key: "dq",
+    eventCode: "TIMEE2600002",
     name: "Data Quest",
     category: "Technical",
     teamSize: "2-3 Members",
@@ -498,6 +488,7 @@ const events: EventDetail[] = [
   },
   {
     key: "mm",
+    eventCode: "TIMEE2600008",
     name: "Math Mania",
     category: "Technical",
     teamSize: "2 Members",
@@ -528,7 +519,38 @@ const events: EventDetail[] = [
     ],
   },
   {
+    key: "brc",
+    eventCode: "TIMEE2600004",
+    name: "Breach Point",
+    category: "Technical",
+    teamSize: "2-4 Members",
+    prize: "₹17,500",
+    logo: "/assets/logo-brc.webp",
+    tag: "CTF · 5 TRACKS",
+    shortDescription: "Every system has a weakness. Every story has a hidden layer.",
+    about:
+      "Every system has a weakness. Every story has a hidden layer. Step into Breach Point, where cybersecurity meets narrative, and every flag you capture unravels the next piece of the puzzle. From cracking jeopardy-style challenges woven into a gripping storyline to defending your own systems while breaching your rivals’, only the sharpest hackers will make it out with the final flag.",
+    rounds: [
+      { title: "Signal Zero", description: "Three dead systems just woke up after a decade of silence, broadcasting the same six words: “We have already tried this once.” Step into a jeopardy-style CTF told through an unfolding investigation — chase down who built ECHO, how it’s moving through the wires, and why its predictions keep coming true. Every flag you capture peels back another layer of a truth the story has been hiding in plain sight." },
+      { title: "Red vs Blue", description: "An intense Attack-Defence CTF where teams must patch and defend their own vulnerable systems while simultaneously breaching opponents’ infrastructure to plant flags. Offense and defense in equal measure — falter on either side, and you’re exposed." },
+    ],
+    convenors: [
+      { name: "Saivenketraj K.S", phone: "+91 80569 92112" },
+      { name: "Aditya Hariharan M", phone: "+91 77955 88955" },
+    ],
+    prizeSplits: [
+      { place: "Champion", amount: "₹9,500", widthPercent: "100%" },
+      { place: "Runner-up", amount: "₹5,000", widthPercent: "56%" },
+      { place: "Third", amount: "₹3,000", widthPercent: "42%" },
+    ],
+    timeline: [
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "D Block Assembly Hall" },
+      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "14:00", duration: "4:30", location: "M503" },
+    ],
+  },
+  {
     key: "qz",
+    eventCode: "TIMEE2600009",
     name: "QFactor",
     category: "Non Technical",
     teamSize: "1-2 Members",
@@ -558,6 +580,7 @@ const events: EventDetail[] = [
   },
   {
     key: "svc",
+    eventCode: "TIMEE2600010",
     name: "Survivors' Court",
     category: "Non Technical",
     teamSize: "2-3 Members",
@@ -590,6 +613,7 @@ const events: EventDetail[] = [
   },
   {
     key: "val",
+    eventCode: "TIMEE2600007",
     name: "Game Over - Valorant",
     category: "Gaming",
     teamSize: "5 Members",
@@ -620,6 +644,7 @@ const events: EventDetail[] = [
   },
   {
     key: "fifa",
+    eventCode: "TIMEE2600006",
     name: "Game Over - FIFA",
     category: "Gaming",
     teamSize: "Solo Entry",
@@ -650,6 +675,7 @@ const events: EventDetail[] = [
   },
   {
     key: "bb",
+    eventCode: "TIMEE2600003",
     name: "Big Bull",
     category: "Non Technical",
     teamSize: "3 Members",
@@ -683,6 +709,7 @@ const events: EventDetail[] = [
   },
   {
     key: "chess",
+    eventCode: "TIMEE2600005",
     name: "Game Over - Chess",
     category: "Gaming",
     teamSize: "Solo Entry",
@@ -709,7 +736,7 @@ const events: EventDetail[] = [
       { place: "Fifth", amount: "₹500", widthPercent: "27%" },
     ],
     timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "CSL 1, 2, 3" },
+      { round: "Round 1", day: "Day 2", startTime: "10:00", endTime: "13:00", duration: "3:00", location: "CSL 1,CSL 2,CSL 3,DSL" },
     ],
   },
 ];
@@ -743,8 +770,7 @@ const sponsors: SponsorsContent = {
       title: "Title Sponsors",
       logos: [
         { label: "Title Sponsor", alt: "Arcesium", logo: "/assets/arcesium-logo.webp", background: "#000" },
-        // Title Co-Sponsor: none for now. KLA moved to previous sponsors.
-        // { label: "Title Co-Sponsor", alt: "KLA", logo: "/assets/kla-logo.webp" },
+        { label: "Title Sponsor", alt: "KLA", logo: "/assets/kla-logo.webp" },
       ],
     },
     {
@@ -766,7 +792,7 @@ const sponsors: SponsorsContent = {
   ],
   previousSponsorsHeading: "Previous Sponsors",
   previousSponsors: [
-    { name: "KLA", logo: "/assets/kla-logo.webp" },
+    // { name: "KLA", logo: "/assets/kla-logo.webp" },
     { name: "Foxsense Innovations", logo: "/assets/foxsense.webp" },
     { name: "The Cloud Company", logo: "/assets/thecloudcompany.webp" },
     { name: "Shankar IAS Academy", logo: "/assets/shankariasacademy.webp" },
@@ -810,7 +836,7 @@ const faq: FaqContent = {
     {
       question: "Is accommodation available?",
       answer:
-        "Yes. Limited hostel accommodation is available on a first come, first serve basis with a nominal cost. Place a request for accommodation at the time of registration.",
+        "Yes. Limited hostel accommodation is available on a first come, first serve basis, completely free of cost. Place a request for accommodation at the time of registration.",
     },
   ],
 };
@@ -831,9 +857,13 @@ const footer: FooterContent = {
   ],
   email: "axios@psgtech.ac.in",
   links: [
-    { label: "▸ Axios managed by Proleap", href: "https://proleap.ewhizard.tech/", external: true },
-    { label: "▸ Alumni Registration", href: "https://proleap.ewhizard.tech/guest-invites/y78v5_vW3Le97KYX91gXGI_7SJv1ArQQ12tT4RmBfBU", external: true },
+    { label: "▸ Axios Web App", href: "https://app-axios.psgtech.ac.in/", external: true },
+    { label: "▸ Alumni Registration", href: event.alumniRegistrationUrl, external: true },
     { label: "▸ PSG College of Technology", href: "https://www.psgtech.edu", external: true },
+  ],
+  legal: [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
   ],
   socials: [
     { label: "Instagram", href: "https://instagram.com/axios.psgtech", external: true },
@@ -862,5 +892,22 @@ export const siteConfig: SiteConfig = {
   faq,
   footer,
 };
+
+/**
+ * Deep link to an event's page in the registration app, e.g.
+ * "https://app-axios.psgtech.ac.in/events/TIMEE2600001".
+ *
+ * That page is public, so a signed-out visitor still lands on the event they
+ * clicked. Its own Register button is what sends them through sign-in, and the
+ * app carries them back to this same page afterwards - so the deep link does
+ * not need to know whether anyone is signed in.
+ *
+ * Falls back to the portal root when a code is missing, which is what every
+ * CTA pointed at before the codes existed.
+ */
+export function eventRegistrationUrl(eventCode?: string): string {
+  const base = siteConfig.event.registrationUrl.replace(/\/+$/, "");
+  return eventCode ? `${base}/events/${eventCode}` : `${base}/`;
+}
 
 export default siteConfig;

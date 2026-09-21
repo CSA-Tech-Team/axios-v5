@@ -1,0 +1,164 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { siteConfig } from '../config/site.config';
+
+const { event, footer } = siteConfig;
+const email = footer.email;
+---
+
+<LegalPage
+  title="Privacy Policy"
+  heading="Privacy Policy"
+  updated="19 September 2026"
+  description="How the Computational Sciences Association at PSG College of Technology collects, uses and protects personal data for Axios '26."
+>
+  <div class="lg-note">
+    <b>In short:</b> this website does not use cookies, analytics or ad
+    trackers. When you register for Axios '26, we collect the details we need
+    to run the event: your name, email, phone number, college details,
+    team details and any accommodation request. We use them only for Axios
+    and we do not sell them.
+  </div>
+
+  <h2>1. Who we are</h2>
+  <p>
+    Axios '26 is a technical symposium organised by the
+    {event.organizer.name}, {event.organizer.department},
+    {event.organizer.collegeName} ("CSA", "we", "us"). CSA is responsible for
+    the personal data described in this policy.
+  </p>
+  <p>This policy covers:</p>
+  <ul>
+    <li>the event website at <a href="https://axios.psgtech.ac.in">axios.psgtech.ac.in</a> and its mirror at <a href="https://axios.live">axios.live</a>;</li>
+    <li>the registration portal at <a href="https://app-axios.psgtech.ac.in">app-axios.psgtech.ac.in</a>;</li>
+    <li>the Axios '26 event itself, held on 25–26 September 2026 at {event.date.venueName}.</li>
+  </ul>
+
+  <h2>2. Data we collect</h2>
+
+  <h3>When you browse this website</h3>
+  <p>
+    The website is a static page. It sets no cookies and runs no analytics or
+    advertising scripts. Like any web server, our hosting (the college server
+    and Cloudflare) keeps standard access logs: your IP address, browser user
+    agent, the page requested and the time. Fonts are loaded from Google
+    Fonts, so your browser also sends your IP address to Google when the page
+    loads.
+  </p>
+
+  <h3>When you register on the portal</h3>
+  <ul>
+    <li><b>Account details from Google sign-in:</b> your name, email address, whether Google has verified the email, and your profile picture. We do not receive your Google password.</li>
+    <li><b>Registration details you enter:</b> such as your phone number, college, department, year of study, roll number, the events you pick and your team members.</li>
+    <li><b>Accommodation requests:</b> the names and phone numbers of the people staying, and any notes you add.</li>
+    <li><b>Payments,</b> if an item needs one: the amount, status and Razorpay order and payment references. Card, UPI and bank details are entered on Razorpay's own checkout and never reach us.</li>
+    <li><b>Event records:</b> check-in and attendance, team membership, submissions and results, and the name printed on your certificate.</li>
+    <li><b>Security logs:</b> sign-in events, IP address and browser user agent, used to protect accounts.</li>
+  </ul>
+
+  <h3>At the event</h3>
+  <p>
+    Photographs and videos are taken at Axios for event coverage. You may
+    appear in them. See section 7 if you would rather not be featured.
+  </p>
+
+  <h2>3. How we use your data</h2>
+  <ul>
+    <li>to create your account, register you and your team, and confirm your place;</li>
+    <li>to send you event emails: confirmations, schedules, venue changes and results;</li>
+    <li>to check you in, run the events, judge entries and issue certificates and prizes;</li>
+    <li>to arrange accommodation you asked for;</li>
+    <li>to keep the portal secure and fix errors;</li>
+    <li>to publish event coverage and winners' names on our website and social media.</li>
+  </ul>
+  <p>
+    We process your data with your consent, which you give when you register,
+    and for the legitimate purpose of running the event you signed up for.
+    You can withdraw consent at any time (section 7). We do not sell or rent
+    your data, and we do not use it for advertising.
+  </p>
+
+  <h2>4. Who we share it with</h2>
+  <ul>
+    <li><b>Event coordinators and volunteers</b> at CSA and PSG College of Technology, who see what they need to run their event or desk.</li>
+    <li><b>Sponsors,</b> only as a winner's name and college in public announcements. We do not hand participant lists to sponsors.</li>
+    <li><b>Service providers</b> that run parts of the service for us, under their own security terms:
+      <ul>
+        <li>Google, for sign-in and web fonts;</li>
+        <li>Razorpay, for payments;</li>
+        <li>Microsoft Azure, for sending email and storing files;</li>
+        <li>Sentry, for error reports, which have personal details removed;</li>
+        <li>Cloudflare, which hosts the axios.live mirror.</li>
+      </ul>
+    </li>
+    <li><b>Authorities,</b> if the law requires it.</li>
+  </ul>
+  <p>
+    Some of these providers may store data outside India. They are bound to
+    protect it.
+  </p>
+
+  <h2>5. Cookies and browser storage</h2>
+  <p>
+    The event website sets none. The registration portal uses a sign-in cookie
+    that keeps you logged in and a security cookie that protects forms. It
+    also saves a few display preferences, such as light or dark theme, in your
+    browser. None of these are used for tracking or advertising.
+  </p>
+
+  <h2>6. How long we keep it</h2>
+  <ul>
+    <li>Sign-in sessions expire after 7 days of inactivity.</li>
+    <li>Security logs are deleted after 180 days.</li>
+    <li>Registration, attendance and certificate records are kept for as long as needed to run Axios '26, verify certificates and meet the college's record-keeping needs. After that they are deleted or anonymised.</li>
+  </ul>
+
+  <h2>7. Your rights</h2>
+  <p>
+    Under India's Digital Personal Data Protection Act, 2023, you can ask us
+    to:
+  </p>
+  <ul>
+    <li>tell you what personal data we hold about you;</li>
+    <li>correct or update it;</li>
+    <li>delete it, and close your account;</li>
+    <li>withdraw your consent;</li>
+    <li>leave you out of published photos, or remove a photo of you.</li>
+  </ul>
+  <p>
+    Email <a href={`mailto:${email}`}>{email}</a> from the address you
+    registered with. We will reply within 30 days. If deleting your data
+    means we can no longer run your registration, we will tell you first.
+  </p>
+
+  <h2>8. Participants under 18</h2>
+  <p>
+    Axios is for college students. If you are under 18, register only with
+    the consent of a parent or guardian. If we learn that we hold a minor's
+    data without that consent, we will delete it.
+  </p>
+
+  <h2>9. Security</h2>
+  <p>
+    All traffic is encrypted with HTTPS. Access to participant data is limited
+    to coordinators who need it. No system is perfectly secure, so if you
+    notice something wrong, tell us at <a href={`mailto:${email}`}>{email}</a>.
+  </p>
+
+  <h2>10. Changes to this policy</h2>
+  <p>
+    We may update this policy. The date at the top shows the latest version.
+    If a change affects how we use data you have already given us, we will
+    email registered participants.
+  </p>
+
+  <h2>11. Contact</h2>
+  <p>
+    Questions, requests or complaints:<br />
+    <b>{event.organizer.name}</b><br />
+    {event.organizer.department}<br />
+    {event.organizer.collegeName}<br />
+    Email: <a href={`mailto:${email}`}>{email}</a>
+  </p>
+  <p>See also our <a href="/terms">Terms of Service</a>.</p>
+</LegalPage>

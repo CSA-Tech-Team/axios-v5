@@ -13,7 +13,7 @@ const {
   theme = 'amber'
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://axios.live');
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://axios.psgtech.ac.in');
 const ogImageUrl = new URL(siteConfig.meta.ogImagePath, canonicalURL).href;
 
 const eventJsonLd = {
@@ -42,6 +42,13 @@ const eventJsonLd = {
     "name": siteConfig.event.organizer.name,
     "url": siteConfig.event.organizer.collegeUrl
   },
+  // Optional in schema.org, but Google's Event rich result test flags its
+  // absence. The association runs the arenas, so it is the performer here.
+  "performer": {
+    "@type": "Organization",
+    "name": siteConfig.event.organizer.name,
+    "url": siteConfig.event.organizer.departmentUrl
+  },
   "offers": {
     "@type": "Offer",
     "url": canonicalURL.href,
@@ -64,6 +71,8 @@ const eventJsonLd = {
   <meta name="keywords" content={siteConfig.meta.keywords} />
   <meta name="author" content={siteConfig.meta.author} />
   <meta name="robots" content="index, follow" />
+  <!-- Google Search Console ownership, for the axios.psgtech.ac.in property. -->
+  <meta name="google-site-verification" content="-JH01O2NZcQlRsYMJFOT7hWHF78EIOQUP8jtbknEE3A" />
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
   <!-- The SVG favicon carries its own prefers-color-scheme rule, but Chromium only
@@ -171,5 +180,72 @@ const eventJsonLd = {
     <slot />
 
   </div>
+
+  <!--
+    Alumni entry, without putting anything in the portal's address bar.
+
+    The portal is a sibling host under psgtech.ac.in, so a cookie scoped to the
+    parent domain reaches it - the same trick the API already uses for its
+    session cookie. On an ordinary click the marker travels in that cookie and
+    the portal opens on a clean URL.
+
+    The `?mode=alumni` on the link itself is the fallback, and is what a copied
+    link, a middle-click or a browser refusing the cookie falls back to, so the
+    entry point never silently stops working. Neither carries the referral
+    code, and neither is a credential: alumni may only request accommodation,
+    which staff still approve.
+  -->
+  <script is:inline>
+    (function () {
+      var links = document.querySelectorAll('a[href*="mode=alumni"]');
+      if (!links.length) return;
+
+      function domainAttr() {
+        // Host-only on localhost, where ports share a cookie jar anyway.
+        return /(^|\.)psgtech\.ac\.in$/.test(location.hostname)
+          ? "; domain=.psgtech.ac.in"
+          : "";
+      }
+
+      function markEntry() {
+        try {
+          document.cookie =
+            "axios_entry=alumni; path=/; max-age=600; samesite=lax" +
+            domainAttr() +
+            (location.protocol === "https:" ? "; secure" : "");
+          return document.cookie.indexOf("axios_entry=alumni") > -1;
+        } catch (err) {
+          return false;
+        }
+      }
+
+      links.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          // Anything but a plain left click (new tab, download, copy) keeps the
+          // href, which still carries the marker.
+          if (
+            event.defaultPrevented ||
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+          )
+            return;
+
+          if (!markEntry()) return; // cookies blocked - let the href do it
+
+          var url = new URL(link.href);
+          url.searchParams.delete("mode");
+          event.preventDefault();
+          if (link.target === "_blank") {
+            window.open(url.toString(), "_blank", "noopener");
+          } else {
+            window.location.href = url.toString();
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
