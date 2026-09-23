@@ -907,7 +907,7 @@ const footer: FooterContent = {
 
 const banner: AnnouncementBanner = {
   enabled: true,
-  lead: "Registrations for certain events are closed as maximum capacity has been reached.",
+  lead: "Registrations for all events are closed as maximum capacity has been reached.",
   tail: "",
   dismissKey: "reg-capacity-v1",
 };
