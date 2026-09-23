@@ -3,26 +3,32 @@ import { siteConfig } from '../config/site.config';
 
 const { banner, events } = siteConfig;
 
-// Resolve the linked event up front so a stale key fails the build instead of
-// shipping a link that opens nothing.
-const linkedEvent = banner.enabled
-  ? events.find((e) => e.key === banner.eventKey)
-  : undefined;
-if (banner.enabled && !linkedEvent) {
+// A banner can be a plain strip (just `lead`) or link into one event, keyed
+// by `eventKey`. Resolve the linked event up front so a stale key fails the
+// build instead of shipping a link that opens nothing.
+const hasLink = banner.enabled && !!banner.eventKey;
+const linkedEvent = hasLink ? events.find((e) => e.key === banner.eventKey) : undefined;
+if (hasLink && !linkedEvent) {
   throw new Error(`AnnouncementBanner.astro: no event configured with key "${banner.eventKey}"`);
 }
 ---
 
-{banner.enabled && linkedEvent && (
+{banner.enabled && (!banner.eventKey || linkedEvent) && (
   <div class="announce-bar" id="announce-bar" data-dismiss-key={banner.dismissKey}>
     <p class="announce-copy">
-      {banner.lead && <span>{banner.lead}{' '}</span>}
-      <a
-        class="announce-link"
-        href={`#e-${banner.eventKey}`}
-        data-open={banner.eventKey}
-        aria-label={`${linkedEvent.name} - ${linkedEvent.category.toLowerCase()} event details`}
-      >{banner.linkLabel}</a><span>{' '}{banner.tail}</span>
+      {linkedEvent ? (
+        <>
+          {banner.lead && <span>{banner.lead}{' '}</span>}
+          <a
+            class="announce-link"
+            href={`#e-${banner.eventKey}`}
+            data-open={banner.eventKey}
+            aria-label={`${linkedEvent.name} - ${linkedEvent.category.toLowerCase()} event details`}
+          >{banner.linkLabel}</a><span>{' '}{banner.tail}</span>
+        </>
+      ) : (
+        <span>{banner.lead}</span>
+      )}
     </p>
     <button type="button" class="announce-close" aria-label="Dismiss announcement">
       <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">

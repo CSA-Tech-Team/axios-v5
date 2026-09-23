@@ -296,16 +296,16 @@ export interface FooterContent {
 export interface AnnouncementBanner {
   /** Set false to pull the strip without deleting the copy. */
   enabled: boolean;
-  /** Text before the link. */
+  /** Text before the link, or the whole message when there's no link. */
   lead: string;
-  /** The linked words. */
-  linkLabel: string;
-  /** Event key the link opens. Must match an entry in `events`. */
-  eventKey: string;
+  /** The linked words. Omit along with `eventKey` for a plain, unlinked strip. */
+  linkLabel?: string;
+  /** Event key the link opens. Must match an entry in `events`. Omit for a plain, unlinked strip. */
+  eventKey?: string;
   /**
    * Text after the link. Any punctuation separating it from the link belongs
    * at the start of this string, e.g. ", a non-tech event ...", since the
-   * component adds only a single space.
+   * component adds only a single space. Ignored when there's no link.
    */
   tail: string;
   /**
@@ -907,11 +907,9 @@ const footer: FooterContent = {
 
 const banner: AnnouncementBanner = {
   enabled: true,
-  lead: "",
-  linkLabel: "BIG BULL",
-  eventKey: "bb",
-  tail: "is live!! Out-invest, out-trade, and out-smart the competition",
-  dismissKey: "bb-launch-v1",
+  lead: "Registrations for certain events are closed as maximum capacity has been reached.",
+  tail: "",
+  dismissKey: "reg-capacity-v1",
 };
 
 export const siteConfig: SiteConfig = {
