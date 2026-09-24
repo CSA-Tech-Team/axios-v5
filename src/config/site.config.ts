@@ -474,7 +474,7 @@ const events: EventDetail[] = [
       { place: "Third", amount: "₹5,000", widthPercent: "38%" },
     ],
     timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:00", endTime: "13:00", duration: "4:00", location: "4 rooms · G Block Classroom" },
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "J508 - J516" },
       { round: "Round 2", day: "Day 1", startTime: "14:30", endTime: "16:00", duration: "1:30", location: "M503" },
       { round: "Round 3", day: "Day 2", startTime: "16:30", endTime: "17:30", duration: "1:00", location: "F-Block Assembly Hall" },
     ],
@@ -509,7 +509,7 @@ const events: EventDetail[] = [
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "11:00", duration: "1:30", location: "SIL, OSL, NSL, IIL" },
       { round: "Round 2", day: "Day 1", startTime: "13:00", endTime: "15:30", duration: "2:30", location: "SIL, OSL" },
-      { round: "Round 3", day: "Day 2", startTime: "08:30", endTime: "13:00", duration: "4:30", location: "SIL, OSL" },
+      { round: "Round 3", day: "Day 2", startTime: "08:30", endTime: "13:00", duration: "4:30", location: "SIL, OSL, NSL, IIL" },
     ],
   },
   {
@@ -541,7 +541,7 @@ const events: EventDetail[] = [
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "12:30", duration: "3:00", location: "M201, M202" },
       { round: "Round 2", day: "Day 1", startTime: "14:00", endTime: "17:00", duration: "3:00", location: "M201, M202" },
-      { round: "Round 3", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "M202 " },
+      { round: "Round 3", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "M202" },
     ],
   },
   {
@@ -570,7 +570,7 @@ const events: EventDetail[] = [
       { place: "Third", amount: "₹3,000", widthPercent: "42%" },
     ],
     timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "CSL 1, 2, 3, DSL" },
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "CSL 1, 2, 3, DSL, SCL" },
       { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "14:00", duration: "4:30", location: "M503" },
     ],
   },
@@ -632,7 +632,7 @@ const events: EventDetail[] = [
     ],
     timeline: [
       { round: "Round 1", day: "Day 1", startTime: "10:00", endTime: "12:00", duration: "2:00", location: "M503, M504" },
-      { round: "Round 2", day: "Day 1", startTime: "14:00", endTime: "16:00", duration: "2:00", location: "M503, M504" },
+      { round: "Round 2", day: "Day 1", startTime: "14:00", endTime: "16:00", duration: "2:00", location: "J508 - J516" },
       { round: "Round 3", day: "Day 2", startTime: "10:00", endTime: "12:00", duration: "2:00", location: "D-Block Conference Hall" },
       { round: "Round 4", day: "Day 2", startTime: "16:15", endTime: "17:00", duration: "0:45", location: "D-Block Conference Hall" },
     ],
@@ -664,8 +664,8 @@ const events: EventDetail[] = [
       //{ place: "Third", amount: "₹9,000", widthPercent: "32%" },
     ],
     timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "F203" },
-      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "F203" },
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "Open Bay" },
+      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "CSL 1, 2, 3, DSL" },
     ],
   },
   {
@@ -695,8 +695,8 @@ const events: EventDetail[] = [
       { place: "Third", amount: "₹500", widthPercent: "32%" },
     ],
     timeline: [
-      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "F202" },
-      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "12:00", duration: "2:30", location: "F202" },
+      { round: "Round 1", day: "Day 1", startTime: "09:30", endTime: "17:00", duration: "7:30", location: "Open Bay" },
+      { round: "Round 2", day: "Day 2", startTime: "09:30", endTime: "13:00", duration: "3:30", location: "CSL 1, 2, 3, DSL" },
     ],
   },
   {
